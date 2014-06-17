@@ -19,13 +19,7 @@ angular.module('woodash', [
 			ionic.Platform.platforms.push('chromeapp');
 		}
 
-		chrome.identity.getAuthToken({ 'interactive': false }, function (token) {
-			if (chrome.runtime.lastError) {
-				$state.go('public.login');
-			} else {
-				$state.go('app.overview');
-			}
-		});
+		$state.go('app.overview');
 
 		if (window.StatusBar) {
 			// org.apache.cordova.statusbar required
