@@ -1,4 +1,4 @@
-woodash
-=======
+Woodash
+===
 
-WooCommerce dashboard application
+Woodash for WooCommerce
