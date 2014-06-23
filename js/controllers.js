@@ -4,9 +4,20 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$scope', '$ionicLoading', 'xhrIdentityAuth', function ($scope, $ionicLoading, xhrIdentityAuth) {
+	.controller('AppCtrl', ['$scope', '$ionicLoading', 'xhrIdentityAuth', '$state', function ($scope, $ionicLoading, xhrIdentityAuth, $state) {
 		//want to make sure user information is displayed
-		var xhr_button, revoke_button;
+		var xhr_button, revoke_button, mystring;
+
+		mystring = $state.current.name;
+		mystring = mystring.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+		console.log(mystring);
+//		mystring.replace(/\./g,'');
+
+		$scope.data = {
+		    currentActive: mystring
+		  };
+
+		console.log($state.current.name);
 
 		function xhrWithAuth(method, url, interactive, callback) {
 			var access_token;
@@ -109,7 +120,6 @@ angular.module('woodash.controllers', [])
 	}])
 
 	.controller('OverviewCtrl', ['$scope', '$ionicLoading', function ($scope, $ionicLoading) {
-
 
 	}])
 

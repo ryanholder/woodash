@@ -69,7 +69,7 @@
 
 .woodash-menu .item-content {
 	background-color: transparent;
-	padding: 10px 40px 10px 15px;
+	/*padding: 14px 40px 14px 15px;*/
 }
 
 .woodash-menu .bar-header {
@@ -200,7 +200,7 @@
 }
 
 .woodash-menu .item-icon-left .icon {
-	font-size: 25px;
+	/*font-size: 25px;*/
 }
 
 .woodash-user-button {
@@ -210,4 +210,37 @@
 .woodash-user-button.ion-chevron-down:before {
 	font-size: 12px !important;
 	padding-left: 4px !important;
+}
+
+.menu-content {
+	left: 68px !important;
+	width: calc(100% - 68px) !important;
+}
+
+.menu-left {
+	width: 220px !important;
+}
+
+.item-complex.item-icon-left .item-content {
+	padding-left: 68px;
+}
+
+.item-icon-left .icon {
+	left: 15px;
+}
+
+.bar-header {
+	height: 50px;
+}
+
+.has-header {
+	top: 50px;
+}
+
+.woodash-menu.menu .item {
+	border-left: 3px solid transparent;
+}
+
+.appoverview .woodash-menu.menu .overview.item {
+	border-left: 3px solid #bada55;
 }
