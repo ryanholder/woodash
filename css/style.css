@@ -1,37 +1,59 @@
 /* Customise the header bar */
 .bar-header {
-	/*height: 60px;*/
+	height: 50px;
+	border-top-width: 1px;
+}
+
+.has-header {
+	top: 50px;
+}
+
+.bar.bar-light {
+	border-color: #eee;
+	border-bottom-color: #f8f8f8;
 }
 
 .bar-header .title {
 	/*line-height: 60px;*/
-	font-family: 'open sans';
-	font-weight: 500;
+	/*font-family: 'open sans';
+	font-weight: 500;*/
 }
 
 .bar-subheader {
-	height: 60px;
+	top: 50px;
+	height: 80px;
+	border-top-width: 0px;
+	border-bottom: none;
 }
 
 .bar-subheader .title {
-	line-height: 50px;
+	font-family: 'Lato';
+	font-weight: 300;
+	text-transform: uppercase;
+	-webkit-font-smoothing: auto;
+	line-height: 80px;
+	height: 80px;
+	margin: 0 15px;
+	color: #bebebe;
 }
 
-.has-header {
-	/*top: 60px;*/
+.bar-subheader .title + .buttons {
+	top: 23px;
+	right: 15px;
+	bottom: 23px;
 }
 
 .nav-bar .button {
-	/*min-height: 50px;*/
+	min-height: 38px;
 }
 
 .woodash-content {
-	background-color: #f2f2f2;
+	background-color: #fff;
 	color: #505050;
 }
 
 .woodash-content.has-subheader {
-	top: 104px;
+	top: 130px;
 }
 
 .chromeapp .woodash-content {
@@ -41,6 +63,50 @@
 .platform-chromeapp .bar-subheader .button-bar.woodash-button-bar-center {
 	max-width: 160px;
 	margin: 0 auto;
+}
+
+/*Woodash buttons*/
+.bar .woodash-buttons > .button {
+	font-family: 'Lato';
+	font-weight: 400;
+	/*text-transform: uppercase;*/
+	/*-webkit-font-smoothing: auto;*/
+	font-size: 14px;
+	padding: 0 12px;
+	border-radius: 3px;
+}
+
+.bar .woodash-buttons > .button.icon-right:before {
+	font-size: 14px;
+	padding-right: 0;
+	padding-left: 5px;
+}
+
+.bar .woodash-buttons > .button.icon-left:before {
+	font-size: 18px;
+	padding-right: 5px;
+	padding-left: 0;
+}
+
+.bar .woodash-buttons > .button.woodash-date-range-select {
+	border-color: #47d3a1;
+	background-color: #47d3a1
+}
+
+.bar .woodash-buttons > .button.woodash-date-range-from,
+.bar .woodash-buttons > .button.woodash-date-range-to {
+	border-color: #e2e2e2;
+	color: #888994;
+}
+
+.bar .woodash-buttons > .button.woodash-date-range-from {
+	margin-right: -5px;
+	border-right-color: transparent;
+	border-radius: 3px 0 0 3px;
+}
+
+.bar .woodash-buttons > .button.woodash-date-range-to {
+	border-radius: 0 3px 3px 0;
 }
 
 /* Side menu changes */
@@ -229,13 +295,7 @@
 	left: 15px;
 }
 
-.bar-header {
-	height: 50px;
-}
 
-.has-header {
-	top: 50px;
-}
 
 .woodash-menu.menu .item {
 	border-left: 3px solid transparent;
@@ -243,4 +303,91 @@
 
 .appoverview .woodash-menu.menu .overview.item {
 	border-left: 3px solid #bada55;
+}
+
+/* Font-face for Lato */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 100;
+  src: local('Lato Hairline'), local('Lato-Hairline'), url('../fonts/Lato-Hairline.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Lato Light'), local('Lato-Light'), url('../fonts/Lato-Light.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url('../fonts/Lato-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/Lato-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 900;
+  src: local('Lato Black'), local('Lato-Black'), url('../fonts/Lato-Black.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 100;
+  src: local('Lato Hairline Italic'), local('Lato-HairlineItalic'), url('../fonts/Lato-HairlineItalic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Lato Light Italic'), local('Lato-LightItalic'), url('../fonts/Lato-LightItalic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Lato Italic'), local('Lato-Italic'), url('../fonts/Lato-LightItalic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url('../fonts/Lato-BoldItalic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 900;
+  src: local('Lato Black Italic'), local('Lato-BlackItalic'), url('../fonts/Lato-BlackItalic.ttf') format('truetype');
+}
+
+#chartdiv {
+	width:100%;
+	height:300px;
+	background-color: #fff;
+}
+
+.woodash-numbers {
+	text-align: center;
+	padding: 38px 0;
+}
+
+.woodash-numbers-main {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 38px;
+	font-weight: 500;
+}
+
+.woodash-numbers-desc {
+	font-family: 'Lato';
+	font-weight: 400;
+	text-transform: uppercase;
+	margin-top: 15px;
+	font-size: 12px;
 }

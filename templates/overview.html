@@ -1,23 +1,48 @@
-<ion-view title="Overview">
+<ion-view>
 	<ion-nav-buttons side="left">
 		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 	</ion-nav-buttons>
-	<ion-header-bar align-title="left" class="bar-subheader item-input-inset">
-		<div class="col">
-			<div class="button-bar button-bar-inline">
-				<a class="button button-stable">Today</a>
-				<a class="button button-stable">Yesterday</a>
-				<a class="button button-stable">Last 7 Days</a>
-			</div>
-		</div>
-		<div class="col">
-			<button class="button icon ion-ios7-gear button-stable woodash-button-gear"></button>
+	<ion-header-bar align-title="left" class="bar-subheader">
+		<h1 class="title">Overview for Store Name</h1>
+		<div class="buttons woodash-buttons">
+			<button class="button button-balanced icon-right ion-chevron-down woodash-date-range-select">Custom range</button>
+  		<button class="button button-outline button-stable icon-left ion-calendar woodash-date-range-from">01/01/2014</button>
+			<button class="button button-outline button-stable icon-left ion-calendar woodash-date-range-to">01/07/2014</button>
 		</div>
 	</ion-header-bar>
 	<ion-content class="has-subheader woodash-content">
+		<div id="chartdiv"></div>
+		<div class="row" style="background-color:#f2f2f2;">
+			<div class="col woodash-numbers">
+				<div class="woodash-numbers-main">$32,000</div>
+				<div class="woodash-numbers-desc">total orders ($)</div>
+			</div>
+			<div class="col woodash-numbers">
+				<div class="woodash-numbers-main">$32,000</div>
+				<div class="woodash-numbers-desc">total orders ($)</div>
+			</div>
+			<div class="col woodash-numbers">
+				<div class="woodash-numbers-main">$32,000</div>
+				<div class="woodash-numbers-desc">total orders ($)</div>
+			</div>
+			<div class="col woodash-numbers">
+				<div class="woodash-numbers-main">$32,000</div>
+				<div class="woodash-numbers-desc">total orders ($)</div>
+			</div>
+			<div class="col woodash-numbers">
+				<div class="woodash-numbers-main">$32,000</div>
+				<div class="woodash-numbers-desc">total orders ($)</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col">
-				<h2>Overview Page</h2>
+				col1
+			</div>
+			<div class="col">
+				col2
+			</div>
+			<div class="col col-50">
+				col3
 			</div>
 		</div>
 	</ion-content>

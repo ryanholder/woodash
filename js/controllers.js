@@ -108,7 +108,104 @@ angular.module('woodash.controllers', [])
 	}])
 
 	.controller('OverviewCtrl', ['$scope', '$ionicLoading', function ($scope, $ionicLoading) {
+		AmCharts.makeChart("chartdiv", {
+			type: "serial",
+		  dataProvider: [{
+				"year": 2005,
+			  "customers": 23,
+				"guests": 5
+		  }, {
+			  "year": 2006,
+				"customers": 27,
+				"guests": 4
+		  }, {
+			  "year": 2007,
+			  "customers": 33,
+				"guests": 8
+			}, {
+				"year": 2008,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2009,
+				"customers": 33,
+				"guests": 8
+			}, {
+				"year": 2010,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2011,
+				"customers": 39,
+				"guests": 8
+			}, {
+				"year": 2012,
+				"customers": 23,
+				"guests": 5
+			}, {
+				"year": 2013,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2014,
+				"customers": 33,
+				"guests": 8
+			}, {
+				"year": 2010,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2011,
+				"customers": 39,
+				"guests": 8
+		  }],
+		  categoryField: "year",
+		  rotate: false,
+			//  autoMargins: false,
+			autoMarginOffset: 15,
+			// autoMargins: false,
+			// marginBottom: 20,
+			// marginLeft: 0,
+			// marginRight: 0,
+			marginTop: 10,
+			columnWidth: 0.6,
 
+		  categoryAxis: {
+			  gridPosition: "start",
+			  axisColor: "#DADADA",
+				gridThickness: 0,
+				axisThickness: 0,
+		  },
+		  valueAxes: [{
+			  axisAlpha: 0,
+				gridColor: "#ccc",
+				gridAlpha: 0.2,
+				stackType: "regular",
+				fillAlpha: 0,
+				// fillColor: "#f6f6f7",
+				// minVerticalGap: 50,
+				// ignoreAxisWidth: true,
+				// inside: true,
+				// totalText: "[[total]]",
+		  }],
+		  graphs: [{
+			  type: "column",
+			  title: "Customers",
+			  valueField: "customers",
+			  lineAlpha: 0,
+			  fillColors: "#3995d4",
+			  fillAlphas: 1,
+			  balloonText: "[[title]] in [[category]]:<b>[[value]]</b>"
+			}, {
+				type: "column",
+				title: "Guests",
+				valueField: "guests",
+				lineAlpha: 0,
+				fillColors: "#65b7f1",
+				fillAlphas: 1,
+				balloonText: "[[title]] in [[category]]:<b>[[value]]</b>"
+		  }]
+		});
 	}])
 
 	.controller('UppCtrl', ['$scope', '$ionicModal', function ($scope, $ionicModal) {
