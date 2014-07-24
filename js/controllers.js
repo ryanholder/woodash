@@ -159,16 +159,88 @@ angular.module('woodash.controllers', [])
 				"year": 2011,
 				"customers": 39,
 				"guests": 8
+			}, {
+				"year": 2006,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2007,
+				"customers": 33,
+				"guests": 8
+			}, {
+				"year": 2008,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2009,
+				"customers": 33,
+				"guests": 8
+			}, {
+				"year": 2010,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2011,
+				"customers": 39,
+				"guests": 8
+			}, {
+				"year": 2012,
+				"customers": 23,
+				"guests": 5
+			}, {
+				"year": 2013,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2014,
+				"customers": 33,
+				"guests": 8
+			}, {
+				"year": 2010,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2011,
+				"customers": 39,
+				"guests": 8
+			}, {
+				"year": 2006,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2007,
+				"customers": 33,
+				"guests": 8
+			}, {
+				"year": 2008,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2009,
+				"customers": 33,
+				"guests": 8
+			}, {
+				"year": 2010,
+				"customers": 27,
+				"guests": 4
+			}, {
+				"year": 2011,
+				"customers": 39,
+				"guests": 8
+			}, {
+				"year": 2012,
+				"customers": 23,
+				"guests": 5
 		  }],
 		  categoryField: "year",
 		  rotate: false,
 			//  autoMargins: false,
-			autoMarginOffset: 15,
+			// autoMarginOffset: 15,
 			// autoMargins: false,
 			// marginBottom: 20,
 			// marginLeft: 0,
 			// marginRight: 0,
-			marginTop: 10,
+			// marginTop: 10,
 			columnWidth: 0.6,
 
 		  categoryAxis: {
@@ -189,6 +261,11 @@ angular.module('woodash.controllers', [])
 				// inside: true,
 				// totalText: "[[total]]",
 		  }],
+			legend: {
+				align: "right",
+				position: "top",
+				useGraphSettings: true
+			},
 		  graphs: [{
 			  type: "column",
 			  title: "Customers",
@@ -208,104 +285,137 @@ angular.module('woodash.controllers', [])
 		  }]
 		});
 
-	AmCharts.makeChart("overviewpiediv", {
-		type: "pie",
-		dataProvider: [{
-			"year": 2005,
-			"customers": 23,
-			"guests": 5
-		}, {
-			"year": 2006,
-			"customers": 27,
-			"guests": 4
-		}, {
-			"year": 2007,
-			"customers": 33,
-			"guests": 8
-		}, {
-			"year": 2008,
-			"customers": 27,
-			"guests": 4
-		}, {
-			"year": 2009,
-			"customers": 33,
-			"guests": 8
-		}, {
-			"year": 2010,
-			"customers": 27,
-			"guests": 4
-		}, {
-			"year": 2011,
-			"customers": 39,
-			"guests": 8
-		}, {
-			"year": 2012,
-			"customers": 23,
-			"guests": 5
-		}, {
-			"year": 2013,
-			"customers": 27,
-			"guests": 4
-		}, {
-			"year": 2014,
-			"customers": 33,
-			"guests": 8
-		}, {
-			"year": 2010,
-			"customers": 27,
-			"guests": 4
-		}, {
-			"year": 2011,
-			"customers": 39,
-			"guests": 8
-		}],
-		categoryField: "year",
-		rotate: false,
-		//  autoMargins: false,
-		autoMarginOffset: 15,
-		// autoMargins: false,
-		// marginBottom: 20,
-		// marginLeft: 0,
-		// marginRight: 0,
-		marginTop: 10,
-		columnWidth: 0.6,
+		AmCharts.makeChart("overviewpie1div", {
+			type: "pie",
+			balloonText: "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+			innerRadius: "65%",
+			colors: [
+				"#3995d4",
+				"#37B751",
+				"#FD3A07",
+				"#37ACC0",
+				"#FD6E13",
+				"#B0DE09",
+				"#04D215",
+				"#0D8ECF",
+				"#0D52D1",
+				"#2A0CD0",
+				"#8A0CCF",
+				"#CD0D74",
+				"#754DEB",
+				"#DDDDDD",
+				"#999999",
+				"#333333",
+				"#000000",
+				"#57032A",
+				"#CA9726",
+				"#990000",
+				"#4B0C25"
+			],
+			labelsEnabled: false,
+			labelTickAlpha: 0.1,
+			outlineAlpha: 1,
+			outlineThickness: 2,
+			titleField: "category",
+			valueField: "column-1",
+			allLabels: [],
+			balloon: {
+				fixedPosition: true
+			},
+			legend: {
+				markerBorderColor: "#FFFFFF",
+				markerSize: 13,
+				markerType: "circle",
+				position: "right",
+				spacing: 0,
+				switchable: false,
+				valueAlign: "left",
+				"verticalGap": 7
+			},
+			titles: [],
+			dataProvider: [{
+				"category": "Product 1",
+				"column-1": "10"
+			}, {
+				"category": "Product 2",
+				"column-1": "9"
+			}, {
+				"category": "Product 3",
+				"column-1": "4"
+			}, {
+				"category": "Product 4",
+				"column-1": "4"
+			}, {
+				"category": "Product 5",
+				"column-1": "2"
+			}]
+		});
 
-		categoryAxis: {
-			gridPosition: "start",
-			axisColor: "#DADADA",
-			gridThickness: 0,
-			axisThickness: 0,
-		},
-		valueAxes: [{
-			axisAlpha: 0,
-			gridColor: "#ccc",
-			gridAlpha: 0.2,
-			stackType: "regular",
-			fillAlpha: 0,
-			// fillColor: "#f6f6f7",
-			// minVerticalGap: 50,
-			// ignoreAxisWidth: true,
-			// inside: true,
-			// totalText: "[[total]]",
-		}],
-		graphs: [{
-			type: "column",
-			title: "Customers",
-			valueField: "customers",
-			lineAlpha: 0,
-			fillColors: "#3995d4",
-			fillAlphas: 1,
-			balloonText: "[[title]] in [[category]]:<b>[[value]]</b>"
-		}, {
-			type: "column",
-			title: "Guests",
-			valueField: "guests",
-			lineAlpha: 0,
-			fillColors: "#65b7f1",
-			fillAlphas: 1,
-			balloonText: "[[title]] in [[category]]:<b>[[value]]</b>"
-		}]
-	});
+		AmCharts.makeChart("overviewpie2div", {
+			type: "pie",
+			balloonText: "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+			innerRadius: "65%",
+			colors: [
+				"#3995d4",
+				"#37B751",
+				"#FD3A07",
+				"#37ACC0",
+				"#FD6E13",
+				"#B0DE09",
+				"#04D215",
+				"#0D8ECF",
+				"#0D52D1",
+				"#2A0CD0",
+				"#8A0CCF",
+				"#CD0D74",
+				"#754DEB",
+				"#DDDDDD",
+				"#999999",
+				"#333333",
+				"#000000",
+				"#57032A",
+				"#CA9726",
+				"#990000",
+				"#4B0C25"
+			],
+			labelsEnabled: false,
+			labelTickAlpha: 0.1,
+			outlineAlpha: 1,
+			outlineThickness: 2,
+			titleField: "category",
+			valueField: "column-1",
+			allLabels: [],
+			balloon: {
+				fixedPosition: true
+			},
+			legend: {
+				markerBorderColor: "#FFFFFF",
+				markerSize: 13,
+				markerType: "circle",
+				position: "right",
+				spacing: 0,
+				switchable: false,
+				valueAlign: "left",
+				"verticalGap": 7
+			},
+			titles: [],
+			dataProvider: [{
+				"category": "Product 1",
+				"column-1": "10"
+			}, {
+				"category": "Product 2",
+				"column-1": "9"
+			}, {
+				"category": "Product 3",
+				"column-1": "4"
+			}, {
+				"category": "Product 4",
+				"column-1": "4"
+			}, {
+				"category": "Product 5",
+				"column-1": "2"
+			}]
+		});
 
 	}])
 
