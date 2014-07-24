@@ -373,6 +373,11 @@
 	background-color: #fff;
 }
 
+#overviewpiediv {
+	width:100%;
+	height:200px;
+}
+
 .woodash-numbers {
 	text-align: center;
 	padding: 38px 0;
