@@ -23,7 +23,7 @@
 	height: 80px;
 	border-top-width: 0px;
 	border-bottom-color: #eee;
-	box-shadow: 0 0px 2px rgba(0, 0, 0, 0.1);
+	/*box-shadow: 0 0px 2px rgba(0, 0, 0, 0.1);*/
 }
 
 .bar-subheader .title {
@@ -48,7 +48,7 @@
 }
 
 .woodash-content {
-	background-color: #f8f8f8;
+	background-color: #fafafa;
 	color: #505050;
 }
 
@@ -386,7 +386,7 @@ a[href*="www.amcharts.com"] {
 #overviewpie2div,
 #overviewpie3div {
 	width:100%;
-	height:200px;
+	height:250px;
 }
 
 #overviewpie1div.col,
@@ -418,4 +418,32 @@ a[href*="www.amcharts.com"] {
 
 .card {
 	box-shadow: none;
+	overflow: initial;
+}
+
+.item {
+	border-color: #eee;
+}
+
+.no-top-border {
+	border-top: none;
+}
+
+.no-bot-border {
+	border-bottom: 0;
+	padding-bottom: 1px;
+}
+
+.no-padding {
+	padding: 0;
+}
+
+.card-title {
+	border-bottom: 1px solid #eee;
+	padding-bottom: 15px;
+	font-family: 'Lato';
+	font-weight: 400;
+	text-transform: uppercase;
+	margin-top: 0;
+	font-size: 12px;
 }

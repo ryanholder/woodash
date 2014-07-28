@@ -232,6 +232,7 @@ angular.module('woodash.controllers', [])
 				"customers": 23,
 				"guests": 5
 		  }],
+			color: "#646464",
 		  categoryField: "year",
 		  rotate: false,
 			//  autoMargins: false,
@@ -248,13 +249,16 @@ angular.module('woodash.controllers', [])
 			  axisColor: "#DADADA",
 				gridThickness: 0,
 				axisThickness: 0,
+				fillAlpha: 0.55,
+        fillColor: "#000000"
 		  },
 		  valueAxes: [{
 			  axisAlpha: 0,
 				gridColor: "#ccc",
 				gridAlpha: 0.2,
 				stackType: "regular",
-				fillAlpha: 0,
+				fillAlpha: 0.55,
+				fillColor: "#ff0000"
 				// fillColor: "#f6f6f7",
 				// minVerticalGap: 50,
 				// ignoreAxisWidth: true,
@@ -265,6 +269,12 @@ angular.module('woodash.controllers', [])
 				align: "right",
 				position: "top",
 				useGraphSettings: true
+			},
+			balloon: {
+				borderThickness: 0,
+				color: "#FFFFFF",
+				fillColor: "#000000",
+				shadowAlpha: 0
 			},
 		  graphs: [{
 			  type: "column",
@@ -287,8 +297,22 @@ angular.module('woodash.controllers', [])
 
 		AmCharts.makeChart("overviewpie1div", {
 			type: "pie",
-			balloonText: "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+			balloonText: "<span style='font-size:12px'><b>[[value]]</b> ([[percents]]%)</span>",
 			innerRadius: "65%",
+			labelRadius: 6,
+			labelText: "[[title]]",
+			minRadius: 80,
+			pullOutRadius: 6,
+			radius: "30%",
+			startRadius: "100%",
+			marginBottom: 0,
+			marginLeft: 0,
+			marginRight: 0,
+			marginTop: 0,
+			maxLabelWidth: 80,
+			pullOutOnlyOne: true,
+			sequencedAnimation: false,
+			color: "#646464",
 			colors: [
 				"#3995d4",
 				"#37B751",
@@ -296,51 +320,31 @@ angular.module('woodash.controllers', [])
 				"#37ACC0",
 				"#FD6E13",
 				"#B0DE09",
-				"#04D215",
-				"#0D8ECF",
-				"#0D52D1",
-				"#2A0CD0",
-				"#8A0CCF",
-				"#CD0D74",
-				"#754DEB",
-				"#DDDDDD",
-				"#999999",
-				"#333333",
-				"#000000",
-				"#57032A",
-				"#CA9726",
-				"#990000",
-				"#4B0C25"
 			],
-			labelsEnabled: false,
-			labelTickAlpha: 0.1,
+			// labelsEnabled: false,
+			labelTickAlpha: 0.5,
 			outlineAlpha: 1,
 			outlineThickness: 2,
 			titleField: "category",
 			valueField: "column-1",
 			allLabels: [],
 			balloon: {
-				fixedPosition: true
+				fixedPosition: true,
+				borderThickness: 0,
+				color: "#FFFFFF",
+				fillColor: "#000000",
+				shadowAlpha: 0
 			},
-			legend: {
-				markerBorderColor: "#FFFFFF",
-				markerSize: 13,
-				markerType: "circle",
-				position: "right",
-				spacing: 0,
-				switchable: false,
-				valueAlign: "left",
-				"verticalGap": 7
-			},
+
 			titles: [],
 			dataProvider: [{
-				"category": "Product 1",
+				"category": "Mens red and white tshirt",
 				"column-1": "10"
 			}, {
 				"category": "Product 2",
 				"column-1": "9"
 			}, {
-				"category": "Product 3",
+				"category": "Mens red and black tshirt",
 				"column-1": "4"
 			}, {
 				"category": "Product 4",
@@ -353,69 +357,63 @@ angular.module('woodash.controllers', [])
 
 		AmCharts.makeChart("overviewpie2div", {
 			type: "pie",
-			balloonText: "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-			innerRadius: "65%",
-			colors: [
-				"#3995d4",
-				"#37B751",
-				"#FD3A07",
-				"#37ACC0",
-				"#FD6E13",
-				"#B0DE09",
-				"#04D215",
-				"#0D8ECF",
-				"#0D52D1",
-				"#2A0CD0",
-				"#8A0CCF",
-				"#CD0D74",
-				"#754DEB",
-				"#DDDDDD",
-				"#999999",
-				"#333333",
-				"#000000",
-				"#57032A",
-				"#CA9726",
-				"#990000",
-				"#4B0C25"
-			],
-			labelsEnabled: false,
-			labelTickAlpha: 0.1,
-			outlineAlpha: 1,
-			outlineThickness: 2,
-			titleField: "category",
-			valueField: "column-1",
-			allLabels: [],
-			balloon: {
-				fixedPosition: true
-			},
-			legend: {
-				markerBorderColor: "#FFFFFF",
-				markerSize: 13,
-				markerType: "circle",
-				position: "right",
-				spacing: 0,
-				switchable: false,
-				valueAlign: "left",
-				"verticalGap": 7
-			},
-			titles: [],
-			dataProvider: [{
-				"category": "Product 1",
-				"column-1": "10"
-			}, {
-				"category": "Product 2",
-				"column-1": "9"
-			}, {
-				"category": "Product 3",
-				"column-1": "4"
-			}, {
-				"category": "Product 4",
-				"column-1": "4"
-			}, {
-				"category": "Product 5",
-				"column-1": "2"
-			}]
-		});
+balloonText: "<span style='font-size:12px'><b>[[value]]</b> ([[percents]]%)</span>",
+		innerRadius: "65%",
+		labelRadius: 6,
+		labelText: "[[title]]",
+		minRadius: 80,
+		pullOutRadius: 6,
+		radius: "30%",
+		startRadius: "100%",
+		marginBottom: 0,
+		marginLeft: 0,
+		marginRight: 0,
+		marginTop: 0,
+		maxLabelWidth: 80,
+		pullOutOnlyOne: true,
+		sequencedAnimation: false,
+		color: "#646464",
+		colors: [
+			"#3995d4",
+			"#37B751",
+			"#FD3A07",
+			"#37ACC0",
+			"#FD6E13",
+			"#B0DE09",
+		],
+		// labelsEnabled: false,
+		labelTickAlpha: 0.5,
+		outlineAlpha: 1,
+		outlineThickness: 2,
+		titleField: "category",
+		valueField: "column-1",
+		allLabels: [],
+		balloon: {
+			fixedPosition: true,
+			borderThickness: 0,
+			color: "#FFFFFF",
+			fillColor: "#000000",
+			shadowAlpha: 0
+		},
+
+		titles: [],
+		dataProvider: [{
+			"category": "Mens red and white tshirt",
+			"column-1": "10"
+		}, {
+			"category": "Product 2",
+			"column-1": "9"
+		}, {
+			"category": "Mens red and black tshirt",
+			"column-1": "4"
+		}, {
+			"category": "Product 4",
+			"column-1": "4"
+		}, {
+			"category": "Product 5",
+			"column-1": "2"
+		}]
+	});
 
 	}])
 
