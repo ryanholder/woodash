@@ -399,6 +399,7 @@ a[href*="www.amcharts.com"] {
 .woodash-numbers .card {
 	text-align: center;
 	background-color: transparent;
+	margin: 0 10px;
 }
 
 .woodash-numbers-main {

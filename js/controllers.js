@@ -249,16 +249,16 @@ angular.module('woodash.controllers', [])
 			  axisColor: "#DADADA",
 				gridThickness: 0,
 				axisThickness: 0,
-				fillAlpha: 0.55,
-        fillColor: "#000000"
+				// fillAlpha: 0.2,
+        // fillColor: "#cccccc"
 		  },
 		  valueAxes: [{
 			  axisAlpha: 0,
 				gridColor: "#ccc",
 				gridAlpha: 0.2,
 				stackType: "regular",
-				fillAlpha: 0.55,
-				fillColor: "#ff0000"
+				// fillAlpha: 0.55,
+				// fillColor: "#ff0000"
 				// fillColor: "#f6f6f7",
 				// minVerticalGap: 50,
 				// ignoreAxisWidth: true,
@@ -282,7 +282,7 @@ angular.module('woodash.controllers', [])
 			  valueField: "customers",
 			  lineAlpha: 0,
 			  fillColors: "#3995d4",
-			  fillAlphas: 1,
+			  fillAlphas: 0.9,
 			  balloonText: "[[title]] in [[category]]:<b>[[value]]</b>"
 			}, {
 				type: "column",
@@ -290,7 +290,7 @@ angular.module('woodash.controllers', [])
 				valueField: "guests",
 				lineAlpha: 0,
 				fillColors: "#65b7f1",
-				fillAlphas: 1,
+				fillAlphas: 0.9,
 				balloonText: "[[title]] in [[category]]:<b>[[value]]</b>"
 		  }]
 		});
