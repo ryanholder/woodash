@@ -621,6 +621,9 @@ balloonText: "<span style='font-size:12px'><b>[[value]]</b> ([[percents]]%)</spa
 	.controller('IntroductionCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
 	}])
 
+	.controller('WooCommerceDataCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+	}])
+
 	.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function ($rootScope, $scope, $state) {
 		var signin_button = document.querySelector('#signin');
 		signin_button.addEventListener('click', interactiveSignIn);
