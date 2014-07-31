@@ -458,11 +458,23 @@ a[href*="www.amcharts.com"] {
 	padding: 6px 12px;
 }
 
-.woodash-buttons .form-control.woodash-date-range-from,
+.woodash-buttons .input-group .form-control,
 .woodash-buttons .form-control.woodash-date-range-to {
 	width: 50%;
 }
 
+.woodash-buttons .input-group .item-input {
+	display: inline-flex;
+	border: 1px solid #eee;
+	padding: 6px 12px;
+	overflow: visible;
+}
+
+.woodash-buttons .input-group .item-input input[type="text"] {
+	padding-top: 0;
+}
+
+display: block;
 .woodash-buttons .form-control.woodash-date-range-to {
 	border-radius: 0 3px 3px 0;
 	margin-left: -1px

@@ -5,14 +5,35 @@
 	<ion-header-bar align-title="left" class="bar-subheader">
 		<h1 class="title">Overview for Store Name</h1>
 		<div class="buttons woodash-buttons">
-	    <div class="input-group">
-	      <div class="input-group-btn">
-					<button class="button btn button-balanced woodash-date-range-select" ng-model="selectedIcon" data-html="1" ng-options="icon.value as icon.label for icon in icons" bs-select></button>
-	      </div>
-				<input type="text" class="form-control woodash-date-range-from" ng-model="fromDate" data-max-date="{{untilDate}}" placeholder="From" bs-datepicker>
-				<input type="text" class="form-control woodash-date-range-to" ng-model="untilDate" data-min-date="{{fromDate}}" placeholder="Until" bs-datepicker>
-	    </div>
+			<!-- <div class="form-group"> -->
+		    <div class="input-group">
+		      <div class="input-group-btn">
+						<button class="button btn button-balanced woodash-date-range-select" ng-model="selectedIcon" data-html="1" ng-options="icon.value as icon.label for icon in icons" bs-select></button>
+		      </div>
 
+					<label class="item-input form-control">
+						<i class="icon ion-search placeholder-icon"></i>
+						<input type="text" class="woodash-date-range-from" ng-model="fromDate" data-max-date="{{untilDate}}" placeholder="From" bs-datepicker>
+					</label>
+					<label class="item-input form-control">
+						<i class="icon ion-search placeholder-icon"></i>
+						<input type="text" class="woodash-date-range-to" ng-model="untilDate" data-min-date="{{fromDate}}" placeholder="Until" bs-datepicker>
+					</label>
+
+					<!-- <input type="text" class="form-control woodash-date-range-from" ng-model="fromDate" data-max-date="{{untilDate}}" placeholder="From" bs-datepicker>
+				<input type="text" class="form-control woodash-date-range-to" ng-model="untilDate" data-min-date="{{fromDate}}" placeholder="Until" bs-datepicker> -->
+					<!-- <input type="text" class="form-control icon-left ion-calendar woodash-date-range-to" ng-model="untilDate" data-min-date="{{fromDate}}" placeholder="Until" bs-datepicker> -->
+					<!-- <label class="form-control"> -->
+						<!-- <span class="glyphicon glyphicon-star"></span> -->
+				    <!-- <i class="icon ion-search placeholder-icon"></i> -->
+				    <!-- <input type="text" class="form-control" placeholder="Search"> -->
+	  			<!-- </label> -->
+					<!-- <label class="item item-input">
+    <i class="icon ion-search placeholder-icon"></i>
+    <input type="text" placeholder="Search">
+  </label> -->
+		    </div>
+			<!-- </div> -->
 
 
 
