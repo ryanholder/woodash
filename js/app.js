@@ -10,7 +10,8 @@ angular.module('woodash', [
 	'woodash.filters',
 	'woodash.services',
 	'woodash.directives',
-	'woodash.controllers'
+	'woodash.controllers',
+	'mgcrea.ngStrap'
 ])
 
 .run(['$rootScope', '$state', '$ionicPlatform', function ($rootScope, $state, $ionicPlatform) {
@@ -152,4 +153,3 @@ angular.module('woodash', [
 			}
 		});
 });
-

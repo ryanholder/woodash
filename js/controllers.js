@@ -109,6 +109,18 @@ angular.module('woodash.controllers', [])
 
 	.controller('OverviewCtrl', ['$scope', '$ionicLoading', function ($scope, $ionicLoading) {
 
+		// The AngularStrap select directive setup for date ranges choices
+		$scope.selectedIcon = "Today";
+		$scope.icons = [
+    	{value: 'Today', label: 'Today'},
+  		{value: 'Yesterday', label: 'Yesterday'},
+    	{value: 'Last 7 days', label: 'Last 7 days'},
+    	{value: 'Last 30 days', label: 'Last 30 days'},
+			{value: 'This month', label: 'This month'},
+			{value: 'Year to date', label: 'Year to date'},
+			{value: 'Custom range', label: 'Custom range'}
+  	];
+
 		AmCharts.makeChart("chartdiv", {
 			type: "serial",
 		  dataProvider: [{
