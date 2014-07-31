@@ -66,46 +66,46 @@
 }
 
 /*Woodash buttons*/
-.bar .woodash-buttons > .button {
+.bar .woodash-buttons .button {
 	font-family: 'Lato';
 	font-weight: 400;
 	/*text-transform: uppercase;*/
 	/*-webkit-font-smoothing: auto;*/
 	font-size: 14px;
 	padding: 0 12px;
-	border-radius: 3px;
+	border-radius: 3px 0 0 3px;
 }
 
-.bar .woodash-buttons > .button.icon-right:before {
+.bar .woodash-buttons .button.icon-right:before {
 	font-size: 14px;
 	padding-right: 0;
 	padding-left: 5px;
 }
 
-.bar .woodash-buttons > .button.icon-left:before {
+.bar .woodash-buttons .button.icon-left:before {
 	font-size: 18px;
 	padding-right: 5px;
 	padding-left: 0;
 }
 
-.bar .woodash-buttons > .button.woodash-date-range-select {
+.bar .woodash-buttons .button.woodash-date-range-select {
 	border-color: #47d3a1;
 	background-color: #47d3a1
 }
 
-.bar .woodash-buttons > .button.woodash-date-range-from,
-.bar .woodash-buttons > .button.woodash-date-range-to {
+.bar .woodash-buttons .button.woodash-date-range-from,
+.bar .woodash-buttons .button.woodash-date-range-to {
 	border-color: #e2e2e2;
 	color: #888994;
 }
 
-.bar .woodash-buttons > .button.woodash-date-range-from {
+.bar .woodash-buttons .button.woodash-date-range-from {
 	margin-right: -5px;
 	border-right-color: transparent;
 	border-radius: 3px 0 0 3px;
 }
 
-.bar .woodash-buttons > .button.woodash-date-range-to {
+.bar .woodash-buttons .button.woodash-date-range-to {
 	border-radius: 0 3px 3px 0;
 }
 
@@ -447,4 +447,31 @@ a[href*="www.amcharts.com"] {
 	text-transform: uppercase;
 	margin-top: 0;
 	font-size: 12px;
+}
+
+.input-group-btn {
+	width: initial;
+}
+
+.woodash-buttons .form-control {
+	border: 1px solid #ccc;
+	padding: 6px 12px;
+}
+
+.woodash-buttons .form-control.woodash-date-range-from,
+.woodash-buttons .form-control.woodash-date-range-to {
+	width: 50%;
+}
+
+.woodash-buttons .form-control.woodash-date-range-to {
+	border-radius: 0 3px 3px 0;
+	margin-left: -1px
+}
+
+.woodash-buttons .form-control:focus,
+.woodash-buttons .button:focus {
+	/*border-color: #ccc;*/
+	outline: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
