@@ -11,9 +11,25 @@ var wp = new WP({
 });
 
 // All posts belonging to author with nicename "jadenbeirne"
-wp.posts().filter( 'author_name', 'ryanholder' ).get();
+//wp.posts().filter( 'author_name', 'ryanholder' ).get();
 
-// Callbacks
+//wp.posts().filter({
+//    category_name: 'islands',
+//    tag: [ 'clouds', 'sunset' ]
+//}).get();
+
+wp.posts()
+    .author( 'ryanholder' )
+    .category( 'jetpack' )
+    .get(function( err, data ) {
+        if ( err ) {
+            // handle err
+            console.log('test');
+        }
+        console.log(data);
+        // do something with the returned posts
+    });
+
 //wp.posts().filter( 'author_name', 'ryanholder' ).get(function( err, data ) {
 //    if ( err ) {
 //        // handle err
