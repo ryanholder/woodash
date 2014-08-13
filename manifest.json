@@ -16,7 +16,7 @@
         "identity",
         "https://accounts.google.com/*",
         "https://www.googleapis.com/*",
-        "http://wp.thewhatwhat.com/*"
+        "https://wp.thewhatwhat.com/*"
     ],
 	"oauth2": {
 		// client_id below is specifc to the application key. Follow the
