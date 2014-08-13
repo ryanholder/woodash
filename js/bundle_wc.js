@@ -953,11 +953,6 @@ WCRequest.prototype._renderURI = function() {
 	// If the current request supports filters, render them to a query string
 	var queryStr = this._renderQuery ? this._renderQuery() : '';
 
-    // Add credentials for https basic auth
-
-//    var authParams = '?consumer_key=ck_45841d89825d617a00814f88e74face7&consumer_secret=cs_d6da0b74e1f26cdd1f6bb6c8a0207e90';
-
-//	return this._options.endpoint + path + queryStr + authParams;
     return this._options.endpoint + path + queryStr;
 };
 
