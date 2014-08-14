@@ -4,7 +4,7 @@
  */
 var WP = require( 'wordpress-rest-api' );
 var wp = new WP({
-    endpoint: 'http://wp.thewhatwhat.com/wp-json/',
+    endpoint: 'https://wp.thewhatwhat.com/wp-json/',
     username: 'ryanholder',
     password: 'XGKjDDaFv6obLi4',
     auth: true
@@ -23,60 +23,169 @@ wp.posts()
     });
 
 
-////
-
-
-var WC = require( 'woocommerce-rest-api' );
-var wc = new WC({
-    endpoint: 'http://wp.thewhatwhat.com/wc-api/v1/',
+var wc = new WP({
+    endpoint: 'https://wp.thewhatwhat.com',
     username: 'ck_45841d89825d617a00814f88e74face7',
     password: 'cs_d6da0b74e1f26cdd1f6bb6c8a0207e90',
     auth: true
 });
 
+var request = wc.root( '/wc-api/v1/', true );
 
 // Callbacks
-wc.orders().get(function( err, data ) {
+request.get(function( err, data ) {
     if ( err ) {
         // handle err
     }
     // do something with the returned posts
 });
-
-//wc.posts()
-//    .author( 'ryanholder' )
-//    .get(function( err, data ) {
-//        if ( err ) {
-//            // handle err
-//            console.log('test2');
-//        }
-//        console.log(data);
-//        // do something with the returned posts
-//    });
-},{"woocommerce-rest-api":55,"wordpress-rest-api":114}],2:[function(require,module,exports){
+},{"wordpress-rest-api":60}],2:[function(require,module,exports){
 'use strict';
 /**
- * @module WC
- * @submodule OrdersRequest
+ * @module WP
+ * @submodule MediaRequest
  * @beta
  */
 var CollectionRequest = require( './shared/collection-request' );
 var inherit = require( 'util' ).inherits;
 
 /**
- * OrdersRequest extends CollectionRequest to handle the /orders API endpoint
+ * MediaRequest extends CollectionRequest to handle the /media API endpoint
  *
- * @class OrdersRequest
+ * @class MediaRequest
  * @constructor
  * @extends CollectionRequest
- * @param {Object} options A hash of options for the OrdersRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WC instance
+ * @param {Object} options A hash of options for the MediaRequest instance
+ * @param {String} options.endpoint The endpoint URI for the invoking WP instance
  * @param {String} [options.username] A username for authenticating API requests
  * @param {String} [options.password] A password for authenticating API requests
  */
-function OrdersRequest( options ) {
+function MediaRequest( options ) {
 	/**
-	 * Configuration options for the request such as the endpoint for the invoking WC instance
+	 * Configuration options for the request such as the endpoint for the invoking WP instance
+	 * @property _options
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._options = options || {};
+
+	/**
+	 * A hash of filter values to parse into the final request URI
+	 * @property _filters
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._filters = {};
+
+	/**
+	 * A hash of taxonomy terms to parse into the final request URI
+	 * @property _taxonomyFilters
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._taxonomyFilters = {};
+
+	/**
+	 * A hash of non-filter query parameters
+	 *
+	 * @property _params
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._params = {};
+
+	/**
+	 * A hash of values to assemble into the API request path
+	 *
+	 * @property _path
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._path = {};
+
+	/**
+	 * The URL template that will be used to assemble endpoint paths
+	 *
+	 * @property _template
+	 * @type String
+	 * @protected
+	 * @default 'media(/:id)'
+	 */
+	this._template = 'media(/:id)';
+
+	/**
+	 * @property _supportedMethods
+	 * @type Array
+	 * @private
+	 * @default [ 'head', 'get', 'post' ]
+	 */
+	this._supportedMethods = [ 'head', 'get', 'post' ];
+}
+
+inherit( MediaRequest, CollectionRequest );
+
+/**
+ * A hash table of path keys and regex validators for those path elements
+ *
+ * @property _pathValidators
+ * @type Object
+ * @private
+ */
+MediaRequest.prototype._pathValidators = {
+
+	/**
+	 * ID must be an integer or "me"
+	 *
+	 * @property _pathValidators.id
+	 * @type {RegExp}
+	 */
+	id: /^\d+$/
+};
+
+/**
+ * @method id
+ * @chainable
+ * @param {Number} id The integer ID of a media record
+ * @return {MediaRequest} The MediaRequest instance (for chaining)
+ */
+MediaRequest.prototype.id = function( id ) {
+	this._path.id = parseInt( id, 10 );
+	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
+
+	return this;
+};
+
+module.exports = MediaRequest;
+
+},{"./shared/collection-request":5,"util":71}],3:[function(require,module,exports){
+'use strict';
+/**
+ * @module WP
+ * @submodule PagesRequest
+ * @beta
+ */
+var CollectionRequest = require( './shared/collection-request' );
+var inherit = require( 'util' ).inherits;
+
+/**
+ * PagesRequest extends CollectionRequest to handle the /posts API endpoint
+ *
+ * @class PagesRequest
+ * @constructor
+ * @extends CollectionRequest
+ * @param {Object} options A hash of options for the PagesRequest instance
+ * @param {String} options.endpoint The endpoint URI for the invoking WP instance
+ * @param {String} [options.username] A username for authenticating API requests
+ * @param {String} [options.password] A password for authenticating API requests
+ */
+function PagesRequest( options ) {
+	/**
+	 * Configuration options for the request such as the endpoint for the invoking WP instance
 	 * @property _options
 	 * @type Object
 	 * @private
@@ -128,9 +237,9 @@ function OrdersRequest( options ) {
 	 * @property _template
 	 * @type String
 	 * @private
-	 * @default 'orders(/:id)(/:action)(/:actionId)'
+	 * @default 'pages(/:id)(/:action)(/:commentId)'
 	 */
-	this._template = 'orders(/:id)(/:action)(/:actionId)';
+	this._template = 'pages(/:id)(/:action)(/:commentId)';
 
 	/**
 	 * @property _supportedMethods
@@ -141,7 +250,7 @@ function OrdersRequest( options ) {
 	this._supportedMethods = [ 'head', 'get', 'post' ];
 }
 
-inherit( OrdersRequest, CollectionRequest );
+inherit( PagesRequest, CollectionRequest );
 
 /**
  * A hash table of path keys and regex validators for those path elements
@@ -150,7 +259,204 @@ inherit( OrdersRequest, CollectionRequest );
  * @type Object
  * @private
  */
-OrdersRequest.prototype._pathValidators = {
+PagesRequest.prototype._pathValidators = {
+
+	// No validation on "id", since it can be a string path OR a numeric ID
+
+	/**
+	 * Action must be 'comments' or 'revisions'
+	 *
+	 * @property _pathValidators.action
+	 * @type {RegExp}
+	 * @private
+	 */
+	action: /(comments|revisions)/,
+
+	/**
+	 * Comment ID must be an integer
+	 *
+	 * @property _pathValidators.commentId
+	 * @type {RegExp}
+	 * @private
+	 */
+	commentId: /^\d+$/
+};
+
+/**
+ * Specify a post ID to query
+ *
+ * @method id
+ * @chainable
+ * @return {PagesRequest} The PagesRequest instance (for chaining)
+ */
+PagesRequest.prototype.id = function( id ) {
+	this._path.id = parseInt( id, 10 );
+
+	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
+
+	return this;
+};
+
+/**
+ * Specify that we are getting the comments for a specific page
+ *
+ * @method comments
+ * @chainable
+ * @return {PagesRequest} The PagesRequest instance (for chaining)
+ */
+PagesRequest.prototype.comments = function() {
+	this._path.action = 'comments';
+	this._supportedMethods = [ 'head', 'get' ];
+
+	return this;
+};
+
+/**
+ * Specify a particular comment to retrieve
+ * (forces action "comments")
+ *
+ * @method comment
+ * @chainable
+ * @param {Number} id The ID of the comment to retrieve
+ * @return {PagesRequest}
+ */
+PagesRequest.prototype.comment = function( id ) {
+	this._path.action = 'comments';
+	this._path.commentId = parseInt( id, 10 );
+	this._supportedMethods = [ 'head', 'get', 'delete' ];
+
+	return this;
+};
+
+/**
+ * Specify that we are requesting the revisions for a specific post (forces basic auth)
+ *
+ * @method revisions
+ * @chainable
+ * @return {PagesRequest} The PagesRequest instance (for chaining)
+ */
+PagesRequest.prototype.revisions = function() {
+	this._path.action = 'revisions';
+	this._supportedMethods = [ 'head', 'get' ];
+
+	return this.auth();
+};
+
+/**
+ * Specify that we are requesting a page by its path
+ *
+ * @method path
+ * @chainable
+ * @param {String} path The root-relative URL path for a page
+ * @return {PagesRequest} The PagesRequest instance (for chaining)
+ */
+PagesRequest.prototype.path = function( path ) {
+	this._path.id = path;
+	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
+
+	return this;
+};
+
+module.exports = PagesRequest;
+
+},{"./shared/collection-request":5,"util":71}],4:[function(require,module,exports){
+'use strict';
+/**
+ * @module WP
+ * @submodule PostsRequest
+ * @beta
+ */
+var CollectionRequest = require( './shared/collection-request' );
+var inherit = require( 'util' ).inherits;
+
+/**
+ * PostsRequest extends CollectionRequest to handle the /posts API endpoint
+ *
+ * @class PostsRequest
+ * @constructor
+ * @extends CollectionRequest
+ * @param {Object} options A hash of options for the PostsRequest instance
+ * @param {String} options.endpoint The endpoint URI for the invoking WP instance
+ * @param {String} [options.username] A username for authenticating API requests
+ * @param {String} [options.password] A password for authenticating API requests
+ */
+function PostsRequest( options ) {
+	/**
+	 * Configuration options for the request such as the endpoint for the invoking WP instance
+	 * @property _options
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._options = options || {};
+
+	/**
+	 * A hash of filter values to parse into the final request URI
+	 * @property _filters
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._filters = {};
+
+	/**
+	 * A hash of taxonomy terms to parse into the final request URI
+	 * @property _taxonomyFilters
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._taxonomyFilters = {};
+
+	/**
+	 * A hash of non-filter query parameters
+	 *
+	 * @property _params
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._params = {};
+
+	/**
+	 * A hash of values to assemble into the API request path
+	 *
+	 * @property _path
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._path = {};
+
+	/**
+	 * The URL template that will be used to assemble endpoint paths
+	 *
+	 * @property _template
+	 * @type String
+	 * @private
+	 * @default 'posts(/:id)(/:action)(/:actionId)'
+	 */
+	this._template = 'posts(/:id)(/:action)(/:actionId)';
+
+	/**
+	 * @property _supportedMethods
+	 * @type Array
+	 * @private
+	 * @default [ 'head', 'get', 'post' ]
+	 */
+	this._supportedMethods = [ 'head', 'get', 'post' ];
+}
+
+inherit( PostsRequest, CollectionRequest );
+
+/**
+ * A hash table of path keys and regex validators for those path elements
+ *
+ * @property _pathValidators
+ * @type Object
+ * @private
+ */
+PostsRequest.prototype._pathValidators = {
 
 	/**
 	 * ID must be an integer
@@ -175,9 +481,9 @@ OrdersRequest.prototype._pathValidators = {
  * @method id
  * @chainable
  * @param {Number} id The ID of a post to retrieve
- * @return {OrdersRequest} The OrdersRequest instance (for chaining)
+ * @return {PostsRequest} The PostsRequest instance (for chaining)
  */
-OrdersRequest.prototype.id = function( id ) {
+PostsRequest.prototype.id = function( id ) {
 	this._path.id = parseInt( id, 10 );
 	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
 
@@ -189,9 +495,9 @@ OrdersRequest.prototype.id = function( id ) {
  *
  * @method comments
  * @chainable
- * @return {OrdersRequest} The OrdersRequest instance (for chaining)
+ * @return {PostsRequest} The PostsRequest instance (for chaining)
  */
-OrdersRequest.prototype.comments = function() {
+PostsRequest.prototype.comments = function() {
 	this._path.action = 'comments';
 	this._supportedMethods = [ 'head', 'get', 'post' ];
 	return this;
@@ -204,9 +510,9 @@ OrdersRequest.prototype.comments = function() {
  * @method comment
  * @chainable
  * @param {Number} id The ID of the comment to retrieve
- * @return {OrdersRequest}
+ * @return {PostsRequest}
  */
-OrdersRequest.prototype.comment = function( id ) {
+PostsRequest.prototype.comment = function( id ) {
 	this._path.action = 'comments';
 	this._path.actionId = parseInt( id, 10 );
 	this._supportedMethods = [ 'head', 'get', 'delete' ];
@@ -215,14 +521,14 @@ OrdersRequest.prototype.comment = function( id ) {
 };
 
 /**
- * Query a collection of orders for orders of a specific type
+ * Query a collection of posts for posts of a specific type
  *
  * @method type
  * @param {String|Array} type A string or array of strings specifying post types to query
  * @chainable
- * @return {OrdersRequest} The OrdersRequest instance (for chaining)
+ * @return {PostsRequest} The PostsRequest instance (for chaining)
  */
-OrdersRequest.prototype.type = function( type ) {
+PostsRequest.prototype.type = function( type ) {
 	this.param( 'type', type, true );
 	return this;
 };
@@ -232,9 +538,9 @@ OrdersRequest.prototype.type = function( type ) {
  *
  * @method revisions
  * @chainable
- * @return {OrdersRequest} The OrdersRequest instance (for chaining)
+ * @return {PostsRequest} The PostsRequest instance (for chaining)
  */
-OrdersRequest.prototype.revisions = function() {
+PostsRequest.prototype.revisions = function() {
 	this._path.action = 'revisions';
 	this._supportedMethods = [ 'head', 'get' ];
 
@@ -244,51 +550,51 @@ OrdersRequest.prototype.revisions = function() {
 /**
  * @method statuses
  * @chainable
- * @return {OrdersRequest} The OrdersRequest instance (for chaining)
+ * @return {PostsRequest} The PostsRequest instance (for chaining)
  */
-OrdersRequest.prototype.statuses = function() {
+PostsRequest.prototype.statuses = function() {
 	this._path.action = 'statuses';
 	this._supportedMethods = [ 'head', 'get' ];
 
 	return this;
 };
 
-module.exports = OrdersRequest;
+module.exports = PostsRequest;
 
-},{"./shared/collection-request":3,"util":125}],3:[function(require,module,exports){
+},{"./shared/collection-request":5,"util":71}],5:[function(require,module,exports){
 'use strict';
-/*jshint -W106 */// Disable underscore_case warnings in this file b/c WC uses them
+/*jshint -W106 */// Disable underscore_case warnings in this file b/c WP uses them
 /**
- * @module WC
+ * @module WP
  * @submodule CollectionRequest
  * @beta
  */
-var WCRequest = require( './wc-request' );
+var WPRequest = require( './wp-request' );
 var _ = require( 'lodash' );
 var extend = require( 'node.extend' );
 var inherit = require( 'util' ).inherits;
 var formatUrl = require( 'url' ).format;
 
 /**
- * CollectionRequest extends WCRequest with properties & methods for filtering collections
- * via query parameters. It is the base constructor for most top-level WC instance methods.
+ * CollectionRequest extends WPRequest with properties & methods for filtering collections
+ * via query parameters. It is the base constructor for most top-level WP instance methods.
  *
  * @class CollectionRequest
  * @constructor
- * @extends WCRequest
+ * @extends WPRequest
  * @extensionfor PagesRequest
  * @extensionfor PostsRequest
  * @extensionfor TaxonomiesRequest
  * @extensionfor TypesRequest
  * @extensionfor UsersRequest
  * @param {Object} options A hash of options for the CollectionRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WC instance
+ * @param {String} options.endpoint The endpoint URI for the invoking WP instance
  * @param {String} [options.username] A username for authenticating API requests
  * @param {String} [options.password] A password for authenticating API requests
  */
 function CollectionRequest( options ) {
 	/**
-	 * Configuration options for the request such as the endpoint for the invoking WC instance
+	 * Configuration options for the request such as the endpoint for the invoking WP instance
 	 * @property _options
 	 * @type Object
 	 * @private
@@ -355,7 +661,7 @@ function CollectionRequest( options ) {
 	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
 }
 
-inherit( CollectionRequest, WCRequest );
+inherit( CollectionRequest, WPRequest );
 
 // Private helper methods
 // ======================
@@ -396,7 +702,7 @@ function prepareTaxonomies( taxonomyFilters ) {
  * Process the _params object into valid API-ready query parameters.
  *
  * @param {Object} params The _params object to process
- * @return {Object} An object of WC-API non-filter query parameter key-value pairs
+ * @return {Object} An object of WP-API non-filter query parameter key-value pairs
  */
 function prepareParameters( params ) {
 	return _.reduce( params, function( result, value, key ) {
@@ -431,7 +737,7 @@ function prepareParameters( params ) {
  *    }
  *
  * @param {Object} filters An object of filter values, keyed by filter parameter name
- * @return {Object} An object of WC-API filter query parameter key-value pairs
+ * @return {Object} An object of WP-API filter query parameter key-value pairs
  */
 function prepareFilters( filters ) {
 	return _.reduce( filters, function( result, value, key ) {
@@ -611,16 +917,16 @@ CollectionRequest.prototype.edit = function() {
  *
  * @example
  *     // Set a single property:
- *     wc.filter( 'post_type', 'cpt_event' )...
+ *     wp.filter( 'post_type', 'cpt_event' )...
  *
  *     // Set multiple properties at once:
- *     wc.filter({
+ *     wp.filter({
  *         post_status: 'publish',
  *         category_name: 'news'
  *     })...
  *
  *     // Chain calls to .filter():
- *     wc.filter( 'post_status', 'publish' ).filter( 'category_name', 'news' )...
+ *     wp.filter( 'post_status', 'publish' ).filter( 'category_name', 'news' )...
  *
  * @method filter
  * @chainable
@@ -771,11 +1077,11 @@ CollectionRequest.prototype.slug = CollectionRequest.prototype.name;
 
 module.exports = CollectionRequest;
 
-},{"./wc-request":4,"lodash":40,"node.extend":41,"url":123,"util":125}],4:[function(require,module,exports){
+},{"./wp-request":6,"lodash":45,"node.extend":46,"url":69,"util":71}],6:[function(require,module,exports){
 'use strict';
 /**
- * @module WC
- * @submodule WCRequest
+ * @module WP
+ * @submodule WPRequest
  * @beta
  */
 
@@ -785,18 +1091,18 @@ var agent = require( 'superagent' );
 var Route = require( 'route-parser' );
 
 /**
- * WCRequest is the base API request object constructor
+ * WPRequest is the base API request object constructor
  *
- * @class WCRequest
+ * @class WPRequest
  * @constructor
- * @param {Object} options A hash of options for the WCRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WC instance
+ * @param {Object} options A hash of options for the WPRequest instance
+ * @param {String} options.endpoint The endpoint URI for the invoking WP instance
  * @param {String} [options.username] A username for authenticating API requests
  * @param {String} [options.password] A password for authenticating API requests
  */
-function WCRequest( options ) {
+function WPRequest( options ) {
 	/**
-	 * Configuration options for the request such as the endpoint for the invoking WC instance
+	 * Configuration options for the request such as the endpoint for the invoking WP instance
 	 *
 	 * @property _options
 	 * @type Object
@@ -853,7 +1159,7 @@ function identity( value ) {
 /**
  * If fn is a function, return it; else, return a no-op function
  *
- * @param {Function|undefined} fn A WCRequest request callback
+ * @param {Function|undefined} fn A WPRequest request callback
  * @return {Function} The provided callback function or a no-op
  */
 function ensureFunction( fn ) {
@@ -950,7 +1256,7 @@ function validatePath( pathValues, validators ) {
  * @param {String} method An HTTP method to check ('get', 'post', etc)
  * @return true iff the method is within this._supportedMethods
  */
-WCRequest.prototype._checkMethodSupport = function( method ) {
+WPRequest.prototype._checkMethodSupport = function( method ) {
 	if ( this._supportedMethods.indexOf( method.toLowerCase() ) === -1 ) {
 		throw new Error(
 			'Unsupported method; supported methods are: ' +
@@ -969,7 +1275,7 @@ WCRequest.prototype._checkMethodSupport = function( method ) {
  * @method _renderPath
  * @return {String} The rendered path
  */
-WCRequest.prototype._renderPath = function() {
+WPRequest.prototype._renderPath = function() {
 	var path = new Route( this._template );
 	var pathValues = validatePath( this._path, this._pathValidators );
 
@@ -984,7 +1290,7 @@ WCRequest.prototype._renderPath = function() {
  * @method _renderURI
  * @return {String} The URI for the HTTP request to be sent
  */
-WCRequest.prototype._renderURI = function() {
+WPRequest.prototype._renderURI = function() {
 	// Render the path to a string
 	var path = this._renderPath();
 
@@ -1003,7 +1309,7 @@ WCRequest.prototype._renderURI = function() {
  * @param {Boolean} forceAuthentication whether to force authentication on the request
  * @param {Object} A superagent request object, conditionally configured to use basic auth
  */
-WCRequest.prototype._auth = function( request, forceAuthentication ) {
+WPRequest.prototype._auth = function( request, forceAuthentication ) {
 	// If we're not supposed to authenticate, don't even start
 	if ( ! forceAuthentication && ! this._options.auth ) {
 		return request;
@@ -1026,10 +1332,10 @@ WCRequest.prototype._auth = function( request, forceAuthentication ) {
 // ================
 
 /**
- * Set a request to use authentication, and optionally provide auth credentials
+ * Set a requst to use authentication, and optionally provide auth credentials
  *
  * @example
- * If auth credentials were already specified when the WC instance was created, calling
+ * If auth credentials were already specified when the WP instance was created, calling
  * `.auth` on the request chain will set that request to use the existing credentials:
  *
  *     request.auth().get...
@@ -1042,9 +1348,9 @@ WCRequest.prototype._auth = function( request, forceAuthentication ) {
  * @chainable
  * @param {String} [username] A username string for basic authentication
  * @param {String} [password] A user password string for basic authentication
- * @return {WCRequest} The WCRequest instance (for chaining)
+ * @return {WPRequest} The WPRequest instance (for chaining)
  */
-WCRequest.prototype.auth = function( username, password ) {
+WPRequest.prototype.auth = function( username, password ) {
 	if ( username && typeof username === 'string' ) {
 		this._options.username = username;
 	}
@@ -1070,7 +1376,7 @@ WCRequest.prototype.auth = function( username, password ) {
  * @param {Object} callback.result The body of the server response
  * @return {Promise} A promise to the results of the HTTP request
  */
-WCRequest.prototype.get = function( callback ) {
+WPRequest.prototype.get = function( callback ) {
 	this._checkMethodSupport( 'get' );
 	var url = this._renderURI();
 
@@ -1088,7 +1394,7 @@ WCRequest.prototype.get = function( callback ) {
  * @param {Object} callback.result The body of the server response
  * @return {Promise} A promise to the results of the HTTP request
  */
-WCRequest.prototype.post = function( data, callback ) {
+WPRequest.prototype.post = function( data, callback ) {
 	this._checkMethodSupport( 'post' );
 	var url = this._renderURI();
 	data = data || {};
@@ -1107,7 +1413,7 @@ WCRequest.prototype.post = function( data, callback ) {
  * @param {Object} callback.result The body of the server response
  * @return {Promise} A promise to the results of the HTTP request
  */
-WCRequest.prototype.put = function( data, callback ) {
+WPRequest.prototype.put = function( data, callback ) {
 	this._checkMethodSupport( 'put' );
 	var url = this._renderURI();
 	data = data || {};
@@ -1125,7 +1431,7 @@ WCRequest.prototype.put = function( data, callback ) {
  * @param {Object} callback.result The body of the server response
  * @return {Promise} A promise to the results of the HTTP request
  */
-WCRequest.prototype.delete = function( callback ) {
+WPRequest.prototype.delete = function( callback ) {
 	this._checkMethodSupport( 'delete' );
 	var url = this._renderURI();
 	var request = this._auth( agent.del( url ), true );
@@ -1141,7 +1447,7 @@ WCRequest.prototype.delete = function( callback ) {
  * @param {Object} callback.result The headers from the server response
  * @return {Promise} A promise to the header results of the HTTP request
  */
-WCRequest.prototype.head = function( callback ) {
+WPRequest.prototype.head = function( callback ) {
 	this._checkMethodSupport( 'head' );
 	var url = this._renderURI();
 	var request = this._auth( agent.head( url ) );
@@ -1158,13 +1464,387 @@ WCRequest.prototype.head = function( callback ) {
  * @param {Function} [failureCallback] A callback to handle any errors encountered by the request
  * @return {Promise} A promise to the results of the HTTP request
  */
-WCRequest.prototype.then = function( successCallback, failureCallback ) {
+WPRequest.prototype.then = function( successCallback, failureCallback ) {
 	return this.get().then( successCallback, failureCallback );
 };
 
-module.exports = WCRequest;
+module.exports = WPRequest;
 
-},{"bluebird":7,"route-parser":44,"superagent":52}],5:[function(require,module,exports){
+},{"bluebird":12,"route-parser":49,"superagent":57}],7:[function(require,module,exports){
+'use strict';
+/**
+ * @module WP
+ * @submodule TaxonomiesRequest
+ * @beta
+ */
+var CollectionRequest = require( './shared/collection-request' );
+var inherit = require( 'util' ).inherits;
+
+/**
+ * TaxonomiesRequest extends CollectionRequest to handle the /taxonomies API endpoint
+ *
+ * @class TaxonomiesRequest
+ * @constructor
+ * @extends CollectionRequest
+ * @param {Object} options A hash of options for the TaxonomiesRequest instance
+ * @param {String} options.endpoint The endpoint URI for the invoking WP instance
+ * @param {String} [options.username] A username for authenticating API requests
+ * @param {String} [options.password] A password for authenticating API requests
+ */
+function TaxonomiesRequest( options ) {
+	/**
+	 * Configuration options for the request such as the endpoint for the invoking WP instance
+	 * @property _options
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._options = options || {};
+
+	/**
+	 * A hash of filter values to parse into the final request URI
+	 * @property _filters
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._filters = {};
+
+	/**
+	 * A hash of non-filter query parameters
+	 *
+	 * @property _params
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._params = {};
+
+	/**
+	 * A hash of values to assemble into the API request path
+	 *
+	 * @property _path
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._path = {};
+
+	/**
+	 * The URL template that will be used to assemble endpoint paths
+	 *
+	 * @property _template
+	 * @type String
+	 * @private
+	 * @default 'taxonomies(/:taxonomy)(/:action)(/:term)'
+	 */
+	this._template = 'taxonomies(/:taxonomy)(/:action)(/:term)';
+
+	/**
+	 * @property _supportedMethods
+	 * @type Array
+	 * @private
+	 * @default [ 'head', 'get' ]
+	 */
+	this._supportedMethods = [ 'head', 'get' ];
+}
+
+// TaxonomiesRequest extends CollectionRequest
+inherit( TaxonomiesRequest, CollectionRequest );
+
+/**
+ * A hash of path keys to regex validators for those path elements
+ *
+ * @property _pathValidators
+ * @type Object
+ * @private
+ */
+TaxonomiesRequest.prototype._pathValidators = {
+
+	/**
+	 * The only "action" permitted on a taxonomy is to get a list of terms
+	 *
+	 * @property _pathValidators.action
+	 * @type {RegExp}
+	 */
+	action: /terms/
+
+	// No validation on :taxonomy or :term: they can be numeric or a string
+};
+
+/**
+ * Specify the name of the taxonomy to query
+ *
+ * @method taxonomy
+ * @chainable
+ * @param {String} taxonomyName The name of the taxonomy to query
+ * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
+ */
+TaxonomiesRequest.prototype.taxonomy = function( taxonomyName ) {
+	this._path.taxonomy = taxonomyName;
+
+	return this;
+};
+
+/**
+ * Specify a taxonomy term to request
+ *
+ * @method term
+ * @chainable
+ * @param {String} term The ID or slug of the term to request
+ * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
+ */
+TaxonomiesRequest.prototype.term = function( term ) {
+	this._path.action = 'terms';
+	this._path.term = term;
+
+	return this;
+};
+
+/**
+ * Specify that we are requesting a collection of terms for a taxonomy
+ *
+ * @method terms
+ * @chainable
+ * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
+ */
+TaxonomiesRequest.prototype.terms = function() {
+	this._path.action = 'terms';
+
+	return this;
+};
+
+module.exports = TaxonomiesRequest;
+
+},{"./shared/collection-request":5,"util":71}],8:[function(require,module,exports){
+'use strict';
+/**
+ * @module WP
+ * @submodule TypesRequest
+ * @beta
+ */
+var CollectionRequest = require( './shared/collection-request' );
+var inherit = require( 'util' ).inherits;
+
+/**
+ * TypesRequest extends CollectionRequest to handle the /taxonomies API endpoint
+ *
+ * @class TypesRequest
+ * @constructor
+ * @extends CollectionRequest
+ * @param {Object} options A hash of options for the TypesRequest instance
+ * @param {String} options.endpoint The endpoint URI for the invoking WP instance
+ * @param {String} [options.username] A username for authenticating API requests
+ * @param {String} [options.password] A password for authenticating API requests
+ */
+function TypesRequest( options ) {
+	/**
+	 * Configuration options for the request such as the endpoint for the invoking WP instance
+	 * @property _options
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._options = options || {};
+
+	/**
+	 * A hash of filter values to parse into the final request URI
+	 * @property _filters
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._filters = {};
+
+	/**
+	 * A hash of non-filter query parameters
+	 *
+	 * @property _params
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._params = {};
+
+	/**
+	 * A hash of values to assemble into the API request path
+	 *
+	 * @property _path
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._path = {};
+
+	/**
+	 * The URL template that will be used to assemble request URI paths
+	 *
+	 * @property _template
+	 * @type String
+	 * @private
+	 * @default 'posts/types(/:type)'
+	 */
+	this._template = 'posts/types(/:type)';
+
+	/**
+	 * @property _supportedMethods
+	 * @type Array
+	 * @private
+	 * @default [ 'head', 'get' ]
+	 */
+	this._supportedMethods = [ 'head', 'get' ];
+}
+
+// TypesRequest extends CollectionRequest
+inherit( TypesRequest, CollectionRequest );
+
+/**
+ * Specify the name of the type to query
+ *
+ * @method type
+ * @chainable
+ * @param {String} typeName The name of the type to query
+ * @return {TypesRequest} The TypesRequest instance (for chaining)
+ */
+TypesRequest.prototype.type = function( typeName ) {
+	this._path.type = typeName;
+
+	return this;
+};
+
+module.exports = TypesRequest;
+
+},{"./shared/collection-request":5,"util":71}],9:[function(require,module,exports){
+'use strict';
+/**
+ * @module WP
+ * @submodule UsersRequest
+ * @beta
+ */
+var CollectionRequest = require( './shared/collection-request' );
+var inherit = require( 'util' ).inherits;
+
+/**
+ * UsersRequest extends CollectionRequest to handle the `/users` API endpoint. The `/users`
+ * endpoint responds with a 401 error without authentication, so `users()` forces basic auth.
+ *
+ * @class UsersRequest
+ * @constructor
+ * @extends CollectionRequest
+ * @param {Object} options A hash of options for the UsersRequest instance
+ * @param {String} options.endpoint The endpoint URI for the invoking WP instance
+ * @param {String} [options.username] A username for authenticating API requests
+ * @param {String} [options.password] A password for authenticating API requests
+ */
+function UsersRequest( options ) {
+	/**
+	 * Configuration options for the request such as the endpoint for the invoking WP instance
+	 * @property _options
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._options = options || {};
+
+	/**
+	 * A hash of filter values to parse into the final request URI
+	 * @property _filters
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._filters = {};
+
+	/**
+	 * A hash of non-filter query parameters
+	 *
+	 * @property _params
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._params = {};
+
+	/**
+	 * A hash of values to assemble into the API request path
+	 *
+	 * @property _path
+	 * @type Object
+	 * @private
+	 * @default {}
+	 */
+	this._path = {};
+
+	/**
+	 * The URL template that will be used to assemble endpoint paths
+	 *
+	 * @property _template
+	 * @type String
+	 * @protected
+	 * @default 'users(/:id)'
+	 */
+	this._template = 'users(/:id)';
+
+	/**
+	 * @property _supportedMethods
+	 * @type Array
+	 * @private
+	 * @default [ 'head', 'get', 'post' ]
+	 */
+	this._supportedMethods = [ 'head', 'get', 'post' ];
+
+	// Force authentication on all users requests
+	return this.auth();
+}
+
+inherit( UsersRequest, CollectionRequest );
+
+/**
+ * A hash table of path keys and regex validators for those path elements
+ *
+ * @property _pathValidators
+ * @type Object
+ * @private
+ */
+UsersRequest.prototype._pathValidators = {
+
+	/**
+	 * ID must be an integer or "me"
+	 *
+	 * @property _pathValidators.id
+	 * @type {RegExp}
+	 */
+	id: /(^\d+$|^me$)/
+};
+
+/**
+ * @method me
+ * @chainable
+ * @return {UsersRequest} The UsersRequest instance (for chaining)
+ */
+UsersRequest.prototype.me = function() {
+	this._path.id = 'me';
+	this._supportedMethods = [ 'head', 'get' ];
+
+	return this;
+};
+
+/**
+ * @method id
+ * @chainable
+ * @param {Number} id The integer ID of a user record
+ * @return {UsersRequest} The UsersRequest instance (for chaining)
+ */
+UsersRequest.prototype.id = function( id ) {
+	this._path.id = parseInt( id, 10 );
+	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
+
+	return this;
+};
+
+module.exports = UsersRequest;
+
+},{"./shared/collection-request":5,"util":71}],10:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1212,7 +1892,7 @@ Promise.prototype.any = function Promise$any() {
 
 };
 
-},{}],6:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014 Petka Antonov
@@ -1327,7 +2007,7 @@ Async.prototype._reset = function Async$_reset() {
 module.exports = new Async();
 
 }).call(this,require('_process'))
-},{"./queue.js":29,"./schedule.js":32,"./util.js":39,"_process":118}],7:[function(require,module,exports){
+},{"./queue.js":34,"./schedule.js":37,"./util.js":44,"_process":64}],12:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1353,7 +2033,7 @@ module.exports = new Async();
 "use strict";
 var Promise = require("./promise.js")();
 module.exports = Promise;
-},{"./promise.js":24}],8:[function(require,module,exports){
+},{"./promise.js":29}],13:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1474,7 +2154,7 @@ Promise.prototype.get = function Promise$get(propertyName) {
 };
 };
 
-},{"./util.js":39}],9:[function(require,module,exports){
+},{"./util.js":44}],14:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1551,7 +2231,7 @@ function Promise$fork(didFulfill, didReject, didProgress) {
 };
 };
 
-},{"./async.js":6,"./errors.js":14}],10:[function(require,module,exports){
+},{"./async.js":11,"./errors.js":19}],15:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1786,7 +2466,7 @@ var captureStackTrace = (function stackDetection() {
 return CapturedTrace;
 };
 
-},{"./es5.js":16,"./util.js":39}],11:[function(require,module,exports){
+},{"./es5.js":21,"./util.js":44}],16:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1882,7 +2562,7 @@ CatchFilter.prototype.doFilter = function CatchFilter$_doFilter(e) {
 return CatchFilter;
 };
 
-},{"./errors.js":14,"./es5.js":16,"./util.js":39}],12:[function(require,module,exports){
+},{"./errors.js":19,"./es5.js":21,"./util.js":44}],17:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1962,7 +2642,7 @@ function Promise$thenThrow(reason) {
 };
 };
 
-},{"./util.js":39}],13:[function(require,module,exports){
+},{"./util.js":44}],18:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1998,7 +2678,7 @@ Promise.each = function Promise$Each(promises, fn) {
 };
 };
 
-},{}],14:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2145,7 +2825,7 @@ module.exports = {
     canAttach: canAttach
 };
 
-},{"./es5.js":16,"./util.js":39}],15:[function(require,module,exports){
+},{"./es5.js":21,"./util.js":44}],20:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2185,7 +2865,7 @@ function apiRejection(msg) {
 return apiRejection;
 };
 
-},{"./errors.js":14}],16:[function(require,module,exports){
+},{"./errors.js":19}],21:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2274,7 +2954,7 @@ if (isES5) {
     };
 }
 
-},{}],17:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2310,7 +2990,7 @@ Promise.filter = function Promise$Filter(promises, fn, options) {
 };
 };
 
-},{}],18:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2432,7 +3112,7 @@ Promise.prototype.tap = function Promise$tap(handler) {
 };
 };
 
-},{"./util.js":39}],19:[function(require,module,exports){
+},{"./util.js":44}],24:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2585,7 +3265,7 @@ Promise.spawn = function Promise$Spawn(generatorFunction) {
 };
 };
 
-},{"./errors.js":14,"./util.js":39}],20:[function(require,module,exports){
+},{"./errors.js":19,"./util.js":44}],25:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2709,7 +3389,7 @@ Promise.join = function Promise$Join() {
 
 };
 
-},{"./util.js":39}],21:[function(require,module,exports){
+},{"./util.js":44}],26:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2860,7 +3540,7 @@ Promise.map = function Promise$Map(promises, fn, options, _filter) {
 
 };
 
-},{"./util.js":39}],22:[function(require,module,exports){
+},{"./util.js":44}],27:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2938,7 +3618,7 @@ Promise.prototype.nodeify = function Promise$nodeify(nodeback, options) {
 };
 };
 
-},{"./async.js":6,"./util.js":39}],23:[function(require,module,exports){
+},{"./async.js":11,"./util.js":44}],28:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -3044,7 +3724,7 @@ function Promise$_progressUnchecked(progressValue) {
 };
 };
 
-},{"./async.js":6,"./errors.js":14,"./util.js":39}],24:[function(require,module,exports){
+},{"./async.js":11,"./errors.js":19,"./util.js":44}],29:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014 Petka Antonov
@@ -4094,7 +4774,7 @@ return Promise;
 };
 
 }).call(this,require('_process'))
-},{"./any.js":5,"./async.js":6,"./call_get.js":8,"./cancel.js":9,"./captured_trace.js":10,"./catch_filter.js":11,"./direct_resolve.js":12,"./each.js":13,"./errors.js":14,"./errors_api_rejection":15,"./filter.js":17,"./finally.js":18,"./generators.js":19,"./join.js":20,"./map.js":21,"./nodeify.js":22,"./progress.js":23,"./promise_array.js":25,"./promise_resolver.js":26,"./promisify.js":27,"./props.js":28,"./race.js":30,"./reduce.js":31,"./settle.js":33,"./some.js":34,"./synchronous_inspection.js":35,"./thenables.js":36,"./timers.js":37,"./using.js":38,"./util.js":39,"_process":118}],25:[function(require,module,exports){
+},{"./any.js":10,"./async.js":11,"./call_get.js":13,"./cancel.js":14,"./captured_trace.js":15,"./catch_filter.js":16,"./direct_resolve.js":17,"./each.js":18,"./errors.js":19,"./errors_api_rejection":20,"./filter.js":22,"./finally.js":23,"./generators.js":24,"./join.js":25,"./map.js":26,"./nodeify.js":27,"./progress.js":28,"./promise_array.js":30,"./promise_resolver.js":31,"./promisify.js":32,"./props.js":33,"./race.js":35,"./reduce.js":36,"./settle.js":38,"./some.js":39,"./synchronous_inspection.js":40,"./thenables.js":41,"./timers.js":42,"./using.js":43,"./util.js":44,"_process":64}],30:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4298,7 +4978,7 @@ function PromiseArray$getActualLength(len) {
 return PromiseArray;
 };
 
-},{"./errors.js":14,"./util.js":39}],26:[function(require,module,exports){
+},{"./errors.js":19,"./util.js":44}],31:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4458,7 +5138,7 @@ function PromiseResolver$_setCarriedStackTrace(trace) {
 
 module.exports = PromiseResolver;
 
-},{"./async.js":6,"./errors.js":14,"./es5.js":16,"./util.js":39}],27:[function(require,module,exports){
+},{"./async.js":11,"./errors.js":19,"./es5.js":21,"./util.js":44}],32:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4786,7 +5466,7 @@ Promise.promisifyAll = function Promise$PromisifyAll(target, options) {
 };
 
 
-},{"./errors":14,"./promise_resolver.js":26,"./util.js":39}],28:[function(require,module,exports){
+},{"./errors":19,"./promise_resolver.js":31,"./util.js":44}],33:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4896,7 +5576,7 @@ Promise.props = function Promise$Props(promises) {
 };
 };
 
-},{"./errors_api_rejection":15,"./es5.js":16,"./util.js":39}],29:[function(require,module,exports){
+},{"./errors_api_rejection":20,"./es5.js":21,"./util.js":44}],34:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5013,7 +5693,7 @@ Queue.prototype._resizeTo = function Queue$_resizeTo(capacity) {
 
 module.exports = Queue;
 
-},{}],30:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5087,7 +5767,7 @@ Promise.prototype.race = function Promise$race() {
 
 };
 
-},{"./errors_api_rejection.js":15,"./util.js":39}],31:[function(require,module,exports){
+},{"./errors_api_rejection.js":20,"./util.js":44}],36:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5270,7 +5950,7 @@ Promise.reduce = function Promise$Reduce(promises, fn, initialValue, _each) {
 };
 };
 
-},{"./util.js":39}],32:[function(require,module,exports){
+},{"./util.js":44}],37:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014 Petka Antonov
@@ -5335,7 +6015,7 @@ else throw new Error("no async scheduler available");
 module.exports = schedule;
 
 }).call(this,require('_process'))
-},{"_process":118}],33:[function(require,module,exports){
+},{"_process":64}],38:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5404,7 +6084,7 @@ Promise.prototype.settle = function Promise$settle() {
 };
 };
 
-},{"./util.js":39}],34:[function(require,module,exports){
+},{"./util.js":44}],39:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5567,7 +6247,7 @@ Promise.prototype.some = function Promise$some(howMany) {
 Promise._SomePromiseArray = SomePromiseArray;
 };
 
-},{"./errors.js":14,"./util.js":39}],35:[function(require,module,exports){
+},{"./errors.js":19,"./util.js":44}],40:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5645,7 +6325,7 @@ Promise.prototype.isResolved = function Promise$isResolved() {
 Promise.PromiseInspection = PromiseInspection;
 };
 
-},{}],36:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5780,7 +6460,7 @@ function Promise$_doThenable(x, then, originalPromise) {
 return Promise$_Cast;
 };
 
-},{"./errors.js":14,"./util.js":39}],37:[function(require,module,exports){
+},{"./errors.js":19,"./util.js":44}],42:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5873,7 +6553,7 @@ Promise.prototype.timeout = function Promise$timeout(ms, message) {
 
 };
 
-},{"./errors.js":14,"./errors_api_rejection":15,"./util.js":39}],38:[function(require,module,exports){
+},{"./errors.js":19,"./errors_api_rejection":20,"./util.js":44}],43:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -6049,7 +6729,7 @@ module.exports = function (Promise, apiRejection, cast) {
 
 };
 
-},{"./errors.js":14,"./util.js":39}],39:[function(require,module,exports){
+},{"./errors.js":19,"./util.js":44}],44:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -6319,7 +6999,7 @@ var ret = {
 
 module.exports = ret;
 
-},{"./es5.js":16}],40:[function(require,module,exports){
+},{"./es5.js":21}],45:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -13108,11 +13788,11 @@ module.exports = ret;
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],41:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 module.exports = require('./lib/extend');
 
 
-},{"./lib/extend":42}],42:[function(require,module,exports){
+},{"./lib/extend":47}],47:[function(require,module,exports){
 /*!
  * node.extend
  * Copyright 2011, John Resig
@@ -13196,7 +13876,7 @@ extend.version = '1.0.8';
 module.exports = extend;
 
 
-},{"is":43}],43:[function(require,module,exports){
+},{"is":48}],48:[function(require,module,exports){
 
 /**!
  * is
@@ -13910,7 +14590,7 @@ is.string = function (value) {
 };
 
 
-},{}],44:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 /**
  * @module Passage
  */
@@ -13920,7 +14600,7 @@ var Route = require('./lib/route');
 
 
 module.exports = Route;
-},{"./lib/route":45}],45:[function(require,module,exports){
+},{"./lib/route":50}],50:[function(require,module,exports){
 'use strict';
 var Parser = require('./route/parser'),
     RegexpVisitor = require('./route/visitors/regexp'),
@@ -13983,7 +14663,7 @@ module.exports = function(spec) {
   route.ast = Parser.parse(spec);
   return route;
 }
-},{"./route/parser":48,"./route/visitors/regexp":50,"./route/visitors/reverse":51}],46:[function(require,module,exports){
+},{"./route/parser":53,"./route/visitors/regexp":55,"./route/visitors/reverse":56}],51:[function(require,module,exports){
 (function (process){
 /* parser generated by jison 0.4.13 */
 /*
@@ -14609,7 +15289,7 @@ if (typeof module !== 'undefined' && require.main === module) {
 }
 }
 }).call(this,require('_process'))
-},{"_process":118,"fs":115,"path":117}],47:[function(require,module,exports){
+},{"_process":64,"fs":61,"path":63}],52:[function(require,module,exports){
 'use strict';
 /** @module route/nodes */
 
@@ -14640,7 +15320,7 @@ module.exports = {
   Optional: createNode('Optional')
 };
 
-},{}],48:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 /**
  * @module route/parser
  */
@@ -14651,7 +15331,7 @@ var parser = require('./compiled-grammar').parser;
 parser.yy = require('./nodes');
 module.exports = parser;
 
-},{"./compiled-grammar":46,"./nodes":47}],49:[function(require,module,exports){
+},{"./compiled-grammar":51,"./nodes":52}],54:[function(require,module,exports){
 'use strict';
 /**
  * @module route/visitors/create_visitor
@@ -14690,7 +15370,7 @@ function createVisitor(handlers) {
 }
 
 module.exports = createVisitor;
-},{"../nodes":47}],50:[function(require,module,exports){
+},{"../nodes":52}],55:[function(require,module,exports){
 'use strict';
 
 var createVisitor  = require('./create_visitor'),
@@ -14788,7 +15468,7 @@ var RegexpVisitor = createVisitor({
 });
 
 module.exports = RegexpVisitor;
-},{"./create_visitor":49}],51:[function(require,module,exports){
+},{"./create_visitor":54}],56:[function(require,module,exports){
 'use strict';
 
 var createVisitor  = require('./create_visitor');
@@ -14856,7 +15536,7 @@ var ReverseVisitor = createVisitor({
 });
 
 module.exports = ReverseVisitor;
-},{"./create_visitor":49}],52:[function(require,module,exports){
+},{"./create_visitor":54}],57:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -15907,7 +16587,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":53,"reduce":54}],53:[function(require,module,exports){
+},{"emitter":58,"reduce":59}],58:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -16073,7 +16753,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],54:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -16098,2211 +16778,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],55:[function(require,module,exports){
-'use strict';
-/**
- * A WC REST API client for Node.js
- *
- * @example
- *     var wc = new WC({ endpoint: 'http://src.wordpress-develop.dev/wc-api/v1/' });
- *     wc.orders().then(function( orders ) {
- *         console.log( orders );
- *     }).catch(function( err ) {
- *         console.error( err );
- *     });
- *
- * @module WC
- * @main WC
- * @beta
- })
- */
-var extend = require( 'node.extend' );
-
-var defaults = {
-	username: '',
-	password: ''
-};
-
-// Pull in request module constructors
-var OrdersRequest = require( './lib/orders' );
-var CollectionRequest = require( './lib/shared/collection-request' );
-var WCRequest = require( './lib/shared/wc-request' );
-
-/**
- * The base constructor for the WC API service
- *
- * @class WC
- * @constructor
- * @uses PostsRequest
- * @uses TaxonomiesRequest
- * @uses UsersRequest
- * @param {Object} options An options hash to configure the instance
- * @param {String} options.endpoint The URI for a WC-API endpoint
- * @param {String} [options.username] A WC-API Basic Auth username
- * @param {String} [options.password] A WC-API Basic Auth password
- */
-function WC( options ) {
-
-	// Enforce `new`
-	if ( this instanceof WC === false ) {
-		return new WC( options );
-	}
-
-	this._options = extend( {}, defaults, options );
-
-	if ( ! this._options.endpoint ) {
-		throw new Error( 'options hash must contain an API endpoint URL string' );
-	}
-
-	// Ensure trailing slash on endpoint URI
-	this._options.endpoint = this._options.endpoint.replace( /\/?$/, '/' );
-
-	return this;
-}
-
-/**
- * Convenience method for making a new WC instance
- *
- * @example
- * These are equivalent:
- *
- *     var wc = new WC({ endpoint: 'http://my.blog.url/wc-api/v1/' });
- *     var wc = WC.site( 'http://my.blog.url/wc-api/v1/' );
- *
- * @method site
- * @static
- * @param {String} endpoint The URI for a WC-API endpoint
- * @return {WC} A new WC instance, bound to the provided endpoint
- */
-WC.site = function( endpoint ) {
-	return new WC({ endpoint: endpoint });
-};
-
-/**
- * Start a request against the `/media` endpoint
- *
- * @method media
- * @param {Object} [options] An options hash for a new MediaRequest
- * @return {MediaRequest} A MediaRequest instance
- */
-WC.prototype.media = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new MediaRequest( options );
-};
-
-/**
- * Start a request against the `/pages` endpoint
- *
- * @method pages
- * @param {Object} [options] An options hash for a new PagesRequest
- * @return {PagesRequest} A PagesRequest instance
- */
-WC.prototype.pages = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new PagesRequest( options );
-};
-
-/**
- * Start a request against the `/orders` endpoint
- *
- * @method orders
- * @param {Object} [options] An options hash for a new OrdersRequest
- * @return {OrdersRequest} A OrdersRequest instance
- */
-WC.prototype.orders = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new OrdersRequest( options );
-};
-
-/**
- * Start a request against the `taxonomies` endpoint
- *
- * @method taxonomies
- * @param {Object} [options] An options hash for a new TaxonomiesRequest
- * @return {TaxonomiesRequest} A TaxonomiesRequest instance
- */
-WC.prototype.taxonomies = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new TaxonomiesRequest( options );
-};
-
-/**
- * Start a request for a specific taxonomy object
- *
- * It is repetitive to have to type `.taxonomies().taxonomy()` whenever you want to request
- * a taxonomy object or list of terms for a taxonomy. This convenience method lets you
- * create a `TaxonomiesRequest` object that is bound to the provided taxonomy name.
- *
- * @example
- * If your site uses two custom taxonomies, book_genre and book_publisher, before you would
- * have had to request these terms using the verbose form:
- *
- *     wc.taxonomies().taxonomy( 'book_genre' ).terms()...
- *     wc.taxonomies().taxonomy( 'book_publisher' )...
- *
- * Using `.taxonomy()`, the same query can be achieved much more succinctly:
- *
- *     wc.taxonomy( 'book_genre' ).terms()...
- *     wc.taxonomy( 'book_publisher' )...
- *
- * @method taxonomy
- * @param {String} taxonomyName The name of the taxonomy to request
- * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the value of taxonomyName
- */
-WC.prototype.taxonomy = function( taxonomyName ) {
-	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).taxonomy( taxonomyName );
-};
-
-/**
- * Request a list of category terms
- *
- * This is a shortcut method to retrieve the terms for the "category" taxonomy
- *
- * @example
- * These are equivalent:
- *
- *     wc.taxonomies().taxonomy( 'category' ).terms()
- *     wc.categories()
- *
- * @method categories
- * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the terms for "category"
- */
-WC.prototype.categories = function() {
-	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).taxonomy( 'category' ).terms();
-};
-
-/**
- * Request a list of post_tag terms
- *
- * This is a shortcut method to retrieve the terms for the "post_tag" taxonomy
- *
- * @example
- * These are equivalent:
- *
- *     wc.taxonomies().taxonomy( 'post_tag' ).terms()
- *     wc.tags()
- *
- * @method tags
- * @return {TaxonomiesRequest} A TaxonomiesRequest object bound to the terms for "post_tag"
- */
-WC.prototype.tags = function() {
-	var options = extend( {}, this._options );
-	return new TaxonomiesRequest( options ).taxonomy( 'post_tag' ).terms();
-};
-
-/**
- * Start a request against the `/posts/types` endpoint
- *
- * @method types
- * @param {Object} [options] An options hash for a new TypesRequest
- * @return {TypesRequest} A TypesRequest instance
- */
-WC.prototype.types = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new TypesRequest( options );
-};
-
-/**
- * Start a request against the `/users` endpoint
- *
- * @method users
- * @param {Object} [options] An options hash for a new UsersRequest
- * @return {UsersRequest} A UsersRequest instance
- */
-WC.prototype.users = function( options ) {
-	options = options || {};
-	options = extend( options, this._options );
-	return new UsersRequest( options );
-};
-
-/**
- * Define a method to handle specific custom post types.
- *
- * @example
- * If your site had an events custom type with name `event_cpt`, you could create a convenience
- * method for querying events and store it on the WC instance.
- *
- * Create the WC instance, define the custom endpoint handler, and save it to `wc.events`:
- *
- *     var wc = new WC({ endpoint: 'http://some-website.com/wc-api/v1/' });
- *     wc.events = wc.registerType( 'event_cpt' );
- *
- * You can now call `wc.events()` to trigger event post requests
- *
- *     wc.events().get()... // equivalent to wc.posts().type( 'event_cpt' ).get()...
- *
- * `registerType()` just returns a function, so there's no requirement to store it as a property
- * on the WC instance; however, following the above pattern is likely to be the most useful.
- *
- * @method registerType
- * @param {String|Array} type A string or array of post type names
- * @return {Function} A function to create PostsRequests pre-bound to the provided types
- */
-WC.prototype.registerType = function( type ) {
-	var options = extend( {}, this._options );
-	return function() {
-		return new PostsRequest( options ).type( type );
-	};
-};
-
-/**
- * Generate a request against a completely arbitrary endpoint, with no assumptions about
- * or mutation of path, filtering, or query parameters. This request is not restricted to
- * the endpoint specified during WC object instantiation.
- *
- * @example
- * Generate a request to the explicit URL "http://your.website.com/wc-api/v1/some/custom/path" (yeah, we wish ;)
- *
- *     wc.url( 'http://your.website.com/wc-api/v1/some/custom/path' ).get()...
- *
- * @method url
- * @param {String} url The URL to request
- * @return {WCRequest} A WCRequest object bound to the provided URL
- */
-WC.prototype.url = function( url ) {
-	var options = extend( {}, this._options, {
-		endpoint: url
-	});
-	return new WCRequest( options );
-};
-
-/**
- * Generate a query against an arbitrary path on the current endpoint. This is useful for
- * requesting resources at custom WC-API endpoints, such as WooCommerce's `/products`.
- *
- * @method root
- * @param {String} [relativePath] An endpoint-relative path to which to bind the request
- * @param {Boolean} [collection] Whether to return a CollectionRequest or a vanilla WCRequest
- * @return {CollectionRequest|WCRequest} A request object
- */
-WC.prototype.root = function( relativePath, collection ) {
-	relativePath = relativePath || '';
-	collection = collection || false;
-	var options = extend( {}, this._options );
-	// Request should be
-	var request = collection ? new CollectionRequest( options ) : new WCRequest( options );
-
-	// Set the path template to the string passed in
-	request._template = relativePath;
-
-	return request;
-};
-
-module.exports = WC;
-
-},{"./lib/orders":2,"./lib/shared/collection-request":3,"./lib/shared/wc-request":4,"node.extend":41}],56:[function(require,module,exports){
-'use strict';
-/**
- * @module WP
- * @submodule MediaRequest
- * @beta
- */
-var CollectionRequest = require( './shared/collection-request' );
-var inherit = require( 'util' ).inherits;
-
-/**
- * MediaRequest extends CollectionRequest to handle the /media API endpoint
- *
- * @class MediaRequest
- * @constructor
- * @extends CollectionRequest
- * @param {Object} options A hash of options for the MediaRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WP instance
- * @param {String} [options.username] A username for authenticating API requests
- * @param {String} [options.password] A password for authenticating API requests
- */
-function MediaRequest( options ) {
-	/**
-	 * Configuration options for the request such as the endpoint for the invoking WP instance
-	 * @property _options
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._options = options || {};
-
-	/**
-	 * A hash of filter values to parse into the final request URI
-	 * @property _filters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._filters = {};
-
-	/**
-	 * A hash of taxonomy terms to parse into the final request URI
-	 * @property _taxonomyFilters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._taxonomyFilters = {};
-
-	/**
-	 * A hash of non-filter query parameters
-	 *
-	 * @property _params
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._params = {};
-
-	/**
-	 * A hash of values to assemble into the API request path
-	 *
-	 * @property _path
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._path = {};
-
-	/**
-	 * The URL template that will be used to assemble endpoint paths
-	 *
-	 * @property _template
-	 * @type String
-	 * @protected
-	 * @default 'media(/:id)'
-	 */
-	this._template = 'media(/:id)';
-
-	/**
-	 * @property _supportedMethods
-	 * @type Array
-	 * @private
-	 * @default [ 'head', 'get', 'post' ]
-	 */
-	this._supportedMethods = [ 'head', 'get', 'post' ];
-}
-
-inherit( MediaRequest, CollectionRequest );
-
-/**
- * A hash table of path keys and regex validators for those path elements
- *
- * @property _pathValidators
- * @type Object
- * @private
- */
-MediaRequest.prototype._pathValidators = {
-
-	/**
-	 * ID must be an integer or "me"
-	 *
-	 * @property _pathValidators.id
-	 * @type {RegExp}
-	 */
-	id: /^\d+$/
-};
-
-/**
- * @method id
- * @chainable
- * @param {Number} id The integer ID of a media record
- * @return {MediaRequest} The MediaRequest instance (for chaining)
- */
-MediaRequest.prototype.id = function( id ) {
-	this._path.id = parseInt( id, 10 );
-	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
-
-	return this;
-};
-
-module.exports = MediaRequest;
-
-},{"./shared/collection-request":59,"util":125}],57:[function(require,module,exports){
-'use strict';
-/**
- * @module WP
- * @submodule PagesRequest
- * @beta
- */
-var CollectionRequest = require( './shared/collection-request' );
-var inherit = require( 'util' ).inherits;
-
-/**
- * PagesRequest extends CollectionRequest to handle the /posts API endpoint
- *
- * @class PagesRequest
- * @constructor
- * @extends CollectionRequest
- * @param {Object} options A hash of options for the PagesRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WP instance
- * @param {String} [options.username] A username for authenticating API requests
- * @param {String} [options.password] A password for authenticating API requests
- */
-function PagesRequest( options ) {
-	/**
-	 * Configuration options for the request such as the endpoint for the invoking WP instance
-	 * @property _options
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._options = options || {};
-
-	/**
-	 * A hash of filter values to parse into the final request URI
-	 * @property _filters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._filters = {};
-
-	/**
-	 * A hash of taxonomy terms to parse into the final request URI
-	 * @property _taxonomyFilters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._taxonomyFilters = {};
-
-	/**
-	 * A hash of non-filter query parameters
-	 *
-	 * @property _params
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._params = {};
-
-	/**
-	 * A hash of values to assemble into the API request path
-	 *
-	 * @property _path
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._path = {};
-
-	/**
-	 * The URL template that will be used to assemble endpoint paths
-	 *
-	 * @property _template
-	 * @type String
-	 * @private
-	 * @default 'pages(/:id)(/:action)(/:commentId)'
-	 */
-	this._template = 'pages(/:id)(/:action)(/:commentId)';
-
-	/**
-	 * @property _supportedMethods
-	 * @type Array
-	 * @private
-	 * @default [ 'head', 'get', 'post' ]
-	 */
-	this._supportedMethods = [ 'head', 'get', 'post' ];
-}
-
-inherit( PagesRequest, CollectionRequest );
-
-/**
- * A hash table of path keys and regex validators for those path elements
- *
- * @property _pathValidators
- * @type Object
- * @private
- */
-PagesRequest.prototype._pathValidators = {
-
-	// No validation on "id", since it can be a string path OR a numeric ID
-
-	/**
-	 * Action must be 'comments' or 'revisions'
-	 *
-	 * @property _pathValidators.action
-	 * @type {RegExp}
-	 * @private
-	 */
-	action: /(comments|revisions)/,
-
-	/**
-	 * Comment ID must be an integer
-	 *
-	 * @property _pathValidators.commentId
-	 * @type {RegExp}
-	 * @private
-	 */
-	commentId: /^\d+$/
-};
-
-/**
- * Specify a post ID to query
- *
- * @method id
- * @chainable
- * @return {PagesRequest} The PagesRequest instance (for chaining)
- */
-PagesRequest.prototype.id = function( id ) {
-	this._path.id = parseInt( id, 10 );
-
-	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
-
-	return this;
-};
-
-/**
- * Specify that we are getting the comments for a specific page
- *
- * @method comments
- * @chainable
- * @return {PagesRequest} The PagesRequest instance (for chaining)
- */
-PagesRequest.prototype.comments = function() {
-	this._path.action = 'comments';
-	this._supportedMethods = [ 'head', 'get' ];
-
-	return this;
-};
-
-/**
- * Specify a particular comment to retrieve
- * (forces action "comments")
- *
- * @method comment
- * @chainable
- * @param {Number} id The ID of the comment to retrieve
- * @return {PagesRequest}
- */
-PagesRequest.prototype.comment = function( id ) {
-	this._path.action = 'comments';
-	this._path.commentId = parseInt( id, 10 );
-	this._supportedMethods = [ 'head', 'get', 'delete' ];
-
-	return this;
-};
-
-/**
- * Specify that we are requesting the revisions for a specific post (forces basic auth)
- *
- * @method revisions
- * @chainable
- * @return {PagesRequest} The PagesRequest instance (for chaining)
- */
-PagesRequest.prototype.revisions = function() {
-	this._path.action = 'revisions';
-	this._supportedMethods = [ 'head', 'get' ];
-
-	return this.auth();
-};
-
-/**
- * Specify that we are requesting a page by its path
- *
- * @method path
- * @chainable
- * @param {String} path The root-relative URL path for a page
- * @return {PagesRequest} The PagesRequest instance (for chaining)
- */
-PagesRequest.prototype.path = function( path ) {
-	this._path.id = path;
-	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
-
-	return this;
-};
-
-module.exports = PagesRequest;
-
-},{"./shared/collection-request":59,"util":125}],58:[function(require,module,exports){
-'use strict';
-/**
- * @module WP
- * @submodule PostsRequest
- * @beta
- */
-var CollectionRequest = require( './shared/collection-request' );
-var inherit = require( 'util' ).inherits;
-
-/**
- * PostsRequest extends CollectionRequest to handle the /posts API endpoint
- *
- * @class PostsRequest
- * @constructor
- * @extends CollectionRequest
- * @param {Object} options A hash of options for the PostsRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WP instance
- * @param {String} [options.username] A username for authenticating API requests
- * @param {String} [options.password] A password for authenticating API requests
- */
-function PostsRequest( options ) {
-	/**
-	 * Configuration options for the request such as the endpoint for the invoking WP instance
-	 * @property _options
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._options = options || {};
-
-	/**
-	 * A hash of filter values to parse into the final request URI
-	 * @property _filters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._filters = {};
-
-	/**
-	 * A hash of taxonomy terms to parse into the final request URI
-	 * @property _taxonomyFilters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._taxonomyFilters = {};
-
-	/**
-	 * A hash of non-filter query parameters
-	 *
-	 * @property _params
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._params = {};
-
-	/**
-	 * A hash of values to assemble into the API request path
-	 *
-	 * @property _path
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._path = {};
-
-	/**
-	 * The URL template that will be used to assemble endpoint paths
-	 *
-	 * @property _template
-	 * @type String
-	 * @private
-	 * @default 'posts(/:id)(/:action)(/:actionId)'
-	 */
-	this._template = 'posts(/:id)(/:action)(/:actionId)';
-
-	/**
-	 * @property _supportedMethods
-	 * @type Array
-	 * @private
-	 * @default [ 'head', 'get', 'post' ]
-	 */
-	this._supportedMethods = [ 'head', 'get', 'post' ];
-}
-
-inherit( PostsRequest, CollectionRequest );
-
-/**
- * A hash table of path keys and regex validators for those path elements
- *
- * @property _pathValidators
- * @type Object
- * @private
- */
-PostsRequest.prototype._pathValidators = {
-
-	/**
-	 * ID must be an integer
-	 *
-	 * @property _pathValidators.id
-	 * @type {RegExp}
-	 */
-	id: /^\d+$/,
-
-	/**
-	 * Action must be one of 'meta', 'comments', or 'revisions'
-	 *
-	 * @property _pathValidators.action
-	 * @type {RegExp}
-	 */
-	action: /(meta|comments|revisions)/
-};
-
-/**
- * Specify a post ID to query
- *
- * @method id
- * @chainable
- * @param {Number} id The ID of a post to retrieve
- * @return {PostsRequest} The PostsRequest instance (for chaining)
- */
-PostsRequest.prototype.id = function( id ) {
-	this._path.id = parseInt( id, 10 );
-	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
-
-	return this;
-};
-
-/**
- * Specify that we are getting the comments for a specific post
- *
- * @method comments
- * @chainable
- * @return {PostsRequest} The PostsRequest instance (for chaining)
- */
-PostsRequest.prototype.comments = function() {
-	this._path.action = 'comments';
-	this._supportedMethods = [ 'head', 'get', 'post' ];
-	return this;
-};
-
-/**
- * Specify a particular comment to retrieve
- * (forces action "comments")
- *
- * @method comment
- * @chainable
- * @param {Number} id The ID of the comment to retrieve
- * @return {PostsRequest}
- */
-PostsRequest.prototype.comment = function( id ) {
-	this._path.action = 'comments';
-	this._path.actionId = parseInt( id, 10 );
-	this._supportedMethods = [ 'head', 'get', 'delete' ];
-
-	return this;
-};
-
-/**
- * Query a collection of posts for posts of a specific type
- *
- * @method type
- * @param {String|Array} type A string or array of strings specifying post types to query
- * @chainable
- * @return {PostsRequest} The PostsRequest instance (for chaining)
- */
-PostsRequest.prototype.type = function( type ) {
-	this.param( 'type', type, true );
-	return this;
-};
-
-/**
- * Specify that we are requesting the revisions for a specific post (forces basic auth)
- *
- * @method revisions
- * @chainable
- * @return {PostsRequest} The PostsRequest instance (for chaining)
- */
-PostsRequest.prototype.revisions = function() {
-	this._path.action = 'revisions';
-	this._supportedMethods = [ 'head', 'get' ];
-
-	return this.auth();
-};
-
-/**
- * @method statuses
- * @chainable
- * @return {PostsRequest} The PostsRequest instance (for chaining)
- */
-PostsRequest.prototype.statuses = function() {
-	this._path.action = 'statuses';
-	this._supportedMethods = [ 'head', 'get' ];
-
-	return this;
-};
-
-module.exports = PostsRequest;
-
-},{"./shared/collection-request":59,"util":125}],59:[function(require,module,exports){
-'use strict';
-/*jshint -W106 */// Disable underscore_case warnings in this file b/c WP uses them
-/**
- * @module WP
- * @submodule CollectionRequest
- * @beta
- */
-var WPRequest = require( './wp-request' );
-var _ = require( 'lodash' );
-var extend = require( 'node.extend' );
-var inherit = require( 'util' ).inherits;
-var formatUrl = require( 'url' ).format;
-
-/**
- * CollectionRequest extends WPRequest with properties & methods for filtering collections
- * via query parameters. It is the base constructor for most top-level WP instance methods.
- *
- * @class CollectionRequest
- * @constructor
- * @extends WPRequest
- * @extensionfor PagesRequest
- * @extensionfor PostsRequest
- * @extensionfor TaxonomiesRequest
- * @extensionfor TypesRequest
- * @extensionfor UsersRequest
- * @param {Object} options A hash of options for the CollectionRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WP instance
- * @param {String} [options.username] A username for authenticating API requests
- * @param {String} [options.password] A password for authenticating API requests
- */
-function CollectionRequest( options ) {
-	/**
-	 * Configuration options for the request such as the endpoint for the invoking WP instance
-	 * @property _options
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._options = options || {};
-
-	/**
-	 * A hash of filter values to parse into the final request URI
-	 * @property _filters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._filters = {};
-
-	/**
-	 * A hash of taxonomy terms to parse into the final request URI
-	 * @property _taxonomyFilters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._taxonomyFilters = {};
-
-	/**
-	 * A hash of non-filter query parameters
-	 * This is used to store the query values for Type, Page & Context
-	 *
-	 * @property _params
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._params = {};
-
-	/**
-	 * A hash of values to assemble into the API request path
-	 *
-	 * @property _path
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._path = {};
-
-	/**
-	 * The URL template that will be used to assemble endpoint paths
-	 *
-	 * @property _template
-	 * @type String
-	 * @private
-	 * @default ''
-	 */
-	this._template = '';
-
-	/**
-	 * An array of supported methods; to be overridden by descendent constructors
-	 * @property _supportedMethods
-	 * @type Array
-	 * @private
-	 * @default [ 'head', 'get', 'put', 'post', 'delete' ]
-	 */
-	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
-}
-
-inherit( CollectionRequest, WPRequest );
-
-// Private helper methods
-// ======================
-
-/**
- * Process arrays of taxonomy terms into query parameters.
- * All terms listed in the arrays will be required (AND behavior).
- *
- * @example
- *    prepareTaxonomies({
- *        tag: [ 'tag1 ', 'tag2' ], // by term slug
- *        cat: [ 7 ] // by term ID
- *    }) === {
- *        tag: 'tag1+tag2',
- *        cat: '7'
- *    }
- *
- * @param {Object} taxonomyFilters An object of taxonomy term arrays, keyed by taxonomy name
- * @return {Object} An object of prepareFilters-ready query arg and query param value pairs
- */
-function prepareTaxonomies( taxonomyFilters ) {
-	if ( ! taxonomyFilters ) {
-		return [];
-	}
-
-	return _.reduce( taxonomyFilters, function( result, terms, key ) {
-		// Trim whitespace and concatenate multiple terms with +
-		result[ key ] = terms.map(function( term ) {
-			// Coerce term into a string so that trim() won't fail
-			term = term + '';
-			return term.trim().toLowerCase();
-		}).join( '+' );
-		return result;
-	}, {});
-}
-
-/**
- * Process the _params object into valid API-ready query parameters.
- *
- * @param {Object} params The _params object to process
- * @return {Object} An object of WP-API non-filter query parameter key-value pairs
- */
-function prepareParameters( params ) {
-	return _.reduce( params, function( result, value, key ) {
-		// No need for array syntax if the value array has only a single member
-		if ( _.isArray( value ) && 1 === value.length ) {
-			value = _.first( value );
-		}
-
-		// If the value was not (or is no longer) an array, set it as-is
-		if ( ! _.isArray( value ) ) {
-			result[ key ] = value;
-		} else {
-			// Use Array-syntax for multiple values (specifically used for the "types" parameter)
-			key = key + '[]';
-			result[ key ] = value;
-		}
-
-		return result;
-	}, {});
-}
-
-/**
- * Process an array of filter keys and values into API-ready query parameter syntax.
- *
- * @example
- *    prepareFilters({
- *        tag: 'tag1+tag2',
- *        category_name: 'news'
- *    }) === {
- *        'filter[tag]': 'tag1+tag2',
- *        'filter[category_name]': 'news'
- *    }
- *
- * @param {Object} filters An object of filter values, keyed by filter parameter name
- * @return {Object} An object of WP-API filter query parameter key-value pairs
- */
-function prepareFilters( filters ) {
-	return _.reduce( filters, function( result, value, key ) {
-		// Filters are specified via query parameter Array syntax
-		key = 'filter[' + key + ']';
-		result[ key ] = value;
-		return result;
-	}, {});
-}
-
-/**
- * Generate a complete query string from the provided array of query parameters.
- *
- * @example
- *     generateQueryString({
- *         'filter[tag]': 'tag1',
- *         'filter[post_status': 'publish',
- *         'type': 'cpt_item'
- *     }) === '?filter%5Btag%5D=tag1&filter%5Bpost_status=publish&type=cpt_item'
- *
- * @param {Object} queryParams A hash of query parameter keys and values
- * @return {String} A complete, rendered query string
- */
-function generateQueryString( queryParams ) {
-	// Sort the object properties by alphabetical order
-	// (consistent property ordering means easier caching of request URIs)
-	var keys = _.keys( queryParams ).sort();
-	queryParams = _.pick( queryParams, keys );
-	return formatUrl({
-		query: queryParams
-	});
-}
-
-/**
- * Utility function for sorting arrays of numbers or strings.
- *
- * @param {String|Number} a The first comparator operand
- * @param {String|Number} a The second comparator operand
- * @return -1 if the values are backwards, 1 if they're ordered, and 0 if they're the same
- */
-function alphaNumericSort( a, b ) {
-	if ( a > b ) {
-		return 1;
-	}
-	if ( a < b ) {
-		return -1;
-	}
-	return 0;
-}
-
-// Prototype Methods
-// =================
-
-/**
- * Process the endpoint query's filter objects into a valid query string.
- *
- * @private
- *
- * @method _renderQuery
- * @return {String} A query string representing the specified filter parameters
- */
-CollectionRequest.prototype._renderQuery = function() {
-	// Prepare the taxonomies to be converted into filter values
-	var taxonomies = prepareTaxonomies( this._taxonomyFilters );
-
-	// Format all filter query parameters using the filter array syntax
-	var filters = prepareFilters( extend( {}, this._filters, taxonomies ) );
-
-	// Get any non-filter query parameters
-	var parameters = prepareParameters( this._params );
-
-	// Append the non-filter parameters to the object and return a generated query string
-	return generateQueryString( extend( {}, filters, parameters ) );
-};
-
-/**
- * Set a parameter to render into the final query URI.
- *
- * @method param
- * @chainable
- * @param {String|Object} props The name of the parameter to set, or an object containing
- *                              parameter keys and their corresponding values
- * @param {String|Number|Array} [value] The value of the parameter being set
- * @param {Boolean} [merge] Whether to merge the value (true) or replace it (false, default)
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.param = function( props, value, merge ) {
-	merge = merge || false;
-
-	// We can use the same iterator function below to handle explicit key-value pairs if we
-	// convert them into to an object we can iterate over:
-	if ( _.isString( props ) && value ) {
-		props = _.object([[ props, value ]]);
-	}
-
-	// Iterate through the properties
-	_.each( props, function( value, key ) {
-		var currentVal = this._params[ key ];
-
-		// Simple case: setting for the first time, or not merging
-		if ( ! currentVal || ! merge ) {
-
-			// Arrays should be de-duped and sorted
-			if ( _.isArray( value ) ) {
-				value = _.unique( value ).sort( alphaNumericSort );
-			}
-
-			// Set the value
-			this._params[ key ] = value;
-
-			// Continue
-			return;
-		}
-
-		// value and currentVal must both be arrays in order to merge
-		if ( ! _.isArray( currentVal ) ) {
-			currentVal = [ currentVal ];
-		}
-
-		if ( ! _.isArray( value ) ) {
-			value = [ value ];
-		}
-
-		// Concat the new values onto the old (and sort)
-		this._params[ key ] = _.union( currentVal, value ).sort( alphaNumericSort );
-	}.bind( this ));
-
-	return this;
-};
-
-/**
- * Set the pagination of a request. Use in conjunction with `filter( posts_per_page )` for
- * explicit pagination handling. (Note that the number of posts in a response can be
- * retrieved from the response's .)
- *
- * @method page
- * @chainable
- * @param {Number} pageNumber The page number of results to retrieve
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.page = function( pageNumber ) {
-	return this.param( 'page', pageNumber );
-};
-
-/**
- * Set the context of the request. Used primarily to expose private values on a request
- * object, by setting the context to "edit".
- *
- * @method context
- * @chainable
- * @param {String} context The context to set on the request
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.context = function( context ) {
-	if ( context === 'edit' ) {
-		// Force basic authentication for edit context
-		this.auth();
-	}
-	return this.param( 'context', context );
-};
-
-/**
- * Convenience wrapper for `.context( 'edit' )`
- *
- * @method edit
- * @chainable
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.edit = function() {
-	return this.context( 'edit' );
-};
-
-/**
- * Specify key-value pairs by which to filter the API results (commonly used
- * to retrieve only posts meeting certain criteria, such as posts within a
- * particular category or by a particular author).
- *
- * @example
- *     // Set a single property:
- *     wp.filter( 'post_type', 'cpt_event' )...
- *
- *     // Set multiple properties at once:
- *     wp.filter({
- *         post_status: 'publish',
- *         category_name: 'news'
- *     })...
- *
- *     // Chain calls to .filter():
- *     wp.filter( 'post_status', 'publish' ).filter( 'category_name', 'news' )...
- *
- * @method filter
- * @chainable
- * @param {String|Object} props A filter property name string, or object of name/value pairs
- * @param {String|Number|Array} [value] The value(s) corresponding to the provided filter property
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.filter = function( props, value ) {
-	// convert the property name string `props` and value `value` into an object
-	if ( _.isString( props ) && value ) {
-		props = _.object([[ props, value ]]);
-	}
-
-	this._filters = extend( this._filters, props );
-
-	return this;
-};
-
-/**
- * Restrict the query results to posts matching one or more taxonomy terms.
- *
- * @method taxonomy
- * @chainable
- * @param {String} taxonomy The name of the taxonomy to filter by
- * @param {String|Number|Array} term A string or integer, or array thereof, representing terms
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.taxonomy = function( taxonomy, term ) {
-	var termIsArray = _.isArray( term );
-	var termIsNumber = termIsArray ? _.isNumber( term[ 0 ] ) : _.isNumber( term );
-	var termIsString = termIsArray ? _.isString( term[ 0 ] ) : _.isString( term );
-	var taxonomyTerms;
-
-	if ( ! termIsString && ! termIsNumber ) {
-		throw new Error( 'term must be a number, string, or array of numbers or strings' );
-	}
-
-	if ( taxonomy === 'category' ) {
-		if ( termIsString ) {
-			// Query param for filtering by category slug is category_name
-			taxonomy = 'category_name';
-		} else if ( termIsNumber ) {
-			// Query param for filtering by category slug is category_name
-			taxonomy = 'cat';
-		}
-	} else if ( taxonomy === 'post_tag' ) {
-		// tag is used in place of post_tag in the public query variables
-		taxonomy = 'tag';
-	}
-
-	// Ensure there's an array of terms available for this taxonomy
-	taxonomyTerms = this._taxonomyFilters[ taxonomy ] || [];
-
-	// Insert the provided terms into the specified taxonomy's terms array
-	if ( termIsArray ) {
-		taxonomyTerms = taxonomyTerms.concat( term );
-	} else {
-		taxonomyTerms.push( term );
-	}
-
-	// Sort array
-	taxonomyTerms.sort( alphaNumericSort );
-
-	// De-dupe
-	this._taxonomyFilters[ taxonomy ] = _.unique( taxonomyTerms, true );
-
-	return this;
-};
-
-/**
- * Convenience wrapper for `.taxonomy( 'category', ... )`.
- *
- * @method category
- * @chainable
- * @param {String|Number|Array} category A string or integer, or array thereof, representing terms
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.category = function( category ) {
-	return this.taxonomy( 'category', category );
-};
-
-/**
- * Convenience wrapper for `.taxonomy( 'tag', ... )`.
- *
- * @method tag
- * @chainable
- * @param {String|Number|Array} tag A tag term string or array of tag term strings
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.tag = function( tag ) {
-	return this.taxonomy( 'tag', tag );
-};
-
-/**
- * Filter results to those matching the specified search terms.
- *
- * @method search
- * @param {String} searchString A string to search for within post content
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.search = function( searchString ) {
-	return this.filter( 's',  searchString );
-};
-
-/**
- * Query for posts by a specific author.
- * This method will replace any previous 'author' query parameters that had been set.
- *
- * @method author
- * @chainable
- * @param {String|Number} author The nicename or ID for a particular author
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.author = function( author ) {
-	if ( _.isString( author ) ) {
-		delete this._filters.author;
-		return this.filter( 'author_name', author );
-	}
-	if ( _.isNumber( author ) ) {
-		delete this._filters.author_name;
-		return this.filter( 'author', author );
-	}
-	throw new Error( 'author must be either a nicename string or numeric ID' );
-};
-
-/**
- * Query a collection of posts for a post with a specific slug.
- *
- * @method name
- * @chainable
- * @param {String} slug A post name (slug), e.g. "hello-world"
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.name = function( slug ) {
-	return this.filter( 'name', slug );
-};
-
-/**
- * Alias for `.name()`.
- *
- * @method slug
- * @alias name
- * @chainable
- * @param {String} slug A post slug, e.g. "hello-world"
- * @return {CollectionRequest} The CollectionRequest instance (for chaining)
- */
-CollectionRequest.prototype.slug = CollectionRequest.prototype.name;
-
-module.exports = CollectionRequest;
-
-},{"./wp-request":60,"lodash":99,"node.extend":100,"url":123,"util":125}],60:[function(require,module,exports){
-'use strict';
-/**
- * @module WP
- * @submodule WPRequest
- * @beta
- */
-
-/*jshint -W079 */// Suppress warning about redefiniton of `Promise`
-var Promise = require( 'bluebird' );
-var agent = require( 'superagent' );
-var Route = require( 'route-parser' );
-
-/**
- * WPRequest is the base API request object constructor
- *
- * @class WPRequest
- * @constructor
- * @param {Object} options A hash of options for the WPRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WP instance
- * @param {String} [options.username] A username for authenticating API requests
- * @param {String} [options.password] A password for authenticating API requests
- */
-function WPRequest( options ) {
-	/**
-	 * Configuration options for the request such as the endpoint for the invoking WP instance
-	 *
-	 * @property _options
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._options = options || {};
-
-	/**
-	 * Methods supported by this API request instance:
-	 * Individual endpoint handlers specify their own subset of supported methods
-	 *
-	 * @property _supportedMethods
-	 * @type Array
-	 * @private
-	 * @default [ 'head', 'get', 'put', 'post', 'delete' ]
-	 */
-	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
-
-	/**
-	 * A hash of values to assemble into the API request path
-	 * (This will be overwritten by each specific endpoint handler constructor)
-	 *
-	 * @property _path
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._path = {};
-
-	/**
-	 * The URL template that will be used to assemble endpoint paths
-	 * (This will be overwritten by each specific endpoint handler constructor)
-	 *
-	 * @property _template
-	 * @type String
-	 * @private
-	 * @default ''
-	 */
-	this._template = '';
-}
-
-// Helpers
-// =======
-
-/** No-op function for use within ensureFunction() */
-function noop() {}
-
-/** Identity function for use within invokeAndPromisify() */
-function identity( value ) {
-	return value;
-}
-
-/**
- * If fn is a function, return it; else, return a no-op function
- *
- * @param {Function|undefined} fn A WPRequest request callback
- * @return {Function} The provided callback function or a no-op
- */
-function ensureFunction( fn ) {
-	return ( typeof fn === 'function' ) ? fn : noop;
-}
-
-/**
- * Submit the provided superagent request object, invoke a callback (if it was
- * provided), and return a promise to the response from the HTTP request.
- *
- * @param {Object} request A superagent request object
- * @param {Function} callback A callback function (optional)
- * @param {Function} transform A function to transform the result data (optional)
- * @return {Promise} A promise to the superagent request
- */
-function invokeAndPromisify( request, callback, transform ) {
-	callback = ensureFunction( callback );
-	transform = transform || identity;
-
-	return new Promise(function( resolve, reject ) {
-		// Fire off the result
-		request.end(function( err, result ) {
-
-			// Return the results as a promise
-			if ( err || result.error ) {
-				reject( err || result.error );
-			} else {
-				resolve( result );
-			}
-		});
-	}).then(transform).nodeify(callback);
-}
-
-/**
- * Extract and return the body property from a superagent response object
- *
- * @param {Object} result The results from the HTTP request
- * @return {Object} The "body" property of the result
- */
-function returnBody( result ) {
-	return result.body;
-}
-
-/**
- * Extract and return the headers property from a superagent response object
- *
- * @param {Object} result The results from the HTTP request
- * @return {Object} The "headers" property of the result
- */
-function returnHeaders( result ) {
-	return result.headers;
-}
-
-/**
- * Check path parameter values against validation regular expressions
- *
- * @param {Object} pathValues A hash of path placeholder keys and their corresponding values
- * @param {Object} validators A hash of placeholder keys to validation regexes
- * @return {Object} Returns pathValues if all validation passes (else will throw)
- */
-function validatePath( pathValues, validators ) {
-	if ( ! validators ) {
-		return pathValues;
-	}
-	for ( var param in pathValues ) {
-		if ( ! pathValues.hasOwnProperty( param ) ) {
-			continue;
-		}
-
-		// No validator, no problem
-		if ( ! validators[ param ] ) {
-			continue;
-		}
-
-		// Convert parameter to a string value and check it against the regex
-		if ( ! ( pathValues[ param ] + '' ).match( validators[ param ] ) ) {
-			throw new Error( param + ' does not match ' + validators[ param ] );
-		}
-	}
-
-	// If validation passed, return the pathValues object
-	return pathValues;
-}
-
-// Prototype Methods
-// =================
-
-/**
- * Verify that the current request object supports a given HTTP verb
- *
- * @private
- *
- * @method _checkMethodSupport
- * @param {String} method An HTTP method to check ('get', 'post', etc)
- * @return true iff the method is within this._supportedMethods
- */
-WPRequest.prototype._checkMethodSupport = function( method ) {
-	if ( this._supportedMethods.indexOf( method.toLowerCase() ) === -1 ) {
-		throw new Error(
-			'Unsupported method; supported methods are: ' +
-			this._supportedMethods.join( ', ' )
-		);
-	}
-
-	return true;
-};
-
-/**
- * Validate & assemble a path string from the request object's _path
- *
- * @private
- *
- * @method _renderPath
- * @return {String} The rendered path
- */
-WPRequest.prototype._renderPath = function() {
-	var path = new Route( this._template );
-	var pathValues = validatePath( this._path, this._pathValidators );
-
-	return path.reverse( pathValues ) || '';
-};
-
-/**
- * Parse the request's instance properties into a WordPress API request URI
- *
- * @private
- *
- * @method _renderURI
- * @return {String} The URI for the HTTP request to be sent
- */
-WPRequest.prototype._renderURI = function() {
-	// Render the path to a string
-	var path = this._renderPath();
-
-	// If the current request supports filters, render them to a query string
-	var queryStr = this._renderQuery ? this._renderQuery() : '';
-
-	return this._options.endpoint + path + queryStr;
-};
-
-/**
- * Conditionally set basic authentication on a server request object
- *
- * @method _auth
- * @private
- * @param {Object} request A superagent request object
- * @param {Boolean} forceAuthentication whether to force authentication on the request
- * @param {Object} A superagent request object, conditionally configured to use basic auth
- */
-WPRequest.prototype._auth = function( request, forceAuthentication ) {
-	// If we're not supposed to authenticate, don't even start
-	if ( ! forceAuthentication && ! this._options.auth ) {
-		return request;
-	}
-
-	// Retrieve the username & password from the request options if they weren't provided
-	var username = username || this._options.username;
-	var password = password || this._options.password;
-
-	// If no username & password, can't authenticate
-	if ( ! username || ! password ) {
-		return request;
-	}
-
-	// Can authenticate: set basic auth parameters on the request
-	return request.auth( username, password );
-};
-
-// Chaining methods
-// ================
-
-/**
- * Set a requst to use authentication, and optionally provide auth credentials
- *
- * @example
- * If auth credentials were already specified when the WP instance was created, calling
- * `.auth` on the request chain will set that request to use the existing credentials:
- *
- *     request.auth().get...
- *
- * Alternatively, a username & password can be explicitly passed into `.auth`:
- *
- *     request.auth( 'username', 'password' ).get...
- *
- * @method auth
- * @chainable
- * @param {String} [username] A username string for basic authentication
- * @param {String} [password] A user password string for basic authentication
- * @return {WPRequest} The WPRequest instance (for chaining)
- */
-WPRequest.prototype.auth = function( username, password ) {
-	if ( username && typeof username === 'string' ) {
-		this._options.username = username;
-	}
-
-	if ( password && typeof password === 'string' ) {
-		this._options.password = password;
-	}
-
-	// Set the "auth" options flag that will force authentication on this request
-	this._options.auth = true;
-
-	return this;
-};
-
-// HTTP Methods
-// ============
-
-/**
- * @method get
- * @async
- * @param {Function} [callback] A callback to invoke with the results of the GET request
- * @param {Error|Object} callback.err Any errors encountered during the request
- * @param {Object} callback.result The body of the server response
- * @return {Promise} A promise to the results of the HTTP request
- */
-WPRequest.prototype.get = function( callback ) {
-	this._checkMethodSupport( 'get' );
-	var url = this._renderURI();
-
-	var request = this._auth( agent.get( url ) );
-
-	return invokeAndPromisify( request, callback, returnBody );
-};
-
-/**
- * @method post
- * @async
- * @param {Object} data The data for the POST request
- * @param {Function} [callback] A callback to invoke with the results of the POST request
- * @param {Error|Object} callback.err Any errors encountered during the request
- * @param {Object} callback.result The body of the server response
- * @return {Promise} A promise to the results of the HTTP request
- */
-WPRequest.prototype.post = function( data, callback ) {
-	this._checkMethodSupport( 'post' );
-	var url = this._renderURI();
-	data = data || {};
-
-	var request = this._auth( agent.post( url ), true ).send( data );
-
-	return invokeAndPromisify( request, callback, returnBody );
-};
-
-/**
- * @method put
- * @async
- * @param {Object} data The data for the PUT request
- * @param {Function} [callback] A callback to invoke with the results of the PUT request
- * @param {Error|Object} callback.err Any errors encountered during the request
- * @param {Object} callback.result The body of the server response
- * @return {Promise} A promise to the results of the HTTP request
- */
-WPRequest.prototype.put = function( data, callback ) {
-	this._checkMethodSupport( 'put' );
-	var url = this._renderURI();
-	data = data || {};
-
-	var request = this._auth( agent.put( url ), true ).send( data );
-
-	return invokeAndPromisify( request, callback, returnBody );
-};
-
-/**
- * @method delete
- * @async
- * @param {Function} [callback] A callback to invoke with the results of the DELETE request
- * @param {Error|Object} callback.err Any errors encountered during the request
- * @param {Object} callback.result The body of the server response
- * @return {Promise} A promise to the results of the HTTP request
- */
-WPRequest.prototype.delete = function( callback ) {
-	this._checkMethodSupport( 'delete' );
-	var url = this._renderURI();
-	var request = this._auth( agent.del( url ), true );
-
-	return invokeAndPromisify( request, callback, returnBody );
-};
-
-/**
- * @method head
- * @async
- * @param {Function} [callback] A callback to invoke with the results of the HEAD request
- * @param {Error|Object} callback.err Any errors encountered during the request
- * @param {Object} callback.result The headers from the server response
- * @return {Promise} A promise to the header results of the HTTP request
- */
-WPRequest.prototype.head = function( callback ) {
-	this._checkMethodSupport( 'head' );
-	var url = this._renderURI();
-	var request = this._auth( agent.head( url ) );
-
-	return invokeAndPromisify( request, callback, returnHeaders );
-};
-
-/**
- * Calling .then on a query chain will invoke the query as a GET and return a promise
- *
- * @method then
- * @async
- * @param {Function} [successCallback] A callback to handle the data returned from the GET request
- * @param {Function} [failureCallback] A callback to handle any errors encountered by the request
- * @return {Promise} A promise to the results of the HTTP request
- */
-WPRequest.prototype.then = function( successCallback, failureCallback ) {
-	return this.get().then( successCallback, failureCallback );
-};
-
-module.exports = WPRequest;
-
-},{"bluebird":66,"route-parser":103,"superagent":111}],61:[function(require,module,exports){
-'use strict';
-/**
- * @module WP
- * @submodule TaxonomiesRequest
- * @beta
- */
-var CollectionRequest = require( './shared/collection-request' );
-var inherit = require( 'util' ).inherits;
-
-/**
- * TaxonomiesRequest extends CollectionRequest to handle the /taxonomies API endpoint
- *
- * @class TaxonomiesRequest
- * @constructor
- * @extends CollectionRequest
- * @param {Object} options A hash of options for the TaxonomiesRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WP instance
- * @param {String} [options.username] A username for authenticating API requests
- * @param {String} [options.password] A password for authenticating API requests
- */
-function TaxonomiesRequest( options ) {
-	/**
-	 * Configuration options for the request such as the endpoint for the invoking WP instance
-	 * @property _options
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._options = options || {};
-
-	/**
-	 * A hash of filter values to parse into the final request URI
-	 * @property _filters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._filters = {};
-
-	/**
-	 * A hash of non-filter query parameters
-	 *
-	 * @property _params
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._params = {};
-
-	/**
-	 * A hash of values to assemble into the API request path
-	 *
-	 * @property _path
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._path = {};
-
-	/**
-	 * The URL template that will be used to assemble endpoint paths
-	 *
-	 * @property _template
-	 * @type String
-	 * @private
-	 * @default 'taxonomies(/:taxonomy)(/:action)(/:term)'
-	 */
-	this._template = 'taxonomies(/:taxonomy)(/:action)(/:term)';
-
-	/**
-	 * @property _supportedMethods
-	 * @type Array
-	 * @private
-	 * @default [ 'head', 'get' ]
-	 */
-	this._supportedMethods = [ 'head', 'get' ];
-}
-
-// TaxonomiesRequest extends CollectionRequest
-inherit( TaxonomiesRequest, CollectionRequest );
-
-/**
- * A hash of path keys to regex validators for those path elements
- *
- * @property _pathValidators
- * @type Object
- * @private
- */
-TaxonomiesRequest.prototype._pathValidators = {
-
-	/**
-	 * The only "action" permitted on a taxonomy is to get a list of terms
-	 *
-	 * @property _pathValidators.action
-	 * @type {RegExp}
-	 */
-	action: /terms/
-
-	// No validation on :taxonomy or :term: they can be numeric or a string
-};
-
-/**
- * Specify the name of the taxonomy to query
- *
- * @method taxonomy
- * @chainable
- * @param {String} taxonomyName The name of the taxonomy to query
- * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
- */
-TaxonomiesRequest.prototype.taxonomy = function( taxonomyName ) {
-	this._path.taxonomy = taxonomyName;
-
-	return this;
-};
-
-/**
- * Specify a taxonomy term to request
- *
- * @method term
- * @chainable
- * @param {String} term The ID or slug of the term to request
- * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
- */
-TaxonomiesRequest.prototype.term = function( term ) {
-	this._path.action = 'terms';
-	this._path.term = term;
-
-	return this;
-};
-
-/**
- * Specify that we are requesting a collection of terms for a taxonomy
- *
- * @method terms
- * @chainable
- * @return {TaxonomiesRequest} The TaxonomiesRequest instance (for chaining)
- */
-TaxonomiesRequest.prototype.terms = function() {
-	this._path.action = 'terms';
-
-	return this;
-};
-
-module.exports = TaxonomiesRequest;
-
-},{"./shared/collection-request":59,"util":125}],62:[function(require,module,exports){
-'use strict';
-/**
- * @module WP
- * @submodule TypesRequest
- * @beta
- */
-var CollectionRequest = require( './shared/collection-request' );
-var inherit = require( 'util' ).inherits;
-
-/**
- * TypesRequest extends CollectionRequest to handle the /taxonomies API endpoint
- *
- * @class TypesRequest
- * @constructor
- * @extends CollectionRequest
- * @param {Object} options A hash of options for the TypesRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WP instance
- * @param {String} [options.username] A username for authenticating API requests
- * @param {String} [options.password] A password for authenticating API requests
- */
-function TypesRequest( options ) {
-	/**
-	 * Configuration options for the request such as the endpoint for the invoking WP instance
-	 * @property _options
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._options = options || {};
-
-	/**
-	 * A hash of filter values to parse into the final request URI
-	 * @property _filters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._filters = {};
-
-	/**
-	 * A hash of non-filter query parameters
-	 *
-	 * @property _params
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._params = {};
-
-	/**
-	 * A hash of values to assemble into the API request path
-	 *
-	 * @property _path
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._path = {};
-
-	/**
-	 * The URL template that will be used to assemble request URI paths
-	 *
-	 * @property _template
-	 * @type String
-	 * @private
-	 * @default 'posts/types(/:type)'
-	 */
-	this._template = 'posts/types(/:type)';
-
-	/**
-	 * @property _supportedMethods
-	 * @type Array
-	 * @private
-	 * @default [ 'head', 'get' ]
-	 */
-	this._supportedMethods = [ 'head', 'get' ];
-}
-
-// TypesRequest extends CollectionRequest
-inherit( TypesRequest, CollectionRequest );
-
-/**
- * Specify the name of the type to query
- *
- * @method type
- * @chainable
- * @param {String} typeName The name of the type to query
- * @return {TypesRequest} The TypesRequest instance (for chaining)
- */
-TypesRequest.prototype.type = function( typeName ) {
-	this._path.type = typeName;
-
-	return this;
-};
-
-module.exports = TypesRequest;
-
-},{"./shared/collection-request":59,"util":125}],63:[function(require,module,exports){
-'use strict';
-/**
- * @module WP
- * @submodule UsersRequest
- * @beta
- */
-var CollectionRequest = require( './shared/collection-request' );
-var inherit = require( 'util' ).inherits;
-
-/**
- * UsersRequest extends CollectionRequest to handle the `/users` API endpoint. The `/users`
- * endpoint responds with a 401 error without authentication, so `users()` forces basic auth.
- *
- * @class UsersRequest
- * @constructor
- * @extends CollectionRequest
- * @param {Object} options A hash of options for the UsersRequest instance
- * @param {String} options.endpoint The endpoint URI for the invoking WP instance
- * @param {String} [options.username] A username for authenticating API requests
- * @param {String} [options.password] A password for authenticating API requests
- */
-function UsersRequest( options ) {
-	/**
-	 * Configuration options for the request such as the endpoint for the invoking WP instance
-	 * @property _options
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._options = options || {};
-
-	/**
-	 * A hash of filter values to parse into the final request URI
-	 * @property _filters
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._filters = {};
-
-	/**
-	 * A hash of non-filter query parameters
-	 *
-	 * @property _params
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._params = {};
-
-	/**
-	 * A hash of values to assemble into the API request path
-	 *
-	 * @property _path
-	 * @type Object
-	 * @private
-	 * @default {}
-	 */
-	this._path = {};
-
-	/**
-	 * The URL template that will be used to assemble endpoint paths
-	 *
-	 * @property _template
-	 * @type String
-	 * @protected
-	 * @default 'users(/:id)'
-	 */
-	this._template = 'users(/:id)';
-
-	/**
-	 * @property _supportedMethods
-	 * @type Array
-	 * @private
-	 * @default [ 'head', 'get', 'post' ]
-	 */
-	this._supportedMethods = [ 'head', 'get', 'post' ];
-
-	// Force authentication on all users requests
-	return this.auth();
-}
-
-inherit( UsersRequest, CollectionRequest );
-
-/**
- * A hash table of path keys and regex validators for those path elements
- *
- * @property _pathValidators
- * @type Object
- * @private
- */
-UsersRequest.prototype._pathValidators = {
-
-	/**
-	 * ID must be an integer or "me"
-	 *
-	 * @property _pathValidators.id
-	 * @type {RegExp}
-	 */
-	id: /(^\d+$|^me$)/
-};
-
-/**
- * @method me
- * @chainable
- * @return {UsersRequest} The UsersRequest instance (for chaining)
- */
-UsersRequest.prototype.me = function() {
-	this._path.id = 'me';
-	this._supportedMethods = [ 'head', 'get' ];
-
-	return this;
-};
-
-/**
- * @method id
- * @chainable
- * @param {Number} id The integer ID of a user record
- * @return {UsersRequest} The UsersRequest instance (for chaining)
- */
-UsersRequest.prototype.id = function( id ) {
-	this._path.id = parseInt( id, 10 );
-	this._supportedMethods = [ 'head', 'get', 'put', 'post', 'delete' ];
-
-	return this;
-};
-
-module.exports = UsersRequest;
-
-},{"./shared/collection-request":59,"util":125}],64:[function(require,module,exports){
-module.exports=require(5)
-},{}],65:[function(require,module,exports){
-arguments[4][6][0].apply(exports,arguments)
-},{"./queue.js":88,"./schedule.js":91,"./util.js":98,"_process":118}],66:[function(require,module,exports){
-arguments[4][7][0].apply(exports,arguments)
-},{"./promise.js":83}],67:[function(require,module,exports){
-arguments[4][8][0].apply(exports,arguments)
-},{"./util.js":98}],68:[function(require,module,exports){
-arguments[4][9][0].apply(exports,arguments)
-},{"./async.js":65,"./errors.js":73}],69:[function(require,module,exports){
-arguments[4][10][0].apply(exports,arguments)
-},{"./es5.js":75,"./util.js":98}],70:[function(require,module,exports){
-arguments[4][11][0].apply(exports,arguments)
-},{"./errors.js":73,"./es5.js":75,"./util.js":98}],71:[function(require,module,exports){
-arguments[4][12][0].apply(exports,arguments)
-},{"./util.js":98}],72:[function(require,module,exports){
-module.exports=require(13)
-},{}],73:[function(require,module,exports){
-arguments[4][14][0].apply(exports,arguments)
-},{"./es5.js":75,"./util.js":98}],74:[function(require,module,exports){
-arguments[4][15][0].apply(exports,arguments)
-},{"./errors.js":73}],75:[function(require,module,exports){
-module.exports=require(16)
-},{}],76:[function(require,module,exports){
-module.exports=require(17)
-},{}],77:[function(require,module,exports){
-arguments[4][18][0].apply(exports,arguments)
-},{"./util.js":98}],78:[function(require,module,exports){
-arguments[4][19][0].apply(exports,arguments)
-},{"./errors.js":73,"./util.js":98}],79:[function(require,module,exports){
-arguments[4][20][0].apply(exports,arguments)
-},{"./util.js":98}],80:[function(require,module,exports){
-arguments[4][21][0].apply(exports,arguments)
-},{"./util.js":98}],81:[function(require,module,exports){
-arguments[4][22][0].apply(exports,arguments)
-},{"./async.js":65,"./util.js":98}],82:[function(require,module,exports){
-arguments[4][23][0].apply(exports,arguments)
-},{"./async.js":65,"./errors.js":73,"./util.js":98}],83:[function(require,module,exports){
-arguments[4][24][0].apply(exports,arguments)
-},{"./any.js":64,"./async.js":65,"./call_get.js":67,"./cancel.js":68,"./captured_trace.js":69,"./catch_filter.js":70,"./direct_resolve.js":71,"./each.js":72,"./errors.js":73,"./errors_api_rejection":74,"./filter.js":76,"./finally.js":77,"./generators.js":78,"./join.js":79,"./map.js":80,"./nodeify.js":81,"./progress.js":82,"./promise_array.js":84,"./promise_resolver.js":85,"./promisify.js":86,"./props.js":87,"./race.js":89,"./reduce.js":90,"./settle.js":92,"./some.js":93,"./synchronous_inspection.js":94,"./thenables.js":95,"./timers.js":96,"./using.js":97,"./util.js":98,"_process":118}],84:[function(require,module,exports){
-arguments[4][25][0].apply(exports,arguments)
-},{"./errors.js":73,"./util.js":98}],85:[function(require,module,exports){
-arguments[4][26][0].apply(exports,arguments)
-},{"./async.js":65,"./errors.js":73,"./es5.js":75,"./util.js":98}],86:[function(require,module,exports){
-arguments[4][27][0].apply(exports,arguments)
-},{"./errors":73,"./promise_resolver.js":85,"./util.js":98}],87:[function(require,module,exports){
-arguments[4][28][0].apply(exports,arguments)
-},{"./errors_api_rejection":74,"./es5.js":75,"./util.js":98}],88:[function(require,module,exports){
-module.exports=require(29)
-},{}],89:[function(require,module,exports){
-arguments[4][30][0].apply(exports,arguments)
-},{"./errors_api_rejection.js":74,"./util.js":98}],90:[function(require,module,exports){
-arguments[4][31][0].apply(exports,arguments)
-},{"./util.js":98}],91:[function(require,module,exports){
-module.exports=require(32)
-},{"_process":118}],92:[function(require,module,exports){
-arguments[4][33][0].apply(exports,arguments)
-},{"./util.js":98}],93:[function(require,module,exports){
-arguments[4][34][0].apply(exports,arguments)
-},{"./errors.js":73,"./util.js":98}],94:[function(require,module,exports){
-module.exports=require(35)
-},{}],95:[function(require,module,exports){
-arguments[4][36][0].apply(exports,arguments)
-},{"./errors.js":73,"./util.js":98}],96:[function(require,module,exports){
-arguments[4][37][0].apply(exports,arguments)
-},{"./errors.js":73,"./errors_api_rejection":74,"./util.js":98}],97:[function(require,module,exports){
-arguments[4][38][0].apply(exports,arguments)
-},{"./errors.js":73,"./util.js":98}],98:[function(require,module,exports){
-module.exports=require(39)
-},{"./es5.js":75}],99:[function(require,module,exports){
-module.exports=require(40)
-},{}],100:[function(require,module,exports){
-arguments[4][41][0].apply(exports,arguments)
-},{"./lib/extend":101}],101:[function(require,module,exports){
-arguments[4][42][0].apply(exports,arguments)
-},{"is":102}],102:[function(require,module,exports){
-module.exports=require(43)
-},{}],103:[function(require,module,exports){
-arguments[4][44][0].apply(exports,arguments)
-},{"./lib/route":104}],104:[function(require,module,exports){
-arguments[4][45][0].apply(exports,arguments)
-},{"./route/parser":107,"./route/visitors/regexp":109,"./route/visitors/reverse":110}],105:[function(require,module,exports){
-module.exports=require(46)
-},{"_process":118,"fs":115,"path":117}],106:[function(require,module,exports){
-module.exports=require(47)
-},{}],107:[function(require,module,exports){
-module.exports=require(48)
-},{"./compiled-grammar":105,"./nodes":106}],108:[function(require,module,exports){
-module.exports=require(49)
-},{"../nodes":106}],109:[function(require,module,exports){
-module.exports=require(50)
-},{"./create_visitor":108}],110:[function(require,module,exports){
-module.exports=require(51)
-},{"./create_visitor":108}],111:[function(require,module,exports){
-arguments[4][52][0].apply(exports,arguments)
-},{"emitter":112,"reduce":113}],112:[function(require,module,exports){
-module.exports=require(53)
-},{}],113:[function(require,module,exports){
-module.exports=require(54)
-},{}],114:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict';
 /**
  * A WP REST API client for Node.js
@@ -18606,9 +17082,9 @@ WP.prototype.root = function( relativePath, collection ) {
 
 module.exports = WP;
 
-},{"./lib/media":56,"./lib/pages":57,"./lib/posts":58,"./lib/shared/collection-request":59,"./lib/shared/wp-request":60,"./lib/taxonomies":61,"./lib/types":62,"./lib/users":63,"node.extend":100}],115:[function(require,module,exports){
+},{"./lib/media":2,"./lib/pages":3,"./lib/posts":4,"./lib/shared/collection-request":5,"./lib/shared/wp-request":6,"./lib/taxonomies":7,"./lib/types":8,"./lib/users":9,"node.extend":46}],61:[function(require,module,exports){
 
-},{}],116:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -18633,7 +17109,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],117:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -18861,7 +17337,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":118}],118:[function(require,module,exports){
+},{"_process":64}],64:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -18926,7 +17402,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],119:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -19437,7 +17913,7 @@ process.chdir = function (dir) {
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],120:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -19523,7 +17999,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],121:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -19610,13 +18086,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],122:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":120,"./encode":121}],123:[function(require,module,exports){
+},{"./decode":66,"./encode":67}],69:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -20325,14 +18801,14 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":119,"querystring":122}],124:[function(require,module,exports){
+},{"punycode":65,"querystring":68}],70:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],125:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -20922,4 +19398,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":124,"_process":118,"inherits":116}]},{},[1]);
+},{"./support/isBuffer":70,"_process":64,"inherits":62}]},{},[1]);
