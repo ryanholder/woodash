@@ -24,13 +24,13 @@ wp.posts()
 
 
 var wc = new WP({
-    endpoint: 'https://wp.thewhatwhat.com',
+    endpoint: 'https://wp.thewhatwhat.com/',
     username: 'ck_45841d89825d617a00814f88e74face7',
     password: 'cs_d6da0b74e1f26cdd1f6bb6c8a0207e90',
     auth: true
 });
 
-var request = wc.root( '/wc-api/v1/', true );
+var request = wc.root( 'wc-api/v1/orders' );
 
 // Callbacks
 request.get(function( err, data ) {
