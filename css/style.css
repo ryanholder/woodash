@@ -475,7 +475,6 @@ a[href*="www.amcharts.com"] {
 	padding-top: 0;
 }
 
-display: block;
 .woodash-buttons .form-control.woodash-date-range-to {
 	border-radius: 0 3px 3px 0;
 	margin-left: -1px
@@ -487,4 +486,8 @@ display: block;
 	outline: none;
 	-webkit-box-shadow: none;
 	box-shadow: none;
+}
+
+.bar-header .buttons.right-buttons .button.button-icon:before {
+    font-size: 28px;
 }
