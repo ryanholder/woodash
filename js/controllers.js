@@ -633,7 +633,11 @@ balloonText: "<span style='font-size:12px'><b>[[value]]</b> ([[percents]]%)</spa
 	.controller('IntroductionCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
 	}])
 
-	.controller('WooCommerceDataCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+    .controller('OrdersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+        
+    }])
+
+	.controller('DataCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
 	}])
 
 	.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function ($rootScope, $scope, $state) {

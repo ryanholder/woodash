@@ -57,21 +57,22 @@ angular.module('woodash', [
 			}
 		})
 
+        .state('app.orders', {
+            url: "/orders",
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/orders.html",
+                    controller: 'OrdersCtrl'
+                }
+            }
+        })
+
 		.state('app.dashboard', {
 			url: "/dashboard",
 			views: {
 				'menuContent': {
 					templateUrl: "templates/dashboard.html",
 					controller: 'DashboardCtrl'
-				}
-			}
-		})
-
-		.state('app.twitter', {
-			url: "/twitter",
-			views: {
-				'menuContent': {
-					templateUrl: "templates/dashboard.twitter.html"
 				}
 			}
 		})
