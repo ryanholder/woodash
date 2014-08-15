@@ -13,7 +13,8 @@
 }
 
 .bar-header .title {
-	/*line-height: 60px;*/
+	line-height: 50px;
+    height: 50px;
 	/*font-family: 'open sans';
 	font-weight: 500;*/
 }

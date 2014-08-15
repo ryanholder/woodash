@@ -634,7 +634,7 @@ balloonText: "<span style='font-size:12px'><b>[[value]]</b> ([[percents]]%)</spa
 	}])
 
     .controller('OrdersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
-        
+
     }])
 
 	.controller('DataCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
