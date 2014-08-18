@@ -57,6 +57,26 @@ angular.module('woodash', [
 			}
 		})
 
+        .state('app.customers', {
+            url: "/customers",
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/customers.html",
+                    controller: 'CustomersCtrl'
+                }
+            }
+        })
+
+        .state('app.products', {
+            url: "/products",
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/products.html",
+                    controller: 'ProductsCtrl'
+                }
+            }
+        })
+
         .state('app.orders', {
             url: "/orders",
             views: {

@@ -633,6 +633,14 @@ balloonText: "<span style='font-size:12px'><b>[[value]]</b> ([[percents]]%)</spa
 	.controller('IntroductionCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
 	}])
 
+    .controller('CustomersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+
+    }])
+
+    .controller('ProductsCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+
+    }])
+
     .controller('OrdersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
 
     }])
