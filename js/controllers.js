@@ -103,10 +103,6 @@ angular.module('woodash.controllers', [])
 		getUserInfo();
 	}])
 
-	.controller('DashboardCtrl', ['$scope', '$ionicLoading', function ($scope, $ionicLoading) {
-
-	}])
-
 	.controller('OverviewCtrl', ['$scope', '$ionicLoading', function ($scope, $ionicLoading) {
 
 		// The AngularStrap select directive setup for date ranges choices
@@ -119,7 +115,7 @@ angular.module('woodash.controllers', [])
 			{value: 'This month', label: 'This month'},
 			{value: 'Year to date', label: 'Year to date'},
 			{value: 'Custom range', label: 'Custom range'}
-  	];
+    	];
 
 		AmCharts.makeChart("chartdiv", {
 			type: "serial",
@@ -429,210 +425,6 @@ balloonText: "<span style='font-size:12px'><b>[[value]]</b> ([[percents]]%)</spa
 
 	}])
 
-	.controller('UppCtrl', ['$scope', '$ionicModal', function ($scope, $ionicModal) {
-		var chart, chart2;
-		var chartData = [];
-		var chartData2 = [];
-
-		// generate some random data
-		function generateChartData() {
-
-			var firstDate = new Date();
-			firstDate.setDate(firstDate.getHours() - 1);
-
-			for (var i = 0; i < 60; i++) {
-				var newDate = new Date(firstDate);
-				newDate.setDate(newDate.getMinutes() + i);
-
-//				var g1 = Math.round(Math.random() * 40) + 100;
-				var g2 = Math.random() * (2 - 0.5) + 0.5;
-
-				chartData.push({
-					date: newDate,
-					g2: g2
-				});
-			}
-		}
-
-		function generateChartData2() {
-
-			var firstDate = new Date();
-			firstDate.setDate(firstDate.getHours() - 1);
-
-			for (var i = 0; i < 60; i++) {
-				var newDate = new Date(firstDate);
-				newDate.setDate(newDate.getMinutes() + i);
-
-//				var g1 = Math.round(Math.random() * 40) + 100;
-				var g2 = Math.random() * (2 - 0.5) + 0.5;
-
-				chartData2.push({
-					date: newDate,
-					g2: g2
-				});
-			}
-		}
-
-		// create chart
-//		AmCharts.ready(function() {
-		// generate some random data first
-		generateChartData();
-		generateChartData2();
-
-		// SERIAL CHART
-		chart = new AmCharts.AmSerialChart();
-//		chart.marginTop = 0;
-//		chart.autoMarginOffset = 5;
-//		chart.pathToImages = "http://www.amcharts.com/lib/images/";
-		chart.zoomOutButton = {
-			backgroundColor: '#000000',
-			backgroundAlpha: 0.15
-		};
-		chart.dataProvider = chartData;
-		chart.categoryField = "date";
-//		chart.autoMargins = false;
-//		chart.marginTop = 0;
-//		chart.marginRight = 0;
-//		chart.marginLeft = 0;
-//		chart.marginBottom = 0;
-//		chart.equalSpacing = true;
-//		chart.inside = true;
-
-		// AXES
-		// category
-		var categoryAxis = chart.categoryAxis;
-		categoryAxis.parseDates = true; // as our data is date-based, we set parseDates to true
-		categoryAxis.minPeriod = "mm"; // our data is daily, so we set minPeriod to DD
-		categoryAxis.dashLength = 0;
-		categoryAxis.gridAlpha = 0;
-		categoryAxis.axisAlpha = 0;
-		categoryAxis.axisColor = "#DADADA";
-		categoryAxis.startOnAxis = true;
-//		categoryAxis.period = "nn";
-//		categoryAxis.format = "JJ:NN";
-//		categoryAxis.position = "top";
-		categoryAxis.color = "#bbbbbb";
-
-		// value axis
-		var valueAxis = new AmCharts.ValueAxis();
-		valueAxis.axisColor = "#DADADA";
-		valueAxis.axisThickness = 1;
-		valueAxis.gridAlpha = 0.15;
-		valueAxis.gridColor = "#DADADA";
-		valueAxis.axisAlpha = 0;
-//		valueAxis.inside = true;
-		valueAxis.color = "#bbbbbb";
-		chart.addValueAxis(valueAxis);
-
-				// SERIAL CHART 2
-		chart2 = new AmCharts.AmSerialChart();
-//		chart2.marginTop = 0;
-//		chart2.autoMarginOffset = 5;
-//		chart2.pathToImages = "http://www.amcharts.com/lib/images/";
-		chart2.zoomOutButton = {
-			backgroundColor: '#000000',
-			backgroundAlpha: 0.15
-		};
-		chart2.dataProvider = chartData2;
-		chart2.categoryField = "date";
-//		chart2.autoMargins = false;
-//		chart2.marginTop = 0;
-//		chart2.marginRight = 0;
-//		chart2.marginLeft = 0;
-//		chart2.marginBottom = 0;
-//		chart2.equalSpacing = true;
-//		chart2.inside = true;
-
-		// AXES
-		// category
-		var categoryAxis2 = chart2.categoryAxis;
-		categoryAxis2.parseDates = true; // as our data is date-based, we set parseDates to true
-		categoryAxis2.minPeriod = "mm"; // our data is daily, so we set minPeriod to DD
-		categoryAxis2.dashLength = 0;
-		categoryAxis2.gridAlpha = 0;
-		categoryAxis2.axisAlpha = 0;
-		categoryAxis2.axisColor = "#DADADA";
-		categoryAxis2.startOnAxis = true;
-//		categoryAxis2.period = "nn";
-//		categoryAxis2.format = "JJ:NN";
-//		categoryAxis2.position = "top";
-		categoryAxis2.color = "#bbbbbb";
-
-		// value axis
-		var valueAxis2 = new AmCharts.ValueAxis();
-		valueAxis2.axisColor = "#DADADA";
-		valueAxis2.axisThickness = 1;
-		valueAxis2.gridAlpha = 0.15;
-		valueAxis2.gridColor = "#DADADA";
-		valueAxis2.axisAlpha = 0;
-//		valueAxis2.inside = true;
-		valueAxis2.color = "#bbbbbb";
-		chart2.addValueAxis(valueAxis);
-
-		// GRAPHS
-		// second graph
-		var graph1 = new AmCharts.AmGraph();
-		graph1.title = "yellow line";
-		graph1.fillAlphas = 0.2;
-//		graph1.fillToGraph = graph1; // this here we specify which graph object to fill to
-		graph1.valueField = "g2";
-		graph1.bullet = "square";
-		graph1.hideBulletsCount = 30;
-		graph1.type = "smoothedLine";
-		chart2.addGraph(graph1);
-
-		// second graph
-		var graph2 = new AmCharts.AmGraph();
-		graph2.title = "yellow line";
-		graph2.fillAlphas = 0.2;
-//		graph2.fillToGraph = graph1; // this here we specify which graph object to fill to
-		graph2.valueField = "g2";
-		graph2.bullet = "square";
-		graph2.hideBulletsCount = 30;
-		graph2.type = "smoothedLine";
-		chart.addGraph(graph2);
-
-		// CURSOR
-//		var chartCursor = new AmCharts.ChartCursor();
-//		chartCursor.cursorPosition = "mouse";
-//		chart.addChartCursor(chartCursor);
-
-		// SCROLLBAR
-//		var chartScrollbar = new AmCharts.ChartScrollbar();
-//		chart.addChartScrollbar(chartScrollbar);
-
-		// LEGEND
-//		var legend = new AmCharts.AmLegend();
-//		legend.marginLeft = 110;
-//		chart.addLegend(legend);
-
-		// WRITE
-		// chart.write("chartdiv");
-		// chart2.write("chartdiv2");
-//		});
-		$ionicModal.fromTemplateUrl('my-modal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-  $scope.openModal = function() {
-    $scope.modal.show();
-  };
-  $scope.closeModal = function() {
-    $scope.modal.hide();
-  };
-  //Cleanup the modal when we're done with it!
-  $scope.$on('$destroy', function() {
-    $scope.modal.remove();
-  });
-
-
-	}])
-
-	.controller('IntroductionCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
-	}])
-
     .controller('CustomersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
 
     }])
@@ -644,9 +436,6 @@ balloonText: "<span style='font-size:12px'><b>[[value]]</b> ([[percents]]%)</spa
     .controller('OrdersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
 
     }])
-
-	.controller('DataCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
-	}])
 
 	.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function ($rootScope, $scope, $state) {
 		var signin_button = document.querySelector('#signin');
