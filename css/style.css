@@ -491,3 +491,7 @@ a[href*="www.amcharts.com"] {
 .bar-header .buttons.right-buttons .button.button-icon:before {
     font-size: 28px;
 }
+
+.woodash-menu .bar {
+    background-image: linear-gradient(0deg, #333, #333 50%, transparent 50%);
+}
