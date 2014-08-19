@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="woodash">
+<html ng-app="woodash" ng-csp>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
@@ -11,12 +11,21 @@
 	<link href="css/style.css" rel="stylesheet">
 	<link href="css/bootstrap-style.css" rel="stylesheet">
 
+    <!-- angular css when using csp -->
+    <link href="bower_components/angular/angular-csp.css" rel="stylesheet">
+
 	<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
 	<link href="css/ionic.app.css" rel="stylesheet">
 	-->
 
-	<!-- ionic/angularjs js -->
-	<script src="lib/ionic/js/ionic.bundle.js"></script>
+    <!-- angular js -->
+    <script src="bower_components/angular/angular.min.js"></script>
+
+    <!-- angular ui router js-->
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+	<!-- ionic js -->
+	<script src="lib/ionic/js/ionic.min.js"></script>
 
 	<!-- jquery js -->
 	<script src="lib/jquery/jquery-1.9.0.js"></script>
