@@ -16,7 +16,8 @@
         "identity",
         "https://accounts.google.com/*",
         "https://www.googleapis.com/*",
-        "https://wp.thewhatwhat.com/*"
+        "https://wp.thewhatwhat.com/*",
+        "http://api.openweathermap.org/data/2.5/forecast/*"
     ],
 	"oauth2": {
 		// client_id below is specifc to the application key. Follow the
