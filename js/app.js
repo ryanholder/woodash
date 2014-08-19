@@ -6,6 +6,10 @@
 // 'woodash.controllers' is found in controllers.js
 
 angular.module('woodash', [
+    'ngAnimate',
+    'ngResource',
+    'ngSanitize',
+    'ui.router',
 	'ionic',
 	'woodash.filters',
 	'woodash.services',
@@ -34,7 +38,7 @@ angular.module('woodash', [
 		.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
 })
 
-.config(function ($compileProvider, $stateProvider, $urlRouterProvider) {
+.config(function ($compileProvider, $stateProvider) {
 	$stateProvider
 
 		.state('app', {
