@@ -71,7 +71,7 @@ angular.module('woodash.directives', [])
         }
     })
 
-    .directive('myElem',
+    .directive('wooChart',
         function () {
             return {
                 restrict: 'E',
@@ -88,27 +88,6 @@ angular.module('woodash.directives', [])
             }
     });
 
-//var chartGraph = function(element, data, opts) {
-//    var width = opts.width || 200,
-//        height = opts.height || 80,
-//        padding = opts.padding || 30;
-//
-//    console.log(data);
-//    console.log(element);
-//
-//    var chart = new AmCharts.AmSerialChart();
-//    chart.dataProvider = data;
-//    chart.categoryField = "date";
-//
-//    var graph = new AmCharts.AmGraph();
-//    graph.valueField = "temp";
-//    graph.type = "column";
-//    chart.addGraph(graph);
-//    console.log(opts.id);
-//
-//    chart.write(opts.id);
-//    chart.write('chartdiv');
-//}
 
 var initChart = function(element, attrs, data) {
 
