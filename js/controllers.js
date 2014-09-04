@@ -103,7 +103,30 @@ angular.module('woodash.controllers', [])
 		getUserInfo();
 	}])
 
-	.controller('OverviewCtrl', ['$scope', '$ionicLoading', function ($scope, $ionicLoading) {
+	.controller('OverviewCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
+
+//        var daOrder = Restangular.all('orders');
+//        var allOrders = daOrder.getList(); // GET /users
+
+        // First way of creating a Restangular object. Just saying the base URL
+        var baseAccounts = Restangular.allUrl('orders', 'https://wp.thewhatwhat.com/wc-api/v1/orders?consumer_key=ck_45841d89825d617a00814f88e74face7&consumer_secret=cs_d6da0b74e1f26cdd1f6bb6c8a0207e90');
+
+        // This will query /accounts and return a promise.
+        baseAccounts.getList().then(function(accounts) {
+            $scope.allAccounts = accounts;
+            var firstAccount = accounts[0];
+            console.log(accounts);
+            console.log(firstAccount);
+
+            firstAccount.customer_ip = "0.0.1.1";
+        });
+
+//        var orders = Restangular.allUrl('orders', 'https://wp.thewhatwhat.com/wc-api/v1/orders?consumer_key=ck_45841d89825d617a00814f88e74face7&consumer_secret=cs_d6da0b74e1f26cdd1f6bb6c8a0207e90');
+//        // Will send a request to GET http://google.com/
+//        var allOrders = orders.getList().then(function(users) {
+//            console.log(allOrders);
+//        });
+
 
 		// The AngularStrap select directive setup for date ranges choices
 		$scope.selectedIcon = "Today";
