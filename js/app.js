@@ -104,12 +104,18 @@ angular.module('woodash', [
     // add a response intereceptor
     RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
         var extractedData;
+
+        console.log(data);
+        console.log(operation);
+        console.log(what);
+        console.log(url);
+        console.log(response);
+        console.log(deferred);
+
         // .. to look for getList operations
         if (operation === "getList") {
             // .. and handle the data and meta data
-            extractedData = data.orders;
-        } else {
-            extractedData = data.orders;
+            extractedData = data[what];
         }
         return extractedData;
     });
