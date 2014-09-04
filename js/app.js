@@ -95,6 +95,12 @@ angular.module('woodash', [
 
 .config(function(RestangularProvider) {
 
+    RestangularProvider.setBaseUrl('https://wp.thewhatwhat.com/wc-api/v1');
+    RestangularProvider.setDefaultRequestParams({
+        consumer_key: "ck_45841d89825d617a00814f88e74face7",
+        consumer_secret: "cs_d6da0b74e1f26cdd1f6bb6c8a0207e90"
+    });
+
     // add a response intereceptor
     RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
         var extractedData;

@@ -109,7 +109,8 @@ angular.module('woodash.controllers', [])
 //        var allOrders = daOrder.getList(); // GET /users
 
         // First way of creating a Restangular object. Just saying the base URL
-        var baseAccounts = Restangular.allUrl('orders', 'https://wp.thewhatwhat.com/wc-api/v1/orders?consumer_key=ck_45841d89825d617a00814f88e74face7&consumer_secret=cs_d6da0b74e1f26cdd1f6bb6c8a0207e90');
+//        var baseAccounts = Restangular.allUrl('orders', 'orders?consumer_key=&consumer_secret=');
+        var baseAccounts = Restangular.all('orders');
 
         // This will query /accounts and return a promise.
         baseAccounts.getList().then(function(accounts) {
@@ -119,6 +120,8 @@ angular.module('woodash.controllers', [])
             console.log(firstAccount);
 
             firstAccount.customer_ip = "0.0.1.1";
+
+            $scope.accountFromServer = firstAccount.get();
         });
 
 //        var orders = Restangular.allUrl('orders', 'https://wp.thewhatwhat.com/wc-api/v1/orders?consumer_key=ck_45841d89825d617a00814f88e74face7&consumer_secret=cs_d6da0b74e1f26cdd1f6bb6c8a0207e90');
