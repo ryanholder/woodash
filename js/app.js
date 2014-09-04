@@ -7,8 +7,8 @@
 
 angular.module('woodash', [
     'ngAnimate',
-    'ngResource',
     'ngSanitize',
+    'restangular',
     'ui.router',
 	'ionic',
 	'woodash.filters',
