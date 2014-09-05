@@ -103,32 +103,38 @@ angular.module('woodash.directives', [])
                     if (newVal) {
                         var iData = [];
 
-//                        var iData = [{
-//                            "year": "1950",
-//                            "value": -0.307
-//                        }, {
-//                            "year": "1951",
-//                            "value": -0.168
-//                        }, {
-//                            "year": "1952",
-//                            "value": -0.073
-//                        }, {
-//                            "year": "1953",
-//                            "value": -0.027
-//                        }, {
-//                            "year": "1954",
-//                            "value": -0.251
-//                        }, {
-//                            "year": "2005",
-//                            "value": 0.47
-//                        }];
+                        var iData = [{
+                        "year": 2005,
+                            "customers": 23,
+                            "guests": 5
+                    }, {
+                        "year": 2006,
+                            "customers": 27,
+                            "guests": 4
+                    }, {
+                        "year": 2007,
+                            "customers": 33,
+                            "guests": 8
+                    }, {
+                        "year": 2008,
+                            "customers": 27,
+                            "guests": 4
+                    }, {
+                        "year": 2009,
+                            "customers": 33,
+                            "guests": 8
+                    }, {
+                        "year": 2010,
+                            "customers": 27,
+                            "guests": 4
+                    }];
 
-                        angular.forEach(scope.weather, function(value){
-                            iData.push({
-                                date: value.dt,
-                                temp: value.temp.max
-                            });
-                        });
+//                        angular.forEach(scope.weather, function(value){
+//                            iData.push({
+//                                date: value.dt,
+//                                temp: value.temp.max
+//                            });
+//                        });
 
                         console.table(iData);
                         initChart(iElement, iAttrs, iData);
@@ -144,42 +150,70 @@ angular.module('woodash.directives', [])
 
     var initChart = function(element, attrs, data) {
 
-        var chart = AmCharts.makeChart(attrs.id, {
+        AmCharts.makeChart(attrs.id, {
             "type": "serial",
-            "theme": "none",
-            "marginLeft": 20,
-            "pathToImages": "http://www.amcharts.com/lib/3/images/",
             "dataProvider": data,
-            "valueAxes": [{
-                "axisAlpha": 0,
-                "inside": true,
-                "position": "left",
-                "ignoreAxisWidth": true
-            }],
-            "graphs": [{
-                "balloonText": "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
-                "bullet": "round",
-                "bulletSize": 6,
-                "lineColor": "#d1655d",
-                "lineThickness": 2,
-                "negativeLineColor": "#637bb6",
-                "type": "smoothedLine",
-                "valueField": "temp"
-            }],
-            "chartScrollbar": {},
-            "chartCursor": {
-                "categoryBalloonDateFormat": "YYYY",
-                "cursorAlpha": 0,
-                "cursorPosition": "mouse"
+            color: "#646464",
+            categoryField: "year",
+            rotate: false,
+            //  autoMargins: false,
+            // autoMarginOffset: 15,
+            // autoMargins: false,
+            // marginBottom: 20,
+            // marginLeft: 0,
+            // marginRight: 0,
+            // marginTop: 10,
+            columnWidth: 0.6,
+
+            categoryAxis: {
+                gridPosition: "start",
+                axisColor: "#DADADA",
+                gridThickness: 0,
+                axisThickness: 0,
+                // fillAlpha: 0.2,
+                // fillColor: "#cccccc"
             },
-    //        "dataDateFormat": "DD",
-            "categoryField": "date",
-            "categoryAxis": {
-                "minPeriod": "hh",
-                "parseDates": true,
-                "minorGridAlpha": 0.1,
-                "minorGridEnabled": true
-            }
+            valueAxes: [{
+                axisAlpha: 0,
+                gridColor: "#ccc",
+                gridAlpha: 0.2,
+                stackType: "regular",
+                // fillAlpha: 0.55,
+                // fillColor: "#ff0000"
+                // fillColor: "#f6f6f7",
+                // minVerticalGap: 50,
+                // ignoreAxisWidth: true,
+                // inside: true,
+                // totalText: "[[total]]",
+            }],
+            legend: {
+                align: "right",
+                position: "top",
+                useGraphSettings: true
+            },
+            balloon: {
+                borderThickness: 0,
+                color: "#FFFFFF",
+                fillColor: "#000000",
+                shadowAlpha: 0
+            },
+            graphs: [{
+                type: "column",
+                title: "Customers",
+                valueField: "customers",
+                lineAlpha: 0,
+                fillColors: "#3995d4",
+                fillAlphas: 0.9,
+                balloonText: "[[title]] in [[category]]:<b>[[value]]</b>"
+            }, {
+                type: "column",
+                title: "Guests",
+                valueField: "guests",
+                lineAlpha: 0,
+                fillColors: "#65b7f1",
+                fillAlphas: 0.9,
+                balloonText: "[[title]] in [[category]]:<b>[[value]]</b>"
+            }]
         });
 
 
