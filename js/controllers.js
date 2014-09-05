@@ -118,6 +118,8 @@ angular.module('woodash.controllers', [])
             $scope.accountFromServer = firstAccount.get();
         });
 
+        $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
         $('#reportrange').daterangepicker(
             {
                 ranges: {
