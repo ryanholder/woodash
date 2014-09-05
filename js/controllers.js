@@ -105,24 +105,36 @@ angular.module('woodash.controllers', [])
 
 	.controller('OverviewCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
 
-//        var daOrder = Restangular.all('orders');
-//        var allOrders = daOrder.getList(); // GET /users
+        var allOrders = Restangular.all('orders');
 
-        // First way of creating a Restangular object. Just saying the base URL
-//        var baseAccounts = Restangular.allUrl('orders', 'orders?consumer_key=&consumer_secret=');
-        var baseAccounts = Restangular.all('orders');
-
-        // This will query /accounts and return a promise.
-        baseAccounts.getList().then(function(accounts) {
+        // This will query /orders and return a promise.
+        allOrders.getList().then( function(accounts) {
             $scope.allAccounts = accounts;
             var firstAccount = accounts[0];
             console.log(accounts);
             console.log(firstAccount);
 
-            firstAccount.customer_ip = "0.0.1.1";
 
             $scope.accountFromServer = firstAccount.get();
         });
+
+        $('#reportrange').daterangepicker(
+            {
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                    'Last 7 Days': [moment().subtract('days', 6), moment()],
+                    'Last 30 Days': [moment().subtract('days', 29), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                },
+                startDate: moment().subtract('days', 29),
+                endDate: moment()
+            },
+            function(start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+        );
 
 //        var orders = Restangular.allUrl('orders', 'https://wp.thewhatwhat.com/wc-api/v1/orders?consumer_key=ck_45841d89825d617a00814f88e74face7&consumer_secret=cs_d6da0b74e1f26cdd1f6bb6c8a0207e90');
 //        // Will send a request to GET http://google.com/
@@ -132,12 +144,12 @@ angular.module('woodash.controllers', [])
 
 
 		// The AngularStrap select directive setup for date ranges choices
-		$scope.selectedIcon = "Today";
-		$scope.icons = [
-    	{value: 'Today', label: 'Today'},
-  		{value: 'Yesterday', label: 'Yesterday'},
-    	{value: 'Last 7 days', label: 'Last 7 days'},
-    	{value: 'Last 30 days', label: 'Last 30 days'},
+		$scope.selectedRange = "Today";
+		$scope.rangeOptions = [
+    	    {value: 'Today', label: 'Today'},
+  		    {value: 'Yesterday', label: 'Yesterday'},
+    	    {value: 'Last 7 days', label: 'Last 7 days'},
+    	    {value: 'Last 30 days', label: 'Last 30 days'},
 			{value: 'This month', label: 'This month'},
 			{value: 'Year to date', label: 'Year to date'},
 			{value: 'Custom range', label: 'Custom range'}

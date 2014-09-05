@@ -71,7 +71,7 @@ angular.module('woodash.directives', [])
         }
     })
 
-    .directive('wooChart', function () {
+    .directive('ordersChart', function () {
         var url = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&units=imperial&cnt=14&q=";
         return {
             restrict: 'E',
@@ -142,45 +142,45 @@ angular.module('woodash.directives', [])
     });
 
 
-var initChart = function(element, attrs, data) {
+    var initChart = function(element, attrs, data) {
 
-    var chart = AmCharts.makeChart(attrs.id, {
-        "type": "serial",
-        "theme": "none",
-        "marginLeft": 20,
-        "pathToImages": "http://www.amcharts.com/lib/3/images/",
-        "dataProvider": data,
-        "valueAxes": [{
-            "axisAlpha": 0,
-            "inside": true,
-            "position": "left",
-            "ignoreAxisWidth": true
-        }],
-        "graphs": [{
-            "balloonText": "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
-            "bullet": "round",
-            "bulletSize": 6,
-            "lineColor": "#d1655d",
-            "lineThickness": 2,
-            "negativeLineColor": "#637bb6",
-            "type": "smoothedLine",
-            "valueField": "temp"
-        }],
-        "chartScrollbar": {},
-        "chartCursor": {
-            "categoryBalloonDateFormat": "YYYY",
-            "cursorAlpha": 0,
-            "cursorPosition": "mouse"
-        },
-//        "dataDateFormat": "DD",
-        "categoryField": "date",
-        "categoryAxis": {
-            "minPeriod": "hh",
-            "parseDates": true,
-            "minorGridAlpha": 0.1,
-            "minorGridEnabled": true
-        }
-    });
+        var chart = AmCharts.makeChart(attrs.id, {
+            "type": "serial",
+            "theme": "none",
+            "marginLeft": 20,
+            "pathToImages": "http://www.amcharts.com/lib/3/images/",
+            "dataProvider": data,
+            "valueAxes": [{
+                "axisAlpha": 0,
+                "inside": true,
+                "position": "left",
+                "ignoreAxisWidth": true
+            }],
+            "graphs": [{
+                "balloonText": "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
+                "bullet": "round",
+                "bulletSize": 6,
+                "lineColor": "#d1655d",
+                "lineThickness": 2,
+                "negativeLineColor": "#637bb6",
+                "type": "smoothedLine",
+                "valueField": "temp"
+            }],
+            "chartScrollbar": {},
+            "chartCursor": {
+                "categoryBalloonDateFormat": "YYYY",
+                "cursorAlpha": 0,
+                "cursorPosition": "mouse"
+            },
+    //        "dataDateFormat": "DD",
+            "categoryField": "date",
+            "categoryAxis": {
+                "minPeriod": "hh",
+                "parseDates": true,
+                "minorGridAlpha": 0.1,
+                "minorGridEnabled": true
+            }
+        });
 
 
-};
+    };
