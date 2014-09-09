@@ -142,20 +142,7 @@ angular.module('woodash.directives', [])
 
                 return function (scope, element, attrs, controller) {
 
-//                    console.log(scope);
-
                     var el = $(element);
-
-//                    var processChange = function () {
-//                        var date = new Date(el.daterangepicker("getDate"));
-//
-//                        scope.$apply(function (scope) {
-//                            // Change bound variable
-//                            modelAccessor.assign(scope, date);
-//                        });
-//                    };
-
-//                    console.log(el);
 
                     el.daterangepicker(
                         {
@@ -171,27 +158,22 @@ angular.module('woodash.directives', [])
                             endDate: moment()
                         },
                         function(start, end) {
-
                             var dateRange = {
                                 dateFrom: start,
                                 dateTo: end
                             }
 
-//                            console.log('mmmm:' + modelAccessor);
-//                            console.log('start:' + start + ' end:' + end);
                             scope.$apply(function (scope) {
-                                // Change bound variable
                                 modelAccessor.assign(scope, dateRange);
                             });
-                            //$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-
-
                         }
                     );
 
                     scope.$watch(modelAccessor, function (val) {
 //                        var date = new Date(val);
-//                        console.dir(val);
+                        console.dir(val);
+                        el.children('span').html(val.dateFrom.format('MMMM D, YYYY') + ' - ' + val.dateTo.format('MMMM D, YYYY'));
+                        console.log(el);
                         console.dir(scope);
 
 //                        el.daterangepicker();
