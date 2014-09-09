@@ -105,20 +105,17 @@ angular.module('woodash.controllers', [])
 
 	.controller('OverviewCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
 
-        var allOrders = Restangular.all('orders');
+        $scope.magicValue = 1;
 
-        // This will query /orders and return a promise.
-        allOrders.getList().then( function(accounts) {
-            $scope.allAccounts = accounts;
-            var firstAccount = accounts[0];
-            console.log(accounts);
-            console.log(firstAccount);
+        $scope.increment = function(){
+            $scope.magicValue += 1;
+        };
 
-
-            $scope.accountFromServer = firstAccount.get();
-        });
+        $scope.fromDate = 1;
+        $scope.toDate = moment();
 
         $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
 
         $('#reportrange').daterangepicker(
             {
@@ -134,7 +131,12 @@ angular.module('woodash.controllers', [])
                 endDate: moment()
             },
             function(start, end) {
+                $scope.fromDate += 1;
                 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+//                $scope.fromDate = start._d;
+//                $scope.toDate = end;
+//                console.log($scope.fromDate);
+
             }
         );
 

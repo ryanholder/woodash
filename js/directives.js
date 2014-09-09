@@ -71,16 +71,81 @@ angular.module('woodash.directives', [])
         }
     })
 
+.directive("valueDisplay1", function () {
+    return {
+        restrict: "E",
+        link: function (scope, element, attrs) {
+            element.text(scope[attrs.value]);
+        }
+    };
+})
+
+
+
+.directive("valueDisplay3", function () {
+    return {
+        restrict: "E",
+        link: function (scope, element, attrs) {
+            attrs.$observe("value", function (newValue) {
+                element.text(newValue);
+            });
+        }
+    };
+})
+
+.directive("valueDisplay4", function () {
+    return {
+        restrict: "E",
+        scope: {
+            value: "="
+        },
+        template: '{{value}}'
+    };
+})
+
+.directive("valueDisplay5", function () {
+    return {
+        restrict: "E",
+        scope: {
+            value: "@"
+        },
+        template: '{{value}}'
+    };
+})
+
+    .directive("valueDisplay2", function () {
+
+        return {
+            restrict: "E",
+            link: function (scope, element, attrs) {
+                scope.$watch(attrs.value, function(newValue) {
+                    element.text(newValue);
+                });
+            }
+        };
+
+    })
+
     .directive('ordersChart', function () {
-        var url = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&units=imperial&cnt=14&q=";
+//        var url = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&units=imperial&cnt=14&q=";
         return {
             restrict: 'E',
-            scope: {
-                city: '@'
-            },
-            replace: true,
-            template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
-            controller: ['$scope', '$http', function($scope, $http) {
+//            template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
+/*            controller: ['$scope', '$http', 'Restangular', function ($scope, $http, Restangular) {
+
+                var allOrders = Restangular.all('orders');
+
+                // This will query /orders and return a promise.
+                allOrders.getList().then( function(accounts) {
+                    $scope.allAccounts = accounts;
+                    var firstAccount = accounts[0];
+                    console.log(accounts);
+                    console.log(firstAccount);
+
+
+                    $scope.accountFromServer = firstAccount.get();
+                });
+
                 $scope.getTemp = function(city) {
                     $http({
                         method: 'GET',
@@ -93,54 +158,30 @@ angular.module('woodash.directives', [])
                         $scope.weather = weather;
                     });
                 }
-            }],
-            link: function (scope, iElement, iAttrs) {
-                scope.getTemp(iAttrs.city);
-                scope.$watch('weather', function(newVal) {
-                    // the `$watch` function will fire even if the
-                    // weather property is undefined, so we'll
-                    // check for it
-                    if (newVal) {
-                        var iData = [];
-
-                        var iData = [{
-                        "year": 2005,
-                            "customers": 23,
-                            "guests": 5
-                    }, {
-                        "year": 2006,
-                            "customers": 27,
-                            "guests": 4
-                    }, {
-                        "year": 2007,
-                            "customers": 33,
-                            "guests": 8
-                    }, {
-                        "year": 2008,
-                            "customers": 27,
-                            "guests": 4
-                    }, {
-                        "year": 2009,
-                            "customers": 33,
-                            "guests": 8
-                    }, {
-                        "year": 2010,
-                            "customers": 27,
-                            "guests": 4
-                    }];
-
-//                        angular.forEach(scope.weather, function(value){
-//                            iData.push({
-//                                date: value.dt,
-//                                temp: value.temp.max
-//                            });
-//                        });
-
-                        console.table(iData);
-                        initChart(iElement, iAttrs, iData);
-                    }
+            }],*/
+            link: function (scope, element, attrs) {
+                scope.$watch(attrs.daval, function(newValue) {
+                    element.text(newValue);
                 });
-//                var iData = "";
+
+         /*       console.log(scope.start);
+                console.log(scope.end);
+
+                scope.$watch('start', function(newValue, oldValue) {
+                    if (newValue)
+                        console.log("I see a data change!");
+                }, true);*/
+/*                function updateTime() {
+                    console.log(iAttrs);
+                }
+
+                scope.$watch(iAttrs.start, function(value) {
+                    if (value) {
+                        console.log('hello:' + value);
+                        updateTime();
+                    }
+                });*/
+
 
 
             }//end watch

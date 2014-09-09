@@ -10,9 +10,11 @@
 
                 <div id="reportrange" class="pull-right">
                     <i class="fa fa-calendar fa-lg"></i>
-                    <span><?php echo date("F j, Y", strtotime('-30 day')); ?> - <?php echo date("F j, Y"); ?></span> <b class="caret""></b>
+                    <span></span> <b class="caret""></b>
                 </div>
-                <div class="input-group-btn">
+                <input type="hidden" class="date-range-from" ng-model="fromDate" value="{{fromDate}}">
+                <input type="hidden" class="date-range-to" ng-model="toDate" value="{{toDate}}">
+<!--                <div class="input-group-btn">
                     <button class="button btn button-balanced woodash-date-range-select" ng-model="selectedRange"
                             data-html="1" ng-options="range.value as range.label for range in rangeOptions" bs-select></button>
                 </div>
@@ -26,28 +28,10 @@
                     <i class="icon ion-calendar placeholder-icon"></i>
                     <input type="text" class="woodash-date-range-to" ng-model="untilDate" data-min-date="{{fromDate}}"
                            placeholder="Until" bs-datepicker>
-                </label>
+                </label>-->
 
-					<!--<input type="text" class="form-control woodash-date-range-from" ng-model="fromDate" data-max-date="{{untilDate}}" placeholder="From" bs-datepicker>-->
-				<!--<input type="text" class="form-control woodash-date-range-to" ng-model="untilDate" data-min-date="{{fromDate}}" placeholder="Until" bs-datepicker>-->
-					 <!--<input type="text" class="form-control icon-left ion-calendar woodash-date-range-to" ng-model="untilDate" data-min-date="{{fromDate}}" placeholder="Until" bs-datepicker>-->
-					 <!--<label class="form-control">-->
-						 <!--<span class="glyphicon glyphicon-star"></span>-->
-				     <!--<i class="icon ion-search placeholder-icon"></i>-->
-				     <!--<input type="text" class="form-control" placeholder="Search">-->
-	  			 <!--</label>-->
-					<!--<label class="item item-input">-->
-    <!--<i class="icon ion-search placeholder-icon"></i>-->
-    <!--<input type="text" placeholder="Search">-->
-  <!--</label>-->
+
 		    </div>
-			<!-- </div> -->
-
-
-
-
-  		<!-- <button class="button button-outline button-stable icon-left ion-calendar woodash-date-range-from">01/01/2014</button>
-			<button class="button button-outline button-stable icon-left ion-calendar woodash-date-range-to">01/07/2014</button> -->
 		</div>
 	</ion-header-bar>
 	<ion-content class="has-subheader woodash-content" overflow-scroll="true">
@@ -63,8 +47,21 @@
 
 					<!--<div id="chartdiv" class="item">-->
 					<!--</div>-->
-                    <orders-chart id="chartdiv" class="item" city="San Francisco"></orders-chart>
+                    <div><orders-chart daval="fromDate"></orders-chart></div>
+                    <!--<orders-chart id="chartdiv" class="item" start="fromDate" end="toDate"></orders-chart>-->
+                    Controller: {{magicValue}}
+                    <button ng-click="increment()">Click</button>
+                    <ol>
+                        <li><value-display1 value="magicValue"></value-display1></li>
 
+                        <li><value-display2 value="magicValue"></value-display2></li>
+
+                        <li><value-display3 value="{{magicValue}}"></value-display3></li>
+
+                        <li><value-display4 value="magicValue"></value-display4></li>
+
+                        <li><value-display5 value="{{magicValue}}"></value-display5></li>
+                    </ol>
 				</div>
 			</div>
 		</div>
