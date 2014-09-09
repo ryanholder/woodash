@@ -8,10 +8,9 @@
 			<!-- <div class="form-group"> -->
 		    <div class="input-group">
 
-                <div id="reportrange" class="pull-right">
-                    <i class="fa fa-calendar fa-lg"></i>
-                    <span></span> <b class="caret""></b>
-                </div>
+                <bsdrp-datepicker id="dateselect" type="text" ng-model="dateRange" />
+
+
                 <input type="hidden" class="date-range-from" ng-model="fromDate" value="{{fromDate}}">
                 <input type="hidden" class="date-range-to" ng-model="toDate" value="{{toDate}}">
 <!--                <div class="input-group-btn">

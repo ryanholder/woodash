@@ -105,40 +105,11 @@ angular.module('woodash.controllers', [])
 
 	.controller('OverviewCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
 
-        $scope.magicValue = 1;
+        $scope.dateRange = {
+            dateFrom: moment().subtract(29, 'days'),
+            dateTo: moment()
+        }
 
-        $scope.increment = function(){
-            $scope.magicValue += 1;
-        };
-
-        $scope.fromDate = 1;
-        $scope.toDate = moment();
-
-        $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-
-
-        $('#reportrange').daterangepicker(
-            {
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                },
-                startDate: moment().subtract(29, 'days'),
-                endDate: moment()
-            },
-            function(start, end) {
-                $scope.fromDate += 1;
-                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-//                $scope.fromDate = start._d;
-//                $scope.toDate = end;
-//                console.log($scope.fromDate);
-
-            }
-        );
 
 //        var orders = Restangular.allUrl('orders', 'https://wp.thewhatwhat.com/wc-api/v1/orders?consumer_key=ck_45841d89825d617a00814f88e74face7&consumer_secret=cs_d6da0b74e1f26cdd1f6bb6c8a0207e90');
 //        // Will send a request to GET http://google.com/
@@ -148,16 +119,16 @@ angular.module('woodash.controllers', [])
 
 
 		// The AngularStrap select directive setup for date ranges choices
-		$scope.selectedRange = "Today";
-		$scope.rangeOptions = [
-    	    {value: 'Today', label: 'Today'},
-  		    {value: 'Yesterday', label: 'Yesterday'},
-    	    {value: 'Last 7 days', label: 'Last 7 days'},
-    	    {value: 'Last 30 days', label: 'Last 30 days'},
-			{value: 'This month', label: 'This month'},
-			{value: 'Year to date', label: 'Year to date'},
-			{value: 'Custom range', label: 'Custom range'}
-    	];
+//		$scope.selectedRange = "Today";
+//		$scope.rangeOptions = [
+//    	    {value: 'Today', label: 'Today'},
+//  		    {value: 'Yesterday', label: 'Yesterday'},
+//    	    {value: 'Last 7 days', label: 'Last 7 days'},
+//    	    {value: 'Last 30 days', label: 'Last 30 days'},
+//			{value: 'This month', label: 'This month'},
+//			{value: 'Year to date', label: 'Year to date'},
+//			{value: 'Custom range', label: 'Custom range'}
+//    	];
 
 		AmCharts.makeChart("overviewpie1div", {
 			type: "pie",

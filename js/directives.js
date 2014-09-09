@@ -126,6 +126,83 @@ angular.module('woodash.directives', [])
 
     })
 
+    .directive('bsdrpDatepicker', function ($parse) {
+        return {
+            restrict: "E",
+            replace: true,
+            transclude: false,
+            compile: function (element, attrs) {
+                var modelAccessor = $parse(attrs.ngModel);
+
+                var html = "<div id='" + attrs.id + "' class='pull-right'>" +
+                    "<i class='fa fa-calendar fa-lg'></i><span></span><b class='caret'></b></div>";
+
+                var newElem = $(html);
+                element.replaceWith(newElem);
+
+                return function (scope, element, attrs, controller) {
+
+//                    console.log(scope);
+
+                    var el = $(element);
+
+//                    var processChange = function () {
+//                        var date = new Date(el.daterangepicker("getDate"));
+//
+//                        scope.$apply(function (scope) {
+//                            // Change bound variable
+//                            modelAccessor.assign(scope, date);
+//                        });
+//                    };
+
+//                    console.log(el);
+
+                    el.daterangepicker(
+                        {
+                            ranges: {
+                                'Today': [moment(), moment()],
+                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                            },
+                            startDate: moment().subtract(29, 'days'),
+                            endDate: moment()
+                        },
+                        function(start, end) {
+
+                            var dateRange = {
+                                dateFrom: start,
+                                dateTo: end
+                            }
+
+//                            console.log('mmmm:' + modelAccessor);
+//                            console.log('start:' + start + ' end:' + end);
+                            scope.$apply(function (scope) {
+                                // Change bound variable
+                                modelAccessor.assign(scope, dateRange);
+                            });
+                            //$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+
+                        }
+                    );
+
+                    scope.$watch(modelAccessor, function (val) {
+//                        var date = new Date(val);
+//                        console.dir(val);
+                        console.dir(scope);
+
+//                        el.daterangepicker();
+                    });
+
+                };
+
+            }
+        };
+    })
+
     .directive('ordersChart', function () {
 //        var url = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&units=imperial&cnt=14&q=";
         return {
