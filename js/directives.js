@@ -170,13 +170,7 @@ angular.module('woodash.directives', [])
                     );
 
                     scope.$watch(modelAccessor, function (val) {
-//                        var date = new Date(val);
-                        console.dir(val);
                         el.children('span').html(val.dateFrom.format('MMMM D, YYYY') + ' - ' + val.dateTo.format('MMMM D, YYYY'));
-                        console.log(el);
-                        console.dir(scope);
-
-//                        el.daterangepicker();
                     });
 
                 };
@@ -186,11 +180,12 @@ angular.module('woodash.directives', [])
     })
 
     .directive('ordersChart', function () {
-//        var url = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&units=imperial&cnt=14&q=";
         return {
             restrict: 'E',
-//            template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
-/*            controller: ['$scope', '$http', 'Restangular', function ($scope, $http, Restangular) {
+            replace: true,
+            transclude: false,
+            template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
+            controller: ['$scope', '$http', 'Restangular', function ($scope, $http, Restangular) {
 
                 var allOrders = Restangular.all('orders');
 
@@ -204,24 +199,13 @@ angular.module('woodash.directives', [])
 
                     $scope.accountFromServer = firstAccount.get();
                 });
-
-                $scope.getTemp = function(city) {
-                    $http({
-                        method: 'GET',
-                        url: url + city
-                    }).success(function(data) {
-                        var weather = [];
-                        angular.forEach(data.list, function(value){
-                            weather.push(value);
-                        });
-                        $scope.weather = weather;
-                    });
-                }
-            }],*/
+            }],
             link: function (scope, element, attrs) {
-                scope.$watch(attrs.daval, function(newValue) {
-                    element.text(newValue);
-                });
+                console.log(scope);
+               
+//                scope.$watch(attrs.daval, function(newValue) {
+//                    element.text(newValue);
+//                });
 
          /*       console.log(scope.start);
                 console.log(scope.end);
