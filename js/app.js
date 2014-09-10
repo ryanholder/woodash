@@ -98,7 +98,8 @@ angular.module('woodash', [
         RestangularProvider.setBaseUrl('https://wp.thewhatwhat.com/wc-api/v1');
         RestangularProvider.setDefaultRequestParams({
             consumer_key: "ck_45841d89825d617a00814f88e74face7",
-            consumer_secret: "cs_d6da0b74e1f26cdd1f6bb6c8a0207e90"
+            consumer_secret: "cs_d6da0b74e1f26cdd1f6bb6c8a0207e90",
+            "filter[limit]": 99
         });
 
         // add a response intereceptor
