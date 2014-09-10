@@ -117,9 +117,7 @@ angular.module('woodash.directives', [])
                     scope.$watch(modelAccessor, function (val) {
                         el.children('span').html(val.dateFrom.format('MMMM D, YYYY') + ' - ' + val.dateTo.format('MMMM D, YYYY'));
                     });
-
                 };
-
             }
         };
     })
@@ -130,8 +128,12 @@ angular.module('woodash.directives', [])
             replace: true,
             transclude: false,
             template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
-            controller: ['$scope', function ($scope) {
+            controller: ['$scope', 'wcOrders', function ($scope, wcOrders) {
 
+                wcOrders.getList().then(function(orders) {
+                    var order = orders[0];
+                    console.log(order);
+                })
             }],
             link: function (scope, element, attrs) {
                 console.log(scope);

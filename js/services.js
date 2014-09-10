@@ -27,6 +27,10 @@ angular.module('woodash.services', [])
         };
     }])
 
+    .factory('wcOrders', function(Restangular) {
+        return Restangular.service('orders');
+    })
+
 	.factory('xhrIdentityAuth', function () {
 		return {
 			getToken: function () {
