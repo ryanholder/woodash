@@ -92,20 +92,20 @@ angular.module('woodash.directives', [])
                     el.daterangepicker(
                         {
                             ranges: {
-                                'Today': [moment(), moment()],
-                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                'Today': [moment.utc(), moment.utc()],
+                                'Yesterday': [moment.utc().subtract(1, 'days'), moment.utc().subtract(1, 'days')],
+                                'Last 7 Days': [moment.utc().subtract(6, 'days'), moment.utc()],
+                                'Last 30 Days': [moment.utc().subtract(29, 'days'), moment.utc()],
+                                'This Month': [moment.utc().startOf('month'), moment.utc().endOf('month')],
+                                'Last Month': [moment.utc().subtract(1, 'month').startOf('month'), moment.utc().subtract(1, 'month').endOf('month')]
                             },
-                            startDate: moment().subtract(29, 'days'),
-                            endDate: moment()
+                            startDate: moment.utc().subtract(6, 'month'),
+                            endDate: moment.utc()
                         },
                         function(start, end) {
                             var dateRange = {
-                                dateFrom: start,
-                                dateTo: end
+                                dateFrom: start.toJSON(),
+                                dateTo: end.toJSON()
                             }
 
                             scope.$apply(function (scope) {
@@ -115,7 +115,8 @@ angular.module('woodash.directives', [])
                     );
 
                     scope.$watch(modelAccessor, function (val) {
-                        el.children('span').html(val.dateFrom.format('MMMM D, YYYY') + ' - ' + val.dateTo.format('MMMM D, YYYY'));
+                        console.dir(val);
+                        el.children('span').html(moment(val.dateFrom).format('MMMM D, YYYY') + ' - ' + moment(val.dateTo).format('MMMM D, YYYY'));
                     });
                 };
             }
@@ -130,10 +131,18 @@ angular.module('woodash.directives', [])
             template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
             controller: ['$scope', 'wcOrders', function ($scope, wcOrders) {
 
-                wcOrders.getList().then(function(orders) {
+                var params = {
+                    "filter[created_at_min]": $scope.$parent.dateRange.dateFrom,
+                    "filter[created_at_max]": $scope.$parent.dateRange.dateTo
+                };
+
+                console.log(params);
+
+                wcOrders.getList(params).then(function(orders) {
                     var order = orders[0];
                     console.log(order);
                 })
+
             }],
             link: function (scope, element, attrs) {
                 console.log(scope);

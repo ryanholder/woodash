@@ -106,11 +106,11 @@ angular.module('woodash.controllers', [])
 	.controller('OverviewCtrl', ['$scope', 'wcApi', function ($scope, wcApi) {
 
         $scope.dateRange = {
-            dateFrom: moment().subtract(29, 'days'),
-            dateTo: moment()
+            dateFrom: moment.utc().subtract(6, 'month').toJSON(),
+            dateTo: moment.utc().toJSON()
         }
 
-        wcApi.getOrders();
+//        wcApi.getOrders();
 
 		AmCharts.makeChart("overviewpie1div", {
 			type: "pie",
