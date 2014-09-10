@@ -4,7 +4,7 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$scope', '$ionicLoading', 'xhrIdentityAuth', '$state', function ($scope, $ionicLoading, xhrIdentityAuth, $state) {
+	.controller('AppCtrl', ['$scope', '$ionicLoading', '$state', 'xhrIdentityAuth', function ($scope, $ionicLoading, $state, xhrIdentityAuth) {
 		//want to make sure user information is displayed
 		var xhr_button, revoke_button;
 
@@ -103,32 +103,14 @@ angular.module('woodash.controllers', [])
 		getUserInfo();
 	}])
 
-	.controller('OverviewCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
+	.controller('OverviewCtrl', ['$scope', 'wcApi', function ($scope, wcApi) {
 
         $scope.dateRange = {
             dateFrom: moment().subtract(29, 'days'),
             dateTo: moment()
         }
 
-
-//        var orders = Restangular.allUrl('orders', 'https://wp.thewhatwhat.com/wc-api/v1/orders?consumer_key=ck_45841d89825d617a00814f88e74face7&consumer_secret=cs_d6da0b74e1f26cdd1f6bb6c8a0207e90');
-//        // Will send a request to GET http://google.com/
-//        var allOrders = orders.getList().then(function(users) {
-//            console.log(allOrders);
-//        });
-
-
-		// The AngularStrap select directive setup for date ranges choices
-//		$scope.selectedRange = "Today";
-//		$scope.rangeOptions = [
-//    	    {value: 'Today', label: 'Today'},
-//  		    {value: 'Yesterday', label: 'Yesterday'},
-//    	    {value: 'Last 7 days', label: 'Last 7 days'},
-//    	    {value: 'Last 30 days', label: 'Last 30 days'},
-//			{value: 'This month', label: 'This month'},
-//			{value: 'Year to date', label: 'Year to date'},
-//			{value: 'Custom range', label: 'Custom range'}
-//    	];
+        wcApi.getOrders();
 
 		AmCharts.makeChart("overviewpie1div", {
 			type: "pie",

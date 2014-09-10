@@ -130,20 +130,8 @@ angular.module('woodash.directives', [])
             replace: true,
             transclude: false,
             template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
-            controller: ['$scope', '$http', 'Restangular', function ($scope, $http, Restangular) {
+            controller: ['$scope', function ($scope) {
 
-                var allOrders = Restangular.all('orders');
-
-                // This will query /orders and return a promise.
-                allOrders.getList().then( function(accounts) {
-                    $scope.allAccounts = accounts;
-                    var firstAccount = accounts[0];
-                    console.log(accounts);
-                    console.log(firstAccount);
-
-
-                    $scope.accountFromServer = firstAccount.get();
-                });
             }],
             link: function (scope, element, attrs) {
                 console.log(scope);

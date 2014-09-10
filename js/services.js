@@ -4,6 +4,29 @@
 
 angular.module('woodash.services', [])
 
+    .factory('githubService', function() {
+        var serviceInstance = {};
+        // Our first service
+        return serviceInstance;
+    })
+
+    .factory('wcApi', ['Restangular', function(Restangular) {
+
+        var doRequest = function(path) {
+
+            return Restangular.all(path).getList()
+                .then(function(result) {
+                    var firstAccount = result[0];
+                    console.dir(result);
+                    console.dir(firstAccount);
+                });
+        }
+
+        return {
+            getOrders: function() { return doRequest('orders'); }
+        };
+    }])
+
 	.factory('xhrIdentityAuth', function () {
 		return {
 			getToken: function () {
