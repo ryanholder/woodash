@@ -123,30 +123,71 @@ angular.module('woodash.directives', [])
         };
     })
 
-    .directive('ordersChart', function () {
+    .directive('ordersChart', function (wcOrders) {
         return {
+            require: 'ngModel',
             restrict: 'E',
             replace: true,
             transclude: false,
             template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
             controller: ['$scope', 'wcOrders', function ($scope, wcOrders) {
 
-                var params = {
-                    "filter[created_at_min]": $scope.$parent.dateRange.dateFrom,
-                    "filter[created_at_max]": $scope.$parent.dateRange.dateTo
-                };
 
-                console.log(params);
-
-                wcOrders.getList(params).then(function(orders) {
-                    var order = orders[0];
-                    console.log(order);
-                })
 
             }],
-            link: function (scope, element, attrs) {
-                console.log(scope);
+            link: function (scope, element, attrs, ngModel) {
 
+                scope.getOrders = function () {
+
+                    var params = {
+                        "filter[created_at_min]": attrs.ngModel.dateFrom,
+                        "filter[created_at_max]": attrs.ngModel.dateTo
+                    };
+
+                    console.log(params);
+
+                    wcOrders.getList(params).then(function(orders) {
+
+                        var allOrders = [];
+//                        $scope.allOrders = orders;
+
+                        angular.forEach(orders, function(value, key) {
+                            allOrders.push(value);
+                        });
+
+//                        angular.forEach(orders.list, function(value){
+//                            weather.push(value);
+//                        });
+//                        var order = orders[0];
+//                        console.dir(allOrders[0]);
+                        console.table(allOrders);
+                        initChart(element, attrs, allOrders);
+                    })
+
+//                    var weather = [];
+//
+//                    $scope.weather = weather;
+//
+//
+//                    //Call external scope's function
+//                    var name = 'New Customer Added by Directive';
+//                    $scope.add();
+//
+//                    //Add new customer to directive scope
+//                    $scope.customers.push({
+//                        name: name
+//                    });
+                };
+
+                scope.$watch(attrs.ngModel, function (val) {
+                    if (val) {
+                        console.dir(val);
+                        scope.getOrders();
+                    }
+                });
+
+                console.log(scope);
+                console.log(ngModel);
 //                scope.$watch(attrs.daval, function(newValue) {
 //                    element.text(newValue);
 //                });
@@ -178,11 +219,12 @@ angular.module('woodash.directives', [])
 
     var initChart = function(element, attrs, data) {
 
+//        console.table(data);
         AmCharts.makeChart(attrs.id, {
             "type": "serial",
             "dataProvider": data,
             color: "#646464",
-            categoryField: "year",
+            categoryField: "created_at",
             rotate: false,
             //  autoMargins: false,
             // autoMarginOffset: 15,
@@ -228,7 +270,7 @@ angular.module('woodash.directives', [])
             graphs: [{
                 type: "column",
                 title: "Customers",
-                valueField: "customers",
+                valueField: "total",
                 lineAlpha: 0,
                 fillColors: "#3995d4",
                 fillAlphas: 0.9,
