@@ -71,61 +71,6 @@ angular.module('woodash.directives', [])
         }
     })
 
-.directive("valueDisplay1", function () {
-    return {
-        restrict: "E",
-        link: function (scope, element, attrs) {
-            element.text(scope[attrs.value]);
-        }
-    };
-})
-
-
-
-.directive("valueDisplay3", function () {
-    return {
-        restrict: "E",
-        link: function (scope, element, attrs) {
-            attrs.$observe("value", function (newValue) {
-                element.text(newValue);
-            });
-        }
-    };
-})
-
-.directive("valueDisplay4", function () {
-    return {
-        restrict: "E",
-        scope: {
-            value: "="
-        },
-        template: '{{value}}'
-    };
-})
-
-.directive("valueDisplay5", function () {
-    return {
-        restrict: "E",
-        scope: {
-            value: "@"
-        },
-        template: '{{value}}'
-    };
-})
-
-    .directive("valueDisplay2", function () {
-
-        return {
-            restrict: "E",
-            link: function (scope, element, attrs) {
-                scope.$watch(attrs.value, function(newValue) {
-                    element.text(newValue);
-                });
-            }
-        };
-
-    })
-
     .directive('bsdrpDatepicker', function ($parse) {
         return {
             restrict: "E",
@@ -202,7 +147,7 @@ angular.module('woodash.directives', [])
             }],
             link: function (scope, element, attrs) {
                 console.log(scope);
-               
+
 //                scope.$watch(attrs.daval, function(newValue) {
 //                    element.text(newValue);
 //                });
