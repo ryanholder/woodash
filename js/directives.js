@@ -10,61 +10,6 @@ angular.module('woodash.directives', [])
 		};
 	}])
 
-//    .directive('woodashPieChart', function () {
-//        return {
-//            restrict: 'EA',
-//            template: '<div class="sparkline"></div>'
-//        }
-//    })
-
-//.directive('ngSparkline', function() {
-//        var url = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&units=imperial&cnt=14&q=";
-//        return {
-//            restrict: 'A',
-//            require: '^ngCity',
-//            transclude: true,
-////            replace: true,
-//            scope: {
-//                ngCity: '@'
-//            },
-//            template: '<div class="sparkline" style="min-width: 310px; height: 400px; margin: 0 auto"><div ng-transclude></div></div>',
-//            controller: ['$scope', '$http', function($scope, $http) {
-//                $scope.getTemp = function(city) {
-//                    $http({
-//                        method: 'GET',
-//                        url: url + city
-//                    }).success(function(data) {
-//                        var weather = [];
-//                        angular.forEach(data.list, function(value){
-//                            weather.push(value);
-//                        });
-//                        $scope.weather = weather;
-//                    });
-//                }
-//            }],
-//            link: function(scope, iElement, iAttrs, ctrl) {
-//                scope.getTemp(iAttrs.ngCity);
-//                scope.$watch('weather', function(newVal) {
-//                    // the `$watch` function will fire even if the
-//                    // weather property is undefined, so we'll
-//                    // check for it
-//                    if (newVal) {
-//                        var highs = [];
-//
-//                        angular.forEach(scope.weather, function(value){
-//                            highs.push({
-//                                date: value.dt,
-//                                temp: value.temp.max
-//                            });
-//                        });
-//
-//                        chartGraph(iElement, highs, iAttrs);
-//                    }
-//                });
-//            }
-//        }
-//})
-
     .directive('ngCity', function() {
         return {
             controller: function($scope) {}
@@ -130,7 +75,7 @@ angular.module('woodash.directives', [])
             replace: true,
             transclude: false,
             template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
-            controller: ['$scope', 'wcOrders', function ($scope, wcOrders) {
+            controller: ['$scope', function ($scope) {
 
 
 
@@ -149,34 +94,14 @@ angular.module('woodash.directives', [])
                     wcOrders.getList(params).then(function(orders) {
 
                         var allOrders = [];
-//                        $scope.allOrders = orders;
 
                         angular.forEach(orders, function(value, key) {
                             allOrders.push(value);
                         });
 
-//                        angular.forEach(orders.list, function(value){
-//                            weather.push(value);
-//                        });
-//                        var order = orders[0];
-//                        console.dir(allOrders[0]);
                         console.table(allOrders);
                         initChart(element, attrs, allOrders);
                     })
-
-//                    var weather = [];
-//
-//                    $scope.weather = weather;
-//
-//
-//                    //Call external scope's function
-//                    var name = 'New Customer Added by Directive';
-//                    $scope.add();
-//
-//                    //Add new customer to directive scope
-//                    $scope.customers.push({
-//                        name: name
-//                    });
                 };
 
                 scope.$watch(attrs.ngModel, function (val) {
@@ -188,30 +113,6 @@ angular.module('woodash.directives', [])
 
                 console.log(scope);
                 console.log(ngModel);
-//                scope.$watch(attrs.daval, function(newValue) {
-//                    element.text(newValue);
-//                });
-
-         /*       console.log(scope.start);
-                console.log(scope.end);
-
-                scope.$watch('start', function(newValue, oldValue) {
-                    if (newValue)
-                        console.log("I see a data change!");
-                }, true);*/
-/*                function updateTime() {
-                    console.log(iAttrs);
-                }
-
-                scope.$watch(iAttrs.start, function(value) {
-                    if (value) {
-                        console.log('hello:' + value);
-                        updateTime();
-                    }
-                });*/
-
-
-
             }//end watch
         }
     });
