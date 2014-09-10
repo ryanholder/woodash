@@ -76,51 +76,38 @@ angular.module('woodash.directives', [])
             transclude: false,
             template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
             controller: ['$scope', function ($scope) {
-
-
-
+                //not using controller but this may be incorrect ??
             }],
             link: function (scope, element, attrs, ngModel) {
 
-                scope.getOrders = function () {
-
+                scope.getOrders = function (val) {
                     var params = {
-                        "filter[created_at_min]": attrs.ngModel.dateFrom,
-                        "filter[created_at_max]": attrs.ngModel.dateTo
+                        "filter[created_at_min]": val.dateFrom,
+                        "filter[created_at_max]": val.dateTo
                     };
 
-                    console.log(params);
-
                     wcOrders.getList(params).then(function(orders) {
-
                         var allOrders = [];
 
-                        angular.forEach(orders, function(value, key) {
+                        angular.forEach(orders, function(value) {
                             allOrders.push(value);
                         });
 
-                        console.table(allOrders);
                         initChart(element, attrs, allOrders);
                     })
                 };
 
                 scope.$watch(attrs.ngModel, function (val) {
                     if (val) {
-                        console.dir(val);
-                        scope.getOrders();
+                        scope.getOrders(val);
                     }
                 });
-
-                console.log(scope);
-                console.log(ngModel);
             }//end watch
         }
     });
 
-
     var initChart = function(element, attrs, data) {
 
-//        console.table(data);
         AmCharts.makeChart(attrs.id, {
             "type": "serial",
             "dataProvider": data,
@@ -186,6 +173,4 @@ angular.module('woodash.directives', [])
                 balloonText: "[[title]] in [[category]]:<b>[[value]]</b>"
             }]
         });
-
-
     };
