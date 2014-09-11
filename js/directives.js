@@ -83,14 +83,18 @@ angular.module('woodash.directives', [])
                 scope.getOrders = function (val) {
                     var params = {
                         "filter[created_at_min]": val.dateFrom,
-                        "filter[created_at_max]": val.dateTo
+                        "filter[created_at_max]": val.dateTo,
+                        "status": "completed"
                     };
 
                     wcOrders.getList(params).then(function(orders) {
                         var allOrders = [];
 
                         angular.forEach(orders, function(value) {
+                            value.moment_date = moment(value.created_at).format('YYYY-MM-DD');
                             allOrders.push(value);
+                            console.log(value);
+
                         });
 
                         initChart(element, attrs, allOrders);
