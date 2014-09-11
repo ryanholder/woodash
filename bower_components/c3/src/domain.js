@@ -76,11 +76,22 @@ c3_chart_internal_fn.getYDomain = function (targets, axisId) {
     if (yTargets.length === 0) { // use current domain if target of axisId is none
         return axisId === 'y2' ? $$.y2.domain() : $$.y.domain();
     }
+    if (isNaN(yDomainMin)) { // set minimum to zero when not number
+        yDomainMin = 0;
+    }
+    if (isNaN(yDomainMax)) { // set maximum to have same value as yDomainMin
+        yDomainMax = yDomainMin;
+    }
     if (yDomainMin === yDomainMax) {
         yDomainMin < 0 ? yDomainMax = 0 : yDomainMin = 0;
     }
     isAllPositive = yDomainMin >= 0 && yDomainMax >= 0;
     isAllNegative = yDomainMin <= 0 && yDomainMax <= 0;
+
+    // Cancel zerobased if axis_*_min / axis_*_max specified
+    if ((isValue(yMin) && isAllPositive) || (isValue(yMax) && isAllNegative)) {
+        isZeroBased = false;
+    }
 
     // Bar/Area chart should be 0-based if all positive|negative
     if (isZeroBased) {
@@ -108,11 +119,11 @@ c3_chart_internal_fn.getYDomain = function (targets, axisId) {
         padding_top += lengths[1];
         padding_bottom += lengths[0];
     }
-    if (axisId === 'y' && config.axis_y_padding) {
+    if (axisId === 'y' && notEmpty(config.axis_y_padding)) {
         padding_top = $$.getAxisPadding(config.axis_y_padding, 'top', padding, domainLength);
         padding_bottom = $$.getAxisPadding(config.axis_y_padding, 'bottom', padding, domainLength);
     }
-    if (axisId === 'y2' && config.axis_y2_padding) {
+    if (axisId === 'y2' && notEmpty(config.axis_y2_padding)) {
         padding_top = $$.getAxisPadding(config.axis_y2_padding, 'top', padding, domainLength);
         padding_bottom = $$.getAxisPadding(config.axis_y2_padding, 'bottom', padding, domainLength);
     }
@@ -125,13 +136,13 @@ c3_chart_internal_fn.getYDomain = function (targets, axisId) {
 };
 c3_chart_internal_fn.getXDomainMin = function (targets) {
     var $$ = this, config = $$.config;
-    return config.axis_x_min ?
+    return isDefined(config.axis_x_min) ?
         ($$.isTimeSeries() ? this.parseDate(config.axis_x_min) : config.axis_x_min) :
     $$.d3.min(targets, function (t) { return $$.d3.min(t.values, function (v) { return v.x; }); });
 };
 c3_chart_internal_fn.getXDomainMax = function (targets) {
     var $$ = this, config = $$.config;
-    return config.axis_x_max ?
+    return isDefined(config.axis_x_max) ?
         ($$.isTimeSeries() ? this.parseDate(config.axis_x_max) : config.axis_x_max) :
     $$.d3.max(targets, function (t) { return $$.d3.max(t.values, function (v) { return v.x; }); });
 };
@@ -176,8 +187,9 @@ c3_chart_internal_fn.getXDomain = function (targets) {
     }
     return [min, max];
 };
-c3_chart_internal_fn.updateXDomain = function (targets, withUpdateXDomain, withUpdateOrgXDomain, domain) {
+c3_chart_internal_fn.updateXDomain = function (targets, withUpdateXDomain, withUpdateOrgXDomain, withTrim, domain) {
     var $$ = this, config = $$.config;
+
     if (withUpdateOrgXDomain) {
         $$.x.domain(domain ? domain : $$.d3.extent($$.getXDomain(targets)));
         $$.orgXDomain = $$.x.domain();
@@ -189,5 +201,21 @@ c3_chart_internal_fn.updateXDomain = function (targets, withUpdateXDomain, withU
         $$.x.domain(domain ? domain : (!$$.brush || $$.brush.empty()) ? $$.orgXDomain : $$.brush.extent());
         if (config.zoom_enabled) { $$.zoom.scale($$.x).updateScaleExtent(); }
     }
+
+    // Trim domain when too big by zoom mousemove event
+    if (withTrim) { $$.x.domain($$.trimXDomain($$.x.orgDomain())); }
+
     return $$.x.domain();
+};
+c3_chart_internal_fn.trimXDomain = function (domain) {
+    var $$ = this;
+    if (domain[0] <= $$.orgXDomain[0]) {
+        domain[1] = +domain[1] + ($$.orgXDomain[0] - domain[0]);
+        domain[0] = $$.orgXDomain[0];
+    }
+    if ($$.orgXDomain[1] <= domain[1]) {
+        domain[0] = +domain[0] - (domain[1] - $$.orgXDomain[1]);
+        domain[1] = $$.orgXDomain[1];
+    }
+    return domain;
 };

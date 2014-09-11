@@ -77,6 +77,7 @@ c3_chart_internal_fn.initParams = function () {
 
     $$.dragStart = null;
     $$.dragging = false;
+    $$.flowing = false;
     $$.cancelClick = false;
     $$.mouseover = false;
     $$.transiting = false;
@@ -219,6 +220,9 @@ c3_chart_internal_fn.initWithData = function (data) {
         .attr("clip-path", $$.clipPath)
         .attr('class', CLASS.chart);
 
+    // Grid lines
+    if (config.grid_lines_front) { $$.initGridLines(); }
+
     // Cover whole with rects for events
     $$.initEventRect();
 
@@ -245,9 +249,7 @@ c3_chart_internal_fn.initWithData = function (data) {
         .on("dblclick.zoom", null);
 
     // Set default extent if defined
-    if (config.axis_x_default) {
-        $$.brush.extent(isFunction(config.axis_x_default) ? config.axis_x_default($$.getXDomain()) : config.axis_x_default);
-    }
+    if (config.axis_x_extent) { $$.brush.extent($$.getDefaultExtent()); }
 
     // Add Axis
     $$.initAxis();
@@ -258,6 +260,7 @@ c3_chart_internal_fn.initWithData = function (data) {
     // Draw with targets
     if (binding) {
         $$.updateDimension();
+        $$.config.oninit.call($$);
         $$.redraw({
             withTransform: true,
             withUpdateXDomain: true,
@@ -366,6 +369,9 @@ c3_chart_internal_fn.updateSizes = function () {
     // for arc
     $$.arcWidth = $$.width - ($$.isLegendRight ? legendWidth + 10 : 0);
     $$.arcHeight = $$.height - ($$.isLegendRight ? 0 : 10);
+    if ($$.hasType('gauge')) {
+        $$.arcHeight += $$.height - $$.getGaugeLabelHeight();
+    }
     if ($$.updateRadius) { $$.updateRadius(); }
 
     if ($$.isLegendRight && hasArc) {
@@ -402,7 +408,7 @@ c3_chart_internal_fn.updateTargets = function (targets) {
 c3_chart_internal_fn.redraw = function (options, transitions) {
     var $$ = this, main = $$.main, d3 = $$.d3, config = $$.config;
     var areaIndices = $$.getShapeIndices($$.isAreaType), barIndices = $$.getShapeIndices($$.isBarType), lineIndices = $$.getShapeIndices($$.isLineType);
-    var withY, withSubchart, withTransition, withTransitionForExit, withTransitionForAxis, withTransform, withUpdateXDomain, withUpdateOrgXDomain, withLegend;
+    var withY, withSubchart, withTransition, withTransitionForExit, withTransitionForAxis, withTransform, withUpdateXDomain, withUpdateOrgXDomain, withTrimXDomain, withLegend;
     var hideAxis = $$.hasArcType();
     var drawArea, drawBar, drawLine, xForText, yForText;
     var duration, durationForExit, durationForAxis;
@@ -419,6 +425,7 @@ c3_chart_internal_fn.redraw = function (options, transitions) {
     withTransform = getOption(options, "withTransform", false);
     withUpdateXDomain = getOption(options, "withUpdateXDomain", false);
     withUpdateOrgXDomain = getOption(options, "withUpdateOrgXDomain", false);
+    withTrimXDomain = getOption(options, "withTrimXDomain", true);
     withLegend = getOption(options, "withLegend", false);
     withTransitionForExit = getOption(options, "withTransitionForExit", withTransition);
     withTransitionForAxis = getOption(options, "withTransitionForAxis", withTransition);
@@ -440,7 +447,7 @@ c3_chart_internal_fn.redraw = function (options, transitions) {
     }
 
     if (targetsToShow.length) {
-        $$.updateXDomain(targetsToShow, withUpdateXDomain, withUpdateOrgXDomain);
+        $$.updateXDomain(targetsToShow, withUpdateXDomain, withUpdateOrgXDomain, withTrimXDomain);
         // update axis tick values according to options
         if (!config.axis_x_tick_values && (config.axis_x_tick_fit || config.axis_x_tick_count)) {
             tickValues = $$.generateTickValues($$.mapTargetsToUniqueXs(targetsToShow), config.axis_x_tick_count);
@@ -490,8 +497,8 @@ c3_chart_internal_fn.redraw = function (options, transitions) {
     drawArea = $$.generateDrawArea ? $$.generateDrawArea(areaIndices, false) : undefined;
     drawBar = $$.generateDrawBar ? $$.generateDrawBar(barIndices) : undefined;
     drawLine = $$.generateDrawLine ? $$.generateDrawLine(lineIndices, false) : undefined;
-    xForText = $$.generateXYForText(barIndices, true);
-    yForText = $$.generateXYForText(barIndices, false);
+    xForText = $$.generateXYForText(areaIndices, barIndices, lineIndices, true);
+    yForText = $$.generateXYForText(areaIndices, barIndices, lineIndices, false);
 
     // Update sub domain
     $$.subY.domain($$.y.domain());
@@ -544,8 +551,8 @@ c3_chart_internal_fn.redraw = function (options, transitions) {
         .selectAll('circle')
         .remove();
 
-    // event rect
-    if (config.interaction_enabled) {
+    // event rects will redrawn when flow called
+    if (config.interaction_enabled && !options.flow) {
         $$.redrawEventRect();
     }
 
@@ -769,6 +776,7 @@ c3_chart_internal_fn.observeInserted = function (selection) {
                     if (selection.node().parentNode) {
                         window.clearInterval(interval);
                         $$.updateDimension();
+                        $$.config.oninit.call($$);
                         $$.redraw({
                             withTransform: true,
                             withUpdateXDomain: true,

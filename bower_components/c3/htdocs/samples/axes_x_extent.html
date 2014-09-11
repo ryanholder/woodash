@@ -15,30 +15,38 @@
         bindto: '#chart1',
         data: {
           columns: [
-            ['data1', 30, 200, 100, 400, 150, 250],
-            ['data2', 50, 20, 10, 40, 15, 25]
+            ['data1', 100, 200, 50, 300, 400, 290],
+            ['data2', 10, 20, 50, 30, 10, 100],
           ],
-          labels: true
+        },
+        axis: {
+          x: {
+            extent: [2, 4.5]
+          }
         },
         subchart: {
           show: true
-        },
+        }
       });
 
       var chart2 = c3.generate({
         bindto: '#chart2',
         data: {
+          x: 'x',
           columns: [
-            ['data1', 30, 200, 100, 400, 150, 250],
-            ['data2', 50, 20, 10, 40, 15, 25]
+            ['x', '2014-01-01', '2014-02-01', '2014-03-01', '2014-04-01', '2014-05-01', '2014-06-01'],
+            ['data1', 100, 200, 50, 300, 400, 290],
+            ['data2', 10, 20, 50, 30, 10, 100],
           ],
-          labels: true
+        },
+        axis: {
+          x: {
+            type: 'timeseries',
+            extent: ['2014-03-01', '2014-04-20']
+          }
         },
         subchart: {
           show: true
-        },
-        axis: {
-          rotated: true
         }
       });
 
@@ -46,21 +54,22 @@
         bindto: '#chart3',
         data: {
           columns: [
-            ['data1', 30, 200, 100, 400, 150, 250],
-            ['data2', 50, 20, 10, 40, 15, 25]
+            ['data1', 100, 200, 50, 300, 400, 290],
+            ['data2', 10, 20, 50, 30, 10, 100],
           ],
-          labels: true
         },
         axis: {
           x: {
-            default: [3, 5]
+            extent: [1, 4.2]
           }
+        },
+        zoom: {
+          enabled: true
         },
         subchart: {
           show: true
-        },
+        }
       });
-
 
     </script>
   </body>

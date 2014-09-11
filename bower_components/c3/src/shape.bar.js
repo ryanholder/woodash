@@ -55,8 +55,9 @@ c3_chart_internal_fn.getBars = function (i) {
     var $$ = this;
     return $$.main.selectAll('.' + CLASS.bar + (isValue(i) ? '-' + i : ''));
 };
-c3_chart_internal_fn.expandBars = function (i) {
+c3_chart_internal_fn.expandBars = function (i, id, reset) {
     var $$ = this;
+    if (reset) { $$.unexpandBars(); }
     $$.getBars(i).classed(CLASS.EXPANDED, true);
 };
 c3_chart_internal_fn.unexpandBars = function (i) {
@@ -85,8 +86,9 @@ c3_chart_internal_fn.generateDrawBar = function (barIndices, isSub) {
 };
 c3_chart_internal_fn.generateGetBarPoints = function (barIndices, isSub) {
     var $$ = this,
+        axis = isSub ? $$.subXAxis : $$.xAxis,
         barTargetsNum = barIndices.__max__ + 1,
-        barW = $$.getBarW($$.xAxis, barTargetsNum),
+        barW = $$.getBarW(axis, barTargetsNum),
         barX = $$.getShapeX(barW, barTargetsNum, barIndices, !!isSub),
         barY = $$.getShapeY(!!isSub),
         barOffset = $$.getShapeOffset($$.isBarType, barIndices, !!isSub),

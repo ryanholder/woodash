@@ -272,13 +272,10 @@ c3_chart_internal_fn.redrawArc = function (duration, durationForExit, withTransf
             $$.config.data_onmouseout(arcData, this);
         })
         .on('click', function (d, i) {
-            var updated, arcData;
-            if (!$$.toggleShape) {
-                return;
-            }
-            updated = $$.updateAngle(d);
-            arcData = $$.convertToArcData(updated);
-            $$.toggleShape(this, arcData, i); // onclick called in toogleShape()
+            var updated = $$.updateAngle(d),
+                arcData = $$.convertToArcData(updated);
+            if ($$.toggleShape) { $$.toggleShape(this, arcData, i); }
+            $$.config.data_onclick.call($$.api, arcData, this);
         });
     mainArc
         .attr("transform", function (d) { return !$$.isGaugeType(d.data) && withTransform ? "scale(0)" : ""; })
@@ -359,4 +356,7 @@ c3_chart_internal_fn.initGauge = function () {
             .style("pointer-events", "none")
             .text(config.gauge_label_show ? config.gauge_max : '');
     }
+};
+c3_chart_internal_fn.getGaugeLabelHeight = function () {
+    return this.config.gauge_label_show ? 20 : 0;
 };

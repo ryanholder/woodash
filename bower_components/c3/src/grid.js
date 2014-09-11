@@ -9,8 +9,6 @@ c3_chart_internal_fn.initGrid = function () {
     if (config.grid_y_show) {
         $$.grid.append('g').attr('class', CLASS.ygrids);
     }
-    $$.grid.append('g').attr("class", CLASS.xgridLines);
-    $$.grid.append('g').attr('class', CLASS.ygridLines);
     if (config.grid_focus_show) {
         $$.grid.append('g')
             .attr("class", CLASS.xgridFocus)
@@ -18,9 +16,17 @@ c3_chart_internal_fn.initGrid = function () {
             .attr('class', CLASS.xgridFocus);
     }
     $$.xgrid = d3.selectAll([]);
+    if (!config.grid_lines_front) { $$.initGridLines(); }
+};
+c3_chart_internal_fn.initGridLines = function () {
+    var $$ = this, d3 = $$.d3;
+    $$.gridLines = $$.main.append('g')
+        .attr("clip-path", $$.clipPath)
+        .attr('class', CLASS.grid + ' ' + CLASS.gridLines);
+    $$.gridLines.append('g').attr("class", CLASS.xgridLines);
+    $$.gridLines.append('g').attr('class', CLASS.ygridLines);
     $$.xgridLines = d3.selectAll([]);
 };
-
 c3_chart_internal_fn.updateXGrid = function (withoutUpdate) {
     var $$ = this, config = $$.config, d3 = $$.d3,
         xgridData = $$.generateGridData(config.grid_x_type, $$.x),
@@ -66,6 +72,10 @@ c3_chart_internal_fn.updateYGrid = function () {
 c3_chart_internal_fn.redrawGrid = function (duration, withY) {
     var $$ = this, main = $$.main, config = $$.config,
         xgridLine, ygridLine, yv;
+
+    // hide if arc type
+    $$.grid.style('visibility', $$.hasArcType() ? 'hidden' : 'visible');
+
     main.select('line.' + CLASS.xgridFocus).style("visibility", "hidden");
     if (config.grid_x_show) {
         $$.updateXGrid();

@@ -30,9 +30,14 @@ c3_chart_internal_fn.initAxis = function () {
         .attr("transform", config.axis_rotated ? "" : "rotate(-90)")
         .style("text-anchor", $$.textAnchorForY2AxisLabel.bind($$));
 };
-c3_chart_internal_fn.getXAxis = function (scale, orient, tickFormat, tickValues) {
+c3_chart_internal_fn.getXAxis = function (scale, orient, tickFormat, tickValues, withOuterTick) {
     var $$ = this, config = $$.config,
-        axis = c3_axis($$.d3, $$.isCategorized()).scale(scale).orient(orient);
+        axisParams = {isCategory: $$.isCategorized(), withOuterTick: withOuterTick},
+        axis = c3_axis($$.d3, axisParams).scale(scale).orient(orient);
+
+    if ($$.isTimeSeries() && tickValues) {
+        tickValues = tickValues.map(function (v) { return $$.parseDate(v); });
+    }
 
     // Set tick
     axis.tickFormat(tickFormat).tickValues(tickValues);
@@ -44,7 +49,8 @@ c3_chart_internal_fn.getXAxis = function (scale, orient, tickFormat, tickValues)
     } else {
         // TODO: move this to c3_axis
         axis.tickOffset = function () {
-            var edgeX = $$.getEdgeX($$.data.targets), diff = $$.x(edgeX[1]) - $$.x(edgeX[0]),
+            var scale = this.scale(),
+                edgeX = $$.getEdgeX($$.data.targets), diff = scale(edgeX[1]) - scale(edgeX[0]),
                 base = diff ? diff : (config.axis_rotated ? $$.height : $$.width);
             return (base / $$.getMaxDataCount()) / 2;
         };
@@ -52,8 +58,9 @@ c3_chart_internal_fn.getXAxis = function (scale, orient, tickFormat, tickValues)
 
     return axis;
 };
-c3_chart_internal_fn.getYAxis = function (scale, orient, tickFormat, ticks) {
-    return c3_axis(this.d3).scale(scale).orient(orient).tickFormat(tickFormat).ticks(ticks);
+c3_chart_internal_fn.getYAxis = function (scale, orient, tickFormat, ticks, withOuterTick) {
+    var axisParams = {withOuterTick: withOuterTick};
+    return c3_axis(this.d3, axisParams).scale(scale).orient(orient).tickFormat(tickFormat).ticks(ticks);
 };
 c3_chart_internal_fn.getAxisId = function (id) {
     var config = this.config;
@@ -222,11 +229,11 @@ c3_chart_internal_fn.xForRotatedTickText = function (r) {
     return 10 * Math.sin(Math.PI * (r / 180));
 };
 c3_chart_internal_fn.yForRotatedTickText = function (r) {
-    return 11.5 - 2.5 * (r / 15);
+    return 11.5 - 2.5 * (r / 15) * (r > 0 ? 1 : -1);
 };
 c3_chart_internal_fn.rotateTickText = function (axis, transition, rotate) {
     axis.selectAll('.tick text')
-        .style("text-anchor", "start");
+        .style("text-anchor", rotate > 0 ? "start" : "end");
     transition.selectAll('.tick text')
         .attr("y", this.yForRotatedTickText(rotate))
         .attr("x", this.xForRotatedTickText(rotate))
@@ -248,7 +255,7 @@ c3_chart_internal_fn.getMaxTickWidth = function (id) {
             scale = $$.x.copy().domain($$.getXDomain(targetsToShow));
             axis = $$.getXAxis(scale, $$.xOrient, $$.getXAxisTickFormat(), config.axis_x_tick_values ? config.axis_x_tick_values : $$.xAxis.tickValues());
         }
-        $$.main.append("g").call(axis).each(function () {
+        $$.d3.select('body').append("g").style('visibility', 'hidden').call(axis).each(function () {
             $$.d3.select(this).selectAll('text').each(function () {
                 var box = this.getBoundingClientRect();
                 if (maxWidth < box.width) { maxWidth = box.width; }
