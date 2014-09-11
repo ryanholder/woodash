@@ -108,7 +108,24 @@ angular.module('woodash.directives', [])
 
     var initChart = function(element, attrs, data) {
 
-        AmCharts.makeChart(attrs.id, {
+        console.log(data);
+        c3.generate({
+            bindto: element[0],
+            data: {
+                json: data,
+                keys: {
+                    x: 'moment_date',
+                    value: ['total', 'subtotal']
+                }
+            },
+            axis: {
+                x: {
+                    type: 'timeseries'
+                }
+            }
+        });
+
+        /*AmCharts.makeChart(attrs.id, {
             "type": "serial",
             "dataProvider": data,
             color: "#646464",
@@ -172,5 +189,5 @@ angular.module('woodash.directives', [])
                 fillAlphas: 0.9,
                 balloonText: "[[title]] in [[category]]:<b>[[value]]</b>"
             }]
-        });
+        });*/
     };
