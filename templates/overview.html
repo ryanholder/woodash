@@ -7,47 +7,15 @@
 		<div class="buttons woodash-buttons">
 			<!-- <div class="form-group"> -->
 		    <div class="input-group">
-
                 <bsdrp-datepicker id="dateselect" type="text" ng-model="dateRange" />
-
-
-                <input type="hidden" class="date-range-from" ng-model="fromDate" value="{{fromDate}}">
-                <input type="hidden" class="date-range-to" ng-model="toDate" value="{{toDate}}">
-<!--                <div class="input-group-btn">
-                    <button class="button btn button-balanced woodash-date-range-select" ng-model="selectedRange"
-                            data-html="1" ng-options="range.value as range.label for range in rangeOptions" bs-select></button>
-                </div>
-
-                <label class="item-input form-control">
-                    <i class="icon ion-calendar placeholder-icon"></i>
-                    <input type="text" class="woodash-date-range-from" ng-model="fromDate" data-max-date="{{untilDate}}"
-                           placeholder="From" bs-datepicker>
-                </label>
-                <label class="item-input form-control">
-                    <i class="icon ion-calendar placeholder-icon"></i>
-                    <input type="text" class="woodash-date-range-to" ng-model="untilDate" data-min-date="{{fromDate}}"
-                           placeholder="Until" bs-datepicker>
-                </label>-->
-
-
 		    </div>
 		</div>
 	</ion-header-bar>
 	<ion-content class="has-subheader woodash-content" overflow-scroll="true">
-		<div class="row" style="padding-top: 0;">
+		<div class="row">
 			<div class="col">
 				<div class="card">
-
-					<!-- <div class="item item-avatar">
-						<img src="avatar.jpg">
-						<h2>Pretty Hate Machine</h2>
-						<p>Nine Inch Nails</p>
-					</div> -->
-
-					<!--<div id="chartdiv" class="item">-->
-					<!--</div>-->
-                    <orders-chart id="chartdiv" ng-model="dateRange"></orders-chart>
-                    <!--<orders-chart id="chartdiv" class="item" start="fromDate" end="toDate"></orders-chart>-->
+                    <orders-chart id="chartdiv" class="item" ng-model="dateRange"></orders-chart>
 				</div>
 			</div>
 		</div>
@@ -55,44 +23,28 @@
 			<div class="col">
 				<div class="card">
 					<div class="woodash-numbers-main">$32,000</div>
-					<div class="woodash-numbers-desc">total orders ($)</div>
+					<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>total revenue</div>
 				</div>
 			</div>
 			<div class="col">
 				<div class="card">
 					<div class="woodash-numbers-main">$32,000</div>
-					<div class="woodash-numbers-desc">total orders ($)</div>
+					<div class="woodash-numbers-desc">orders placed</div>
 				</div>
 			</div>
 			<div class="col">
 				<div class="card">
 					<div class="woodash-numbers-main">$32,000</div>
-					<div class="woodash-numbers-desc">total orders ($)</div>
+					<div class="woodash-numbers-desc">products sold</div>
 				</div>
 			</div>
 			<div class="col">
 				<div class="card">
 					<div class="woodash-numbers-main">$32,000</div>
-					<div class="woodash-numbers-desc">total orders ($)</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card">
-					<div class="woodash-numbers-main">$32,000</div>
-					<div class="woodash-numbers-desc">total orders ($)</div>
+					<div class="woodash-numbers-desc">average sale</div>
 				</div>
 			</div>
 		</div>
-        <div class="row">
-            <div class="col">
-                <div class="card">
-
-                    <input type="text" ng-model="city" placeholder="Enter a city" />
-                    <!--<div ng-sparkline ng-city="San Francisco"></div>-->
-
-                </div>
-            </div>
-        </div>
         <div class="row">
 			<div class="col">
 				<div class="card">
