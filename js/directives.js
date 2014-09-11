@@ -76,14 +76,11 @@ angular.module('woodash.directives', [])
             transclude: false,
             template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
             controller: ['$scope', function ($scope) {
-                //not using controller but this may be incorrect ??
-            }],
-            link: function (scope, element, attrs, ngModel) {
-
-                scope.getOrders = function (val) {
+                $scope.getOrders = function (val) {
                     var params = {
                         "filter[created_at_min]": val.dateFrom,
-                        "filter[created_at_max]": val.dateTo
+                        "filter[created_at_max]": val.dateTo,
+                        "status": "completed"
                     };
 
                     wcOrders.getList(params).then(function(orders) {
@@ -93,13 +90,17 @@ angular.module('woodash.directives', [])
                             allOrders.push(value);
                         });
 
-                        initChart(element, attrs, allOrders);
+                        $scope.allOrders = allOrders;
                     })
                 };
-
-                scope.$watch(attrs.ngModel, function (val) {
+            }],
+            link: function (scope, element, attrs, ngModel) {
+                scope.getOrders(ngModel);
+                scope.$watch('allOrders', function (val) {
                     if (val) {
-                        scope.getOrders(val);
+                        initChart(element, attrs, scope.allOrders);
+
+                        console.table(scope.allOrders);
                     }
                 });
             }//end watch
@@ -112,7 +113,7 @@ angular.module('woodash.directives', [])
             "type": "serial",
             "dataProvider": data,
             color: "#646464",
-            categoryField: "created_at",
+            categoryField: "completed_at",
             rotate: false,
             //  autoMargins: false,
             // autoMarginOffset: 15,
