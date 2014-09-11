@@ -76,11 +76,14 @@ angular.module('woodash.directives', [])
             transclude: false,
             template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
             controller: ['$scope', function ($scope) {
-                $scope.getOrders = function (val) {
+                //not using controller but this may be incorrect ??
+            }],
+            link: function (scope, element, attrs, ngModel) {
+
+                scope.getOrders = function (val) {
                     var params = {
                         "filter[created_at_min]": val.dateFrom,
-                        "filter[created_at_max]": val.dateTo,
-                        "status": "completed"
+                        "filter[created_at_max]": val.dateTo
                     };
 
                     wcOrders.getList(params).then(function(orders) {
@@ -90,17 +93,13 @@ angular.module('woodash.directives', [])
                             allOrders.push(value);
                         });
 
-                        $scope.allOrders = allOrders;
+                        initChart(element, attrs, allOrders);
                     })
                 };
-            }],
-            link: function (scope, element, attrs, ngModel) {
-                scope.getOrders(ngModel);
-                scope.$watch('allOrders', function (val) {
-                    if (val) {
-                        initChart(element, attrs, scope.allOrders);
 
-                        console.table(scope.allOrders);
+                scope.$watch(attrs.ngModel, function (val) {
+                    if (val) {
+                        scope.getOrders(val);
                     }
                 });
             }//end watch
@@ -113,7 +112,7 @@ angular.module('woodash.directives', [])
             "type": "serial",
             "dataProvider": data,
             color: "#646464",
-            categoryField: "completed_at",
+            categoryField: "created_at",
             rotate: false,
             //  autoMargins: false,
             // autoMarginOffset: 15,
