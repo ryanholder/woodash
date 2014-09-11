@@ -103,134 +103,22 @@ angular.module('woodash.controllers', [])
 		getUserInfo();
 	}])
 
-	.controller('OverviewCtrl', ['$scope', 'wcApi', function ($scope, wcApi) {
+	.controller('OverviewCtrl', ['$scope', 'OrdersService', function ($scope, OrdersService) {
+
+        $scope.orders = OrdersService.orders;
+
+        OrdersService
+            .getOrders()
+            .then(function () {
+                $scope.orders = OrdersService.orders;
+            });
+
+
 
         $scope.dateRange = {
             dateFrom: moment.utc().subtract(6, 'month').toJSON(),
             dateTo: moment.utc().toJSON()
         }
-
-//        wcApi.getOrders();
-
-		AmCharts.makeChart("overviewpie1div", {
-			type: "pie",
-			balloonText: "<span style='font-size:12px'><b>[[value]]</b> ([[percents]]%)</span>",
-			innerRadius: "65%",
-			labelRadius: 6,
-			labelText: "[[title]]",
-			minRadius: 80,
-			pullOutRadius: 6,
-			radius: "30%",
-			startRadius: "100%",
-			marginBottom: 0,
-			marginLeft: 0,
-			marginRight: 0,
-			marginTop: 0,
-			maxLabelWidth: 80,
-			pullOutOnlyOne: true,
-			sequencedAnimation: false,
-			color: "#646464",
-			colors: [
-				"#3995d4",
-				"#37B751",
-				"#FD3A07",
-				"#37ACC0",
-				"#FD6E13",
-				"#B0DE09",
-			],
-			// labelsEnabled: false,
-			labelTickAlpha: 0.5,
-			outlineAlpha: 1,
-			outlineThickness: 2,
-			titleField: "category",
-			valueField: "column-1",
-			allLabels: [],
-			balloon: {
-				fixedPosition: true,
-				borderThickness: 0,
-				color: "#FFFFFF",
-				fillColor: "#000000",
-				shadowAlpha: 0
-			},
-
-			titles: [],
-			dataProvider: [{
-				"category": "Mens red and white tshirt",
-				"column-1": "10"
-			}, {
-				"category": "Product 2",
-				"column-1": "9"
-			}, {
-				"category": "Mens red and black tshirt",
-				"column-1": "4"
-			}, {
-				"category": "Product 4",
-				"column-1": "4"
-			}, {
-				"category": "Product 5",
-				"column-1": "2"
-			}]
-		});
-
-		AmCharts.makeChart("overviewpie2div", {
-			type: "pie",
-balloonText: "<span style='font-size:12px'><b>[[value]]</b> ([[percents]]%)</span>",
-		innerRadius: "65%",
-		labelRadius: 6,
-		labelText: "[[title]]",
-		minRadius: 80,
-		pullOutRadius: 6,
-		radius: "30%",
-		startRadius: "100%",
-		marginBottom: 0,
-		marginLeft: 0,
-		marginRight: 0,
-		marginTop: 0,
-		maxLabelWidth: 80,
-		pullOutOnlyOne: true,
-		sequencedAnimation: false,
-		color: "#646464",
-		colors: [
-			"#3995d4",
-			"#37B751",
-			"#FD3A07",
-			"#37ACC0",
-			"#FD6E13",
-			"#B0DE09",
-		],
-		// labelsEnabled: false,
-		labelTickAlpha: 0.5,
-		outlineAlpha: 1,
-		outlineThickness: 2,
-		titleField: "category",
-		valueField: "column-1",
-		allLabels: [],
-		balloon: {
-			fixedPosition: true,
-			borderThickness: 0,
-			color: "#FFFFFF",
-			fillColor: "#000000",
-			shadowAlpha: 0
-		},
-
-		titles: [],
-		dataProvider: [{
-			"category": "Mens red and white tshirt",
-			"column-1": "10"
-		}, {
-			"category": "Product 2",
-			"column-1": "9"
-		}, {
-			"category": "Mens red and black tshirt",
-			"column-1": "4"
-		}, {
-			"category": "Product 4",
-			"column-1": "4"
-		}, {
-			"category": "Product 5",
-			"column-1": "2"
-		}]
-	});
 
 	}])
 
