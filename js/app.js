@@ -56,7 +56,15 @@ angular.module('woodash', [
                 views: {
                     'menuContent': {
                         templateUrl: "templates/overview.html",
-                        controller: 'OverviewCtrl'
+                        controller: 'OverviewCtrl',
+                        resolve:{
+                            loadOrders:  function(OrdersService){
+                                return OrdersService.getOrders()
+                                    .then(function() {
+                                        return OrdersService.orders;
+                                    });
+                            }
+                        }
                     }
                 }
             })

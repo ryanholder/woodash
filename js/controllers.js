@@ -103,17 +103,21 @@ angular.module('woodash.controllers', [])
 		getUserInfo();
 	}])
 
-	.controller('OverviewCtrl', ['$scope', 'OrdersService', function ($scope, OrdersService) {
+	.controller('OverviewCtrl', ['$scope', 'loadOrders', function ($scope, loadOrders) {
 
         var vm = this;
 
-        vm.orders = OrdersService.orders;
+        vm.orders = loadOrders;
+
+        console.log(vm.orders);
+
+/*        vm.orders = OrdersService.orders;
 
         OrdersService.getOrders()
             .then(function() {
                 vm.orders = OrdersService.orders;
             });
-
+*/
         $scope.dateRange = {
             dateFrom: moment.utc().subtract(6, 'month').toJSON(),
             dateTo: moment.utc().toJSON()
