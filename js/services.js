@@ -8,6 +8,7 @@ angular.module('woodash.services', [])
         return serviceInstance;
     })
 
+
     .factory('wcApi', ['Restangular', function(Restangular) {
 
         var doRequest = function(path) {
@@ -25,17 +26,19 @@ angular.module('woodash.services', [])
         };
     }])
 
+
     .factory('wcOrders', function(Restangular) {
         return Restangular.service('orders');
     })
 
-    .factory('OrdersService', ['Restangular', function(Restangular) {
+
+    .factory('OrdersService', ['Restangular', 'NotificationService', function(Restangular, NotificationService) {
         var OrdersService = {};
 
 //        OrdersService.someValue = '';
 
         OrdersService.getOrders = function () {
-            Restangular.all('orders').getList().then(function(data) {
+            return Restangular.all('orders').getList().then(function(data) {
                 OrdersService.orders = data;
             }, function errorCallback(reason) {
                 NotificationService.showError(reason);
@@ -44,6 +47,18 @@ angular.module('woodash.services', [])
 
         return OrdersService;
      }])
+
+
+    .factory('NotificationService', ['$q', function($q) {
+        var NotificationService = {};
+
+        NotificationService.showError = function (reason) {
+            NotificationService.error = reason;
+        };
+
+        return NotificationService;
+    }])
+
 
     .factory('xhrIdentityAuth', function () {
         return {

@@ -105,15 +105,14 @@ angular.module('woodash.controllers', [])
 
 	.controller('OverviewCtrl', ['$scope', 'OrdersService', function ($scope, OrdersService) {
 
-        $scope.orders = OrdersService.orders;
+        var vm = this;
 
-        OrdersService
-            .getOrders()
-            .then(function () {
-                $scope.orders = OrdersService.orders;
+        vm.orders = OrdersService.orders;
+
+        OrdersService.getOrders()
+            .then(function() {
+                vm.orders = OrdersService.orders;
             });
-
-
 
         $scope.dateRange = {
             dateFrom: moment.utc().subtract(6, 'month').toJSON(),
