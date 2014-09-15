@@ -104,25 +104,11 @@ angular.module('woodash.controllers', [])
 	}])
 
 	.controller('OverviewCtrl', ['$scope', 'loadOrders', function ($scope, loadOrders) {
-
+        //use vm to represent the binding scope
         var vm = this;
 
+        //returned data
         vm.orders = loadOrders;
-
-        console.log(vm.orders);
-
-/*        vm.orders = OrdersService.orders;
-
-        OrdersService.getOrders()
-            .then(function() {
-                vm.orders = OrdersService.orders;
-            });
-*/
-        $scope.dateRange = {
-            dateFrom: moment.utc().subtract(6, 'month').toJSON(),
-            dateTo: moment.utc().toJSON()
-        }
-
 	}])
 
     .controller('CustomersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {

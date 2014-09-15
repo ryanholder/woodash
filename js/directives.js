@@ -24,6 +24,8 @@ angular.module('woodash.directives', [])
             compile: function (element, attrs) {
                 var modelAccessor = $parse(attrs.ngModel);
 
+                console.log(element);
+
                 var html = "<div id='" + attrs.id + "' class='pull-right'>" +
                     "<i class='fa fa-calendar fa-lg'></i><span></span><b class='caret'></b></div>";
 
@@ -31,6 +33,11 @@ angular.module('woodash.directives', [])
                 element.replaceWith(newElem);
 
                 return function (scope, element, attrs, controller) {
+
+                    scope.dateRange = {
+                        dateFrom: moment.utc().subtract(6, 'month').toJSON(),
+                        dateTo: moment.utc().toJSON()
+                    }
 
                     var el = $(element);
 
