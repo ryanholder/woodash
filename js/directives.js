@@ -18,8 +18,6 @@ angular.module('woodash.directives', [])
             compile: function (element, attrs) {
                 var modelAccessor = $parse(attrs.ngModel);
 
-                console.log(element);
-
                 var html = "<div id='" + attrs.id + "' class='pull-right'>" +
                     "<i class='fa fa-calendar fa-lg'></i><span></span><b class='caret'></b></div>";
 
@@ -61,7 +59,6 @@ angular.module('woodash.directives', [])
                     );
 
                     scope.$watch(modelAccessor, function (val) {
-                        console.dir(val);
                         el.children('span').html(moment(val.dateFrom).format('MMMM D, YYYY') + ' - ' + moment(val.dateTo).format('MMMM D, YYYY'));
                     });
                 };
@@ -93,8 +90,6 @@ angular.module('woodash.directives', [])
                         angular.forEach(orders, function(value) {
                             value.moment_date = moment(value.created_at).format('YYYY-MM-DD');
                             allOrders.push(value);
-                            console.log(value);
-
                         });
 
                         initChart(element, attrs, allOrders);
@@ -111,7 +106,7 @@ angular.module('woodash.directives', [])
     });
 
     var initChart = function(element, attrs, data) {
-        console.log(data);
+//        console.log(data);
         c3.generate({
             bindto: element[0],
             data: {
