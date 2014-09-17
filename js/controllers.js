@@ -109,6 +109,14 @@ angular.module('woodash.controllers', [])
 
         //returned data
         vm.orders = loadOrders;
+
+        console.log(vm.orders);
+
+        var charDC = new DataCollection(vm.orders);
+        var bastards = charDC.query().sum('total');
+
+        console.log(charDC);
+        console.log(bastards);
 	}])
 
     .controller('CustomersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
