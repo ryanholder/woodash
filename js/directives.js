@@ -10,64 +10,6 @@ angular.module('woodash.directives', [])
 		};
 	}])
 
-    .directive('bsdrpDatepicker', function ($parse) {
-        return {
-            restrict: "E",
-            replace: true,
-            transclude: false,
-            compile: function (element, attrs) {
-                var modelAccessor = $parse(attrs.ngModel);
-                console.log(modelAccessor);
-                console.log(attrs.ngModel);
-
-                var html = "<div id='" + attrs.id + "' class='pull-right'>" +
-                    "<i class='fa fa-calendar fa-lg'></i><span></span><b class='caret'></b></div>";
-
-                var newElem = $(html);
-                element.replaceWith(newElem);
-
-                return function (scope, element, attrs, controller) {
-
-                    scope.dateRange = {
-                        dateFrom: moment.utc().subtract(6, 'month').toJSON(),
-                        dateTo: moment.utc().toJSON()
-                    };
-
-                    var el = $(element);
-
-                    el.daterangepicker(
-                        {
-                            ranges: {
-                                'Today': [moment.utc(), moment.utc()],
-                                'Yesterday': [moment.utc().subtract(1, 'days'), moment.utc().subtract(1, 'days')],
-                                'Last 7 Days': [moment.utc().subtract(6, 'days'), moment.utc()],
-                                'Last 30 Days': [moment.utc().subtract(29, 'days'), moment.utc()],
-                                'This Month': [moment.utc().startOf('month'), moment.utc().endOf('month')],
-                                'Last Month': [moment.utc().subtract(1, 'month').startOf('month'), moment.utc().subtract(1, 'month').endOf('month')]
-                            },
-                            startDate: moment.utc().subtract(6, 'month'),
-                            endDate: moment.utc()
-                        },
-                        function(start, end) {
-                            var dateRange = {
-                                dateFrom: start.toJSON(),
-                                dateTo: end.toJSON()
-                            };
-
-                            scope.$apply(function (scope) {
-                                modelAccessor.assign(scope, dateRange);
-                            });
-                        }
-                    );
-
-                    scope.$watch(modelAccessor, function (val) {
-                        el.children('span').html(moment(val.dateFrom).format('MMMM D, YYYY') + ' - ' + moment(val.dateTo).format('MMMM D, YYYY'));
-                    });
-                };
-            }
-        };
-    })
-
     .directive('dateRange', function () {
         return {
             restrict: "EA",
