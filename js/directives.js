@@ -68,19 +68,21 @@ angular.module('woodash.directives', [])
         };
     })
 
-    .directive('dateRange', function ($parse) {
+    .directive('dateRange', function () {
         return {
             restrict: "EA",
             replace: true,
             template: [
                 '<div class="pull-right">',
-                    '<i class="fa fa-calendar fa-lg"></i><span></span><b class="caret"></b>',
+                    '<i class="fa fa-calendar fa-lg"></i><span>{{dateRange.startDateFormated}}{{dateRange.separator}}{{dateRange.endDateFormated}}</span><b class="caret"></b>',
                 '</div>'
             ].join(''),
-            controller: function($scope, $element){
+            controller: function($scope){
                 $scope.dateRange = {
-                    startDate: moment().utc().startOf('day'),
-                    endDate: moment().utc().endOf('day'),
+                    startDate: moment().startOf('day'),
+                    endDate: moment().endOf('day'),
+                    startDateFormated: moment().startOf('day').format('ll'),
+                    endDateFormated: moment().endOf('day').format('ll'),
                     minDate: false,
                     maxDate: false,
                     dateLimit: { days: 60 },
@@ -91,12 +93,12 @@ angular.module('woodash.directives', [])
                     timePicker12Hour: true,
                     singleDatePicker: false,
                     ranges: {
-                        'Today': [moment.utc(), moment.utc()],
-                        'Yesterday': [moment.utc().subtract(1, 'days'), moment.utc().subtract(1, 'days')],
-                        'Last 7 Days': [moment.utc().subtract(6, 'days'), moment.utc()],
-                        'Last 30 Days': [moment.utc().subtract(29, 'days'), moment.utc()],
-                        'This Month': [moment.utc().startOf('month'), moment.utc().endOf('month')],
-                        'Last Month': [moment.utc().subtract(1, 'month').startOf('month'), moment.utc().subtract(1, 'month').endOf('month')]
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                     },
                     opens: 'left',
                     buttonClasses: ['btn btn-default'],
@@ -117,10 +119,10 @@ angular.module('woodash.directives', [])
                 };
 
                 $scope.cb = function(start, end, label) {
-                    console.log(start, end, label);
-                    console.log(start.toISOString(), end.toISOString(), label);
+                    //console.log(start, end, label);
+                    //console.log(start.toISOString(), end.toISOString(), label);
 
-                    console.log($scope.dateRange);
+                    //console.log($scope.dateRange);
                     //$scopedateRange = {
                     //    dateFrom: start.toJSON(),
                     //    dateTo: end.toJSON()
@@ -129,6 +131,8 @@ angular.module('woodash.directives', [])
                     $scope.$apply(function ($scope) {
                         $scope.dateRange.startDate = start;
                         $scope.dateRange.endDate = end;
+                        $scope.dateRange.startDateFormated = start.format('ll');
+                        $scope.dateRange.endDateFormated = end.format('ll');
                     });
 
                     //$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -142,11 +146,9 @@ angular.module('woodash.directives', [])
 
             },
             link: function(scope, element, attrs) {
-
-
                 var el = $(element);
 
-                console.log(scope);
+                //console.log(scope);
                 el.daterangepicker(scope.dateRange, scope.cb);
                 //    {
                 //        ranges: {
@@ -166,10 +168,10 @@ angular.module('woodash.directives', [])
                 //);
 
                 // Use the relatively new watchCollection().
-                scope.$watchCollection("dateRange", function( newValue, oldValue ) {
-                    console.log( newValue, oldValue );
-                    el.children('span').html(moment(newValue.startDate).format('MMMM D, YYYY') + ' - ' + moment(newValue.endDate).format('MMMM D, YYYY'));
-                });
+                //scope.$watchCollection("dateRange", function( newValue, oldValue ) {
+                //    //console.log( newValue, oldValue );
+                //    //el.children('span').html(moment(newValue.startDate).format('MMMM D, YYYY') + ' - ' + moment(newValue.endDate).format('MMMM D, YYYY'));
+                //});
             }
         };
     })
@@ -186,11 +188,11 @@ angular.module('woodash.directives', [])
             }],
             link: function (scope, element, attrs, ngModel) {
                 scope.getOrders = function (val) {
-                    var params2 = {
-                        "filter[created_at_min]": val.dateFrom,
-                        "filter[created_at_max]": val.dateTo,
-                        "status": "completed"
-                    };
+                    //var params2 = {
+                    //    "filter[created_at_min]": val.dateFrom,
+                    //    "filter[created_at_max]": val.dateTo,
+                    //    "status": "completed"
+                    //};
 
                     var params = {
                         "filter[created_at_min]": val.startDate.toISOString(),
@@ -198,7 +200,7 @@ angular.module('woodash.directives', [])
                         "status": "completed"
                     };
 
-                    console.log(val, params, params2);
+                    //console.log(val, params, params2);
 
                     wcOrders.getList(params).then(function(orders) {
                         var allOrders = [];
