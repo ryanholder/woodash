@@ -29,7 +29,7 @@ angular.module('woodash.directives', [])
                     scope.dateRange = {
                         dateFrom: moment.utc().subtract(6, 'month').toJSON(),
                         dateTo: moment.utc().toJSON()
-                    }
+                    };
 
                     var el = $(element);
 
@@ -50,7 +50,7 @@ angular.module('woodash.directives', [])
                             var dateRange = {
                                 dateFrom: start.toJSON(),
                                 dateTo: end.toJSON()
-                            }
+                            };
 
                             scope.$apply(function (scope) {
                                 modelAccessor.assign(scope, dateRange);
@@ -103,7 +103,67 @@ angular.module('woodash.directives', [])
                 });//end watch
             }
         }
-    });
+    })
+
+    .directive('valueWidget', function () {
+        return {
+            //require: 'ngModel',
+            restrict: 'EA',
+            replace: true,
+            scope: {
+                service: '@',
+                function: '@'
+            },
+            templateUrl: '/templates/value-widget.directive.html',
+            controller: ['$scope', function ($scope) {
+                //todo
+                console.log($scope.service);
+            }],
+            link: function (scope, element, attrs, controller) {
+                //todo
+                console.log(attrs.service);
+            }
+        }
+    })
+
+/*    .directive('chartWidget', function (wcOrders) { // chartWidget to be a more generic version of above ordersWidget
+        return {
+            require: 'ngModel',
+            restrict: 'E',
+            replace: true,
+            transclude: false,
+            template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
+            controller: ['$scope', function ($scope) {
+                //not using controller but this may be incorrect ??
+            }],
+            link: function (scope, element, attrs, ngModel) {
+                scope.getOrders = function (val) {
+                    var params = {
+                        "filter[created_at_min]": val.dateFrom,
+                        "filter[created_at_max]": val.dateTo,
+                        "status": "completed"
+                    };
+
+                    wcOrders.getList(params).then(function(orders) {
+                        var allOrders = [];
+
+                        angular.forEach(orders, function(value) {
+                            value.moment_date = moment(value.created_at).format('YYYY-MM-DD');
+                            allOrders.push(value);
+                        });
+
+                        initChart(element, attrs, allOrders);
+                    })
+                };
+
+                scope.$watch(attrs.ngModel, function (val) {
+                    if (val) {
+                        scope.getOrders(val);
+                    }
+                });//end watch
+            }
+        }
+    });*/
 
     var initChart = function(element, attrs, data) {
 //        console.log(data);
