@@ -20,6 +20,7 @@ angular.module('woodash.directives', [])
                 '</div>'
             ].join(''),
             controller: function($scope){
+                //todo: the current dateRange object should be a service that could be injected in to other directives
                 $scope.dateRange = {
                     startDate: moment().startOf('day'),
                     endDate: moment().endOf('day'),
@@ -115,26 +116,29 @@ angular.module('woodash.directives', [])
         }
     })
 
-    .directive('valueWidget', function () {
+    .directive('totalRevenue', function () {
         return {
-            //require: 'ngModel',
+            require: 'ngModel',
             restrict: 'EA',
             replace: true,
-            scope: {
-                service: '@',
-                function: '@'
-            },
-            templateUrl: '/templates/value-widget.directive.html',
+            template: [
+                '<div>',
+                    '<div class="card">',
+                        '<div class="woodash-numbers-main">$32,000</div>',
+                        '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>total revenue</div>',
+                    '</div>',
+                '</div>'
+            ].join(''),
             controller: ['$scope', function ($scope) {
                 //todo
-                console.log($scope.service);
+                console.log($scope);
             }],
             link: function (scope, element, attrs, controller) {
                 //todo
-                console.log(attrs.service);
+                console.log(attrs);
             }
         }
-    })
+    });
 
 /*    .directive('chartWidget', function (wcOrders) { // chartWidget to be a more generic version of above ordersWidget
         return {
