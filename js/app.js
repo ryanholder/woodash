@@ -61,12 +61,6 @@ angular.module('woodash', [
                             initOverview: function(InitOverviewService) {
                                 return InitOverviewService();
                             }
-                            //getOrders:  function(OrdersService){
-                            //    return OrdersService.getOrders()
-                            //        .then(function() {
-                            //            return OrdersService.orders;
-                            //        });
-                            //}
                         }
                     }
                 }
