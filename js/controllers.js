@@ -103,20 +103,24 @@ angular.module('woodash.controllers', [])
 		getUserInfo();
 	}])
 
-	.controller('OverviewCtrl', ['$scope', 'loadOrders', function ($scope, loadOrders) {
+	.controller('OverviewCtrl', ['$scope', 'initOverview', function ($scope, initOverview) {
         //use vm to represent the binding scope
         var vm = this;
 
         //returned data
-        vm.orders = loadOrders;
+        vm.orders = initOverview.orders;
+        vm.dateRange = initOverview.dateRange;
+        //vm.dateRange = initOverview.greeting;
 
+        console.log(vm.dateRange);
         console.log(vm.orders);
+        //console.log(vm.dateRange);
 
-        var charDC = new DataCollection(vm.orders);
-        var bastards = charDC.query().sum('total');
-
-        console.log(charDC);
-        console.log(bastards);
+        //var charDC = new DataCollection(vm.orders);
+        //var bastards = charDC.query().sum('total');
+        //
+        //console.log(charDC);
+        //console.log(bastards);
 	}])
 
     .controller('CustomersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {

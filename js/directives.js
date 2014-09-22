@@ -12,7 +12,7 @@ angular.module('woodash.directives', [])
 
     .directive('dateRange', function () {
         return {
-            restrict: "EA",
+            restrict: 'EA',
             replace: true,
             template: [
                 '<div class="pull-right">',

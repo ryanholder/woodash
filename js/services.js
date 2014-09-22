@@ -9,45 +9,104 @@ angular.module('woodash.services', [])
     })
 
 
-    .factory('wcApi', ['Restangular', function(Restangular) {
-
-        var doRequest = function(path) {
-
-            return Restangular.all(path).getList()
-                .then(function(result) {
-                    var firstAccount = result[0];
-                    console.dir(result);
-                    console.dir(firstAccount);
-                });
-        }
-
-        return {
-            getOrders: function() { return doRequest('orders'); }
-        };
-    }])
+    //.factory('wcApi', ['Restangular', function(Restangular) {
+    //
+    //    var doRequest = function(path) {
+    //
+    //        return Restangular.all(path).getList()
+    //            .then(function(result) {
+    //                var firstAccount = result[0];
+    //                console.dir(result);
+    //                console.dir(firstAccount);
+    //            });
+    //    }
+    //
+    //    return {
+    //        getOrders: function() { return doRequest('orders'); }
+    //    };
+    //}])
 
 
     .factory('wcOrders', function(Restangular) {
         return Restangular.service('orders');
     })
 
+    .factory("messageService", function($q){
+        return {
+            getMessage: function(){
+                return $q.when("Hello World!");
+            }
+        };
+    })
 
-    .factory('OrdersService', ['Restangular', 'NotificationService', function(Restangular, NotificationService) {
+    .factory("InitOverviewService", function(DateRangeService, OrdersService, $q) {
+        return function() {
+            var dateRange = DateRangeService.dateRange;
+            var orders = OrdersService.getOrders();
+
+            return $q.all([dateRange, orders]).then(function(results){
+                return {
+                    dateRange: results[0],
+                    orders: results[1]
+                };
+            });
+        }
+
+        //var deferred = $q.defer();
+        ////console.log(OrdersService.getOrders());
+        //setTimeout(function() {
+        //    //deferred.notify('About to greet ' + name + '.');
+        //
+        //    if (OrdersService.getOrders()) {
+        //        deferred.resolve('Hello, !');
+        //    } else {
+        //        deferred.reject('Greeting is not allowed.');
+        //    }
+        //}, 6000);
+        //console.log(deferred.promise);
+        //return function() {
+        //    var orders = OrdersService.getOrders();
+        //    var dateRange = DateRangeService.getDateRange();
+        //
+        //    return $q.all([orders, dateRange]).then(function(results) {
+        //        return {
+        //            orders: results[0],
+        //            dateRange: results[1]
+        //        };
+        //    });
+        //}
+    })
+
+    .factory('OrdersService', ['$q', 'Restangular', 'NotificationService', function($q, Restangular, NotificationService) {
         var OrdersService = {};
 
-//        OrdersService.someValue = '';
-
         OrdersService.getOrders = function () {
-            return Restangular.all('orders').getList().then(function(data) {
-                OrdersService.orders = data;
-            }, function errorCallback(reason) {
-                NotificationService.showError(reason);
-            });
+            var deferred = $q.defer();
+            Restangular.all('orders').getList().then(
+                function(data) {
+                    deferred.resolve({
+                        orders: data
+                    });
+                },
+                function(error) {
+                    NotificationService.showError(error);
+                });
+            return deferred.promise;
         };
 
         return OrdersService;
      }])
 
+    .factory('DateRangeService', ['$q', 'NotificationService', function($q, NotificationService) {
+        var DateRangeService = {};
+
+        DateRangeService.dateRange = {
+            startDate: moment().startOf('day'),
+            endDate: moment().endOf('day')
+        };
+
+        return DateRangeService;
+    }])
 
     .factory('NotificationService', ['$q', function($q) {
         var NotificationService = {};

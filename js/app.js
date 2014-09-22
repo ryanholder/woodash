@@ -58,12 +58,15 @@ angular.module('woodash', [
                         templateUrl: "templates/overview.html",
                         controller: 'OverviewCtrl',
                         resolve:{
-                            loadOrders:  function(OrdersService){
-                                return OrdersService.getOrders()
-                                    .then(function() {
-                                        return OrdersService.orders;
-                                    });
+                            initOverview: function(InitOverviewService) {
+                                return InitOverviewService();
                             }
+                            //getOrders:  function(OrdersService){
+                            //    return OrdersService.getOrders()
+                            //        .then(function() {
+                            //            return OrdersService.orders;
+                            //        });
+                            //}
                         }
                     }
                 }
