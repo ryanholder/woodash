@@ -128,16 +128,37 @@ angular.module('woodash.directives', [])
         }
     })
 
-    .directive('valueTotalRevenue', function (wcOrders) {
+    .directive('valueCards', function (wcOrders, $filter) {
+        //todo: create value directive that has child directives to perform alternative functions eg. <value-widget><total-revenue>
         return {
             require: 'ngModel',
             restrict: 'EA',
             replace: true,
             template: [
-                '<div>',
-                    '<div class="card">',
-                        '<div class="woodash-numbers-main">{{totalRevenue}}</div>',
-                        '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>total revenue</div>',
+                '<div class="row woodash-numbers">',
+                    '<div class="col">',
+                        '<div class="card">',
+                            '<div class="woodash-numbers-main">{{totalRevenue}}</div>',
+                            '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>total revenue</div>',
+                        '</div>',
+                    '</div>',
+                    '<div class="col">',
+                        '<div class="card">',
+                            '<div class="woodash-numbers-main">{{ordersPlaced}}</div>',
+                            '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>orders placed</div>',
+                        '</div>',
+                    '</div>',
+                    '<div class="col">',
+                        '<div class="card">',
+                            '<div class="woodash-numbers-main">{{productsSold}}</div>',
+                            '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>products sold</div>',
+                        '</div>',
+                    '</div>',
+                    '<div class="col">',
+                        '<div class="card">',
+                            '<div class="woodash-numbers-main">{{averageSale}}</div>',
+                            '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>average sale</div>',
+                        '</div>',
                     '</div>',
                 '</div>'
             ].join(''),
@@ -152,8 +173,12 @@ angular.module('woodash.directives', [])
                     wcOrders.getList(params).then(function(orders) {
                         //var allOrders = [];
 
+                        console.log(orders);
                         var charDC = new DataCollection(orders);
-                        $scope.totalRevenue = charDC.query().sum('total');
+                        $scope.totalRevenue = $filter('number')(charDC.query().sum('total'), 2);
+                        $scope.ordersPlaced = $filter('number')(orders.length, 2);
+                        $scope.productsSold = $filter('number')(charDC.query().sum('total_line_items_quantity'), 2);
+                        $scope.averageSale = $filter('number')(charDC.query().avg('total'), 2);
 
                     })
                 };
