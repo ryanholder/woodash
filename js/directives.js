@@ -10,22 +10,24 @@ angular.module('woodash.directives', [])
 		};
 	}])
 
-    .directive('dateRange', function () {
+    .directive('dateRange', function (DateRangeService) {
         return {
             restrict: 'EA',
             replace: true,
             template: [
                 '<div class="pull-right">',
-                    '<i class="fa fa-calendar fa-lg"></i><span>{{dateRange.startDateFormated}}{{dateRange.separator}}{{dateRange.endDateFormated}}</span><b class="caret"></b>',
+                    '<i class="fa fa-calendar fa-lg"></i><span>{{dateRangeOptions.startDateFormated}}{{dateRangeOptions.separator}}{{dateRangeOptions.endDateFormated}}</span><b class="caret"></b>',
                 '</div>'
             ].join(''),
             controller: function($scope){
                 //todo: the current dateRange object should be a service that could be injected in to other directives
-                $scope.dateRange = {
-                    startDate: moment().startOf('day'),
-                    endDate: moment().endOf('day'),
-                    startDateFormated: moment().startOf('day').format('ll'),
-                    endDateFormated: moment().endOf('day').format('ll'),
+                var dateRange = DateRangeService.initRange();
+
+                $scope.dateRangeOptions = {
+                    startDate: dateRange.startDate,
+                    endDate : dateRange.endDate,
+                    startDateFormated: dateRange.startDate.format('ll'),
+                    endDateFormated: dateRange.startDate.format('ll'),
                     minDate: false,
                     maxDate: false,
                     dateLimit: { days: 60 },
@@ -62,22 +64,25 @@ angular.module('woodash.directives', [])
                 };
 
                 $scope.cb = function(start, end, label) {
+                    var dateRange = DateRangeService.setRange(start, end);
                     $scope.$apply(function ($scope) {
-                        $scope.dateRange.startDate = start;
-                        $scope.dateRange.endDate = end;
-                        $scope.dateRange.startDateFormated = start.format('ll');
-                        $scope.dateRange.endDateFormated = end.format('ll');
+                        $scope.dateRangeOptions.startDate = dateRange.startDate;
+                        $scope.dateRangeOptions.endDate = dateRange.endDate;
+                        $scope.dateRangeOptions.startDateFormated = dateRange.startDate.format('ll');
+                        $scope.dateRangeOptions.endDateFormated = dateRange.endDate.format('ll');
                     });
+
+
                 };
             },
             link: function(scope, element, attrs) {
                 var el = $(element);
-                el.daterangepicker(scope.dateRange, scope.cb);
+                el.daterangepicker(scope.dateRangeOptions, scope.cb);
             }
         };
     })
 
-    .directive('ordersChart', function (wcOrders) {
+    .directive('ordersChart', function (wcOrders, InitOverviewService) {
         return {
             require: 'ngModel',
             restrict: 'E',
@@ -85,9 +90,16 @@ angular.module('woodash.directives', [])
             transclude: false,
             template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
             controller: ['$scope', function ($scope) {
-                //not using controller but this may be incorrect ??
+/*                InitOverviewService.then(
+                    function(data) {
+                        console.log(data);
+                        console.log($scope);
+                    }
+
+                );*/
             }],
             link: function (scope, element, attrs, ngModel) {
+
                 scope.getOrders = function (val) {
                     var params = {
                         "filter[created_at_min]": val.startDate.toISOString(),
@@ -116,7 +128,7 @@ angular.module('woodash.directives', [])
         }
     })
 
-    .directive('totalRevenue', function () {
+    .directive('valueTotalRevenue', function (wcOrders) {
         return {
             require: 'ngModel',
             restrict: 'EA',
@@ -124,18 +136,34 @@ angular.module('woodash.directives', [])
             template: [
                 '<div>',
                     '<div class="card">',
-                        '<div class="woodash-numbers-main">$32,000</div>',
+                        '<div class="woodash-numbers-main">{{totalRevenue}}</div>',
                         '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>total revenue</div>',
                     '</div>',
                 '</div>'
             ].join(''),
             controller: ['$scope', function ($scope) {
-                //todo
-                console.log($scope);
+                $scope.getTotalRevenue = function (val) {
+                    var params = {
+                        "filter[created_at_min]": val.startDate.toISOString(),
+                        "filter[created_at_max]": val.endDate.toISOString(),
+                        "status": "completed"
+                    };
+
+                    wcOrders.getList(params).then(function(orders) {
+                        //var allOrders = [];
+
+                        var charDC = new DataCollection(orders);
+                        $scope.totalRevenue = charDC.query().sum('total');
+
+                    })
+                };
             }],
             link: function (scope, element, attrs, controller) {
-                //todo
-                console.log(attrs);
+                scope.$watchCollection(attrs.ngModel, function (val) {
+                    if (val) {
+                        scope.getTotalRevenue(val);
+                    }
+                });//end watch
             }
         }
     });

@@ -6,9 +6,11 @@ angular.module('woodash.services', [])
         return Restangular.service('orders');
     })
 
-    .factory("InitOverviewService", function(DateRangeService, OrdersService, $q) {
-        return function() {
-            var dateRange = DateRangeService.dateRange;
+    .factory('InitOverviewService', function(DateRangeService, OrdersService, $q) {
+        //var InitOverviewService = {};
+
+        //InitOverviewService.loadOverview = function () {
+            var dateRange = DateRangeService.initRange();
             var orders = OrdersService.getOrders();
 
             return $q.all([dateRange, orders]).then(function(results){
@@ -16,8 +18,25 @@ angular.module('woodash.services', [])
                     dateRange: results[0],
                     orders: results[1]
                 };
+                //return {
+                //    dateRange: results[0],
+                //    orders: results[1]
+                //};
             });
-        }
+        //};
+
+
+        //return InitOverviewService;
+/*        return function() {
+
+
+            return $q.all([dateRange, orders]).then(function(results){
+                return {
+                    dateRange: results[0],
+                    orders: results[1]
+                };
+            });
+        }*/
     })
 
     .factory('OrdersService', ['$q', 'Restangular', 'NotificationService', function($q, Restangular, NotificationService) {
@@ -40,16 +59,37 @@ angular.module('woodash.services', [])
         return OrdersService;
      }])
 
-    .factory('DateRangeService', ['$q', 'NotificationService', function($q, NotificationService) {
+    .factory('DateRangeService', function() {
         var DateRangeService = {};
 
-        DateRangeService.dateRange = {
-            startDate: moment().startOf('day'),
-            endDate: moment().endOf('day')
+        DateRangeService.initRange = function () {
+            var dateRange = {
+                startDate: moment().startOf('day'),
+                endDate: moment().endOf('day')
+            };
+
+            console.log('test Init');
+            return dateRange;
         };
 
+        DateRangeService.getRange = function () {
+            console.log('test Get');
+            return dateRange;
+        };
+
+        DateRangeService.setRange = function (start, end) {
+            var dateRange = {
+                startDate: start,
+                endDate: end
+            };
+
+            console.log('test Set');
+            return dateRange;
+        };
+
+
         return DateRangeService;
-    }])
+    })
 
     .factory('NotificationService', ['$q', function($q) {
         var NotificationService = {};

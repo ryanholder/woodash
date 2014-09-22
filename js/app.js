@@ -59,7 +59,7 @@ angular.module('woodash', [
                         controller: 'OverviewCtrl',
                         resolve:{
                             initOverview: function(InitOverviewService) {
-                                return InitOverviewService();
+                                return InitOverviewService;
                             }
                         }
                     }
