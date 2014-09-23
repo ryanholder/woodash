@@ -138,26 +138,26 @@ angular.module('woodash.directives', [])
                 '<div class="row woodash-numbers">',
                     '<div class="col">',
                         '<div class="card">',
-                            '<div class="woodash-numbers-main">{{totalRevenue}}</div>',
-                            '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>total revenue</div>',
-                        '</div>',
-                    '</div>',
-                    '<div class="col">',
-                        '<div class="card">',
                             '<div class="woodash-numbers-main">{{ordersPlaced}}</div>',
-                            '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>orders placed</div>',
+                            '<div class="woodash-numbers-desc"></i>orders placed</div>',
                         '</div>',
                     '</div>',
                     '<div class="col">',
                         '<div class="card">',
                             '<div class="woodash-numbers-main">{{productsSold}}</div>',
-                            '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>products sold</div>',
+                            '<div class="woodash-numbers-desc"></i>products sold</div>',
                         '</div>',
                     '</div>',
                     '<div class="col">',
                         '<div class="card">',
-                            '<div class="woodash-numbers-main">{{averageSale}}</div>',
-                            '<div class="woodash-numbers-desc"><i class="fa fa-arrow-circle-up"></i>average sale</div>',
+                            '<div class="woodash-numbers-main">{{totalRevenue | currency}}</div>',
+                            '<div class="woodash-numbers-desc"></i>total revenue</div>',
+                        '</div>',
+                    '</div>',
+                    '<div class="col">',
+                        '<div class="card">',
+                            '<div class="woodash-numbers-main">{{averageSale | currency}}</div>',
+                            '<div class="woodash-numbers-desc"></i>average sale</div>',
                         '</div>',
                     '</div>',
                 '</div>'
@@ -175,10 +175,10 @@ angular.module('woodash.directives', [])
 
                         console.log(orders);
                         var charDC = new DataCollection(orders);
-                        $scope.totalRevenue = $filter('number')(charDC.query().sum('total'), 2);
-                        $scope.ordersPlaced = $filter('number')(orders.length, 2);
-                        $scope.productsSold = $filter('number')(charDC.query().sum('total_line_items_quantity'), 2);
-                        $scope.averageSale = $filter('number')(charDC.query().avg('total'), 2);
+                        $scope.totalRevenue = charDC.query().sum('total');
+                        $scope.ordersPlaced = $filter('number')(orders.length, 0);
+                        $scope.productsSold = $filter('number')(charDC.query().sum('total_line_items_quantity'), 0);
+                        $scope.averageSale = charDC.query().avg('total');
 
                     })
                 };
