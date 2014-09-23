@@ -82,23 +82,111 @@ angular.module('woodash.directives', [])
         };
     })
 
-    .directive('ordersChart', function (wcOrders, InitOverviewService) {
+    .directive('bestSellingProducts', function (wcOrders) {
         return {
-            require: 'ngModel',
-            restrict: 'E',
+            //require: 'ngModel',
+            restrict: 'EA',
+            replace: true,
+            scope: true,
+            template: '<div style="min-width: 100px; height: 300px;"></div>',
+            controller: ['$scope', function ($scope) {
+                //todo: certain functionality to move to controller
+            }],
+            link: function (scope, element, attrs) {
+
+                scope.getOrders = function (val) {
+                    var params = {
+                        "filter[created_at_min]": val.startDate.toISOString(),
+                        "filter[created_at_max]": val.endDate.toISOString(),
+                        "status": "completed"
+                    };
+
+                    wcOrders.getList(params).then(function(orders) {
+
+                        console.log(orders);
+                        var allOrders = [];
+
+                        var flatItemsB = _.chain(_.flatten(orders, 'line_items'))
+                            .union()
+                            .value();
+
+                        var flatItemsC = _.chain(flatItemsB)
+                            .countBy("product_id")
+                            //.pick('name')
+                            .pairs()
+                            .sortBy(1).reverse()
+                            //.pluck(0)
+                            //.value();
+                            .value();
+
+                            //.sortBy();
+                            //.first()
+                            //.value();
+                            //_.chain(orders)
+                            //_.flatten('line_items');
+                            //_.countBy('product_id');
+
+                        var categories = _.chain(_.flatten(orders, 'line_items'))
+                            .countBy("product_id")
+                            .pick('name')
+                            .pairs()
+                            .sortBy(1).reverse()
+                            //.pluck(0)
+                            .value();
+
+                        console.log(categories);
+
+                        //var youngest = _.chain(characters)
+                        //    .sortBy('age')
+                        //    .map(function(chr) { return chr.name + ' is ' + chr.age; })
+                        //    .first()
+                        //    .value();
+
+                        //console.log(flatItemsA);
+                        console.log(flatItemsB);
+                        console.log(flatItemsC);
+
+                        //var charDC = new DataCollection(orders);
+                        //var locations = charDC.query().distinct('product_id');
+                        //console.log(locations);
+
+                        var charDC = new DataCollection(flatItemsB);
+                        angular.forEach(flatItemsC, function(value) {
+                            console.log(value);
+                            var theone = charDC.query()
+                                .filter({product_id: Number(value[0])})
+                                .values();
+                            //value.moment_date = moment(value.created_at).format('YYYY-MM-DD');
+                            //allOrders.push(value.line_items.product_id);
+                            console.log(theone);
+                        });
+
+
+
+                        initBestSellingProducts(element, attrs, allOrders);
+                    })
+                };
+
+                scope.$watchCollection(attrs.ngModel, function (val) {
+                    if (val) {
+                        scope.getOrders(val);
+                    }
+                });
+            }
+        }
+    })
+
+    .directive('ordersChart', function (wcOrders) {
+        return {
+            //require: 'ngModel',
+            restrict: 'EA',
             replace: true,
             transclude: false,
-            template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
+            template: '<div style="min-width: 310px; height: 400px;"></div>',
             controller: ['$scope', function ($scope) {
-/*                InitOverviewService.then(
-                    function(data) {
-                        console.log(data);
-                        console.log($scope);
-                    }
-
-                );*/
+                //todo: certain functionality to move to controller
             }],
-            link: function (scope, element, attrs, ngModel) {
+            link: function (scope, element, attrs) {
 
                 scope.getOrders = function (val) {
                     var params = {
@@ -115,7 +203,7 @@ angular.module('woodash.directives', [])
                             allOrders.push(value);
                         });
 
-                        initChart(element, attrs, allOrders);
+                        initOrdersChart(element, attrs, allOrders);
                     })
                 };
 
@@ -123,7 +211,7 @@ angular.module('woodash.directives', [])
                     if (val) {
                         scope.getOrders(val);
                     }
-                });//end watch
+                });
             }
         }
     })
@@ -193,60 +281,54 @@ angular.module('woodash.directives', [])
         }
     });
 
-/*    .directive('chartWidget', function (wcOrders) { // chartWidget to be a more generic version of above ordersWidget
-        return {
-            require: 'ngModel',
-            restrict: 'E',
-            replace: true,
-            transclude: false,
-            template: '<div style="min-width: 310px; height: 400px; margin: 0 auto"></div>',
-            controller: ['$scope', function ($scope) {
-                //not using controller but this may be incorrect ??
-            }],
-            link: function (scope, element, attrs, ngModel) {
-                scope.getOrders = function (val) {
-                    var params = {
-                        "filter[created_at_min]": val.dateFrom,
-                        "filter[created_at_max]": val.dateTo,
-                        "status": "completed"
-                    };
-
-                    wcOrders.getList(params).then(function(orders) {
-                        var allOrders = [];
-
-                        angular.forEach(orders, function(value) {
-                            value.moment_date = moment(value.created_at).format('YYYY-MM-DD');
-                            allOrders.push(value);
-                        });
-
-                        initChart(element, attrs, allOrders);
-                    })
-                };
-
-                scope.$watch(attrs.ngModel, function (val) {
-                    if (val) {
-                        scope.getOrders(val);
-                    }
-                });//end watch
+var initOrdersChart = function(element, attrs, data) {
+        console.log('da:' + element);
+    c3.generate({
+        bindto: element[0],
+        data: {
+            json: data,
+            keys: {
+                x: 'moment_date',
+                value: ['total', 'subtotal']
+            }
+        },
+        axis: {
+            x: {
+                type: 'timeseries'
             }
         }
-    });*/
+    });
+};
 
-    var initChart = function(element, attrs, data) {
-//        console.log(data);
-        c3.generate({
-            bindto: element[0],
-            data: {
-                json: data,
-                keys: {
-                    x: 'moment_date',
-                    value: ['total', 'subtotal']
-                }
+var initBestSellingProducts = function(element, attrs, data) {
+        console.log(element);
+    c3.generate({
+        bindto: element[0],
+        data: {
+            json: data,
+            keys: {
+                value: ['name', 'total']
             },
-            axis: {
-                x: {
-                    type: 'timeseries'
-                }
-            }
-        });
-    };
+            type: 'donut'
+        },
+        donut: {
+            title: "Iris Petal Width"
+        }
+    });
+
+    //c3.generate({
+    //    data: {
+    //        columns: [
+    //            ['data1', 30],
+    //            ['data2', 120],
+    //        ],
+    //        type : 'donut',
+    //        onclick: function (d, i) { console.log("onclick", d, i); },
+    //        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+    //        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+    //    },
+    //    donut: {
+    //        title: "Iris Petal Width"
+    //    }
+    //});
+};

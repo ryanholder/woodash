@@ -18,37 +18,17 @@
 				</div>
 			</div>
 		</div>
-		<!--<div class="row woodash-numbers">-->
-            <value-cards ng-model="dateRangeOptions"></value-cards>
-<!--			<div class="col">
-				<div class="card">
-					<div class="woodash-numbers-main">$32,000</div>
-					<div class="woodash-numbers-desc">orders placed</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card">
-					<div class="woodash-numbers-main">$32,000</div>
-					<div class="woodash-numbers-desc">products sold</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card">
-					<div class="woodash-numbers-main">$32,000</div>
-					<div class="woodash-numbers-desc">average sale</div>
-				</div>
-			</div>-->
-		<!--</div>-->
+        <value-cards ng-model="dateRangeOptions"></value-cards>
         <div class="row">
 			<div class="col">
 				<div class="card">
 
-                    <div class="item no-bot-border">
-				        <p class="card-title">Nine Inch Nails</p>
-				    </div>
+					<div class="item no-bot-border">
+						<p class="card-title">Best Selling Products</p>
+					</div>
 
 					<div class="item no-top-border no-padding">
-						<div id="overviewpie1div"></div>
+                        <best-selling-products id="bestsellingproducts" class="item" ng-model="dateRangeOptions"></best-selling-products>
 					</div>
 
 				</div>
@@ -57,20 +37,7 @@
 				<div class="card">
 
 					<div class="item no-bot-border">
-						<p class="card-title">Nine Inch Nails</p>
-					</div>
-
-					<div class="item no-top-border no-padding">
-						<div id="overviewpie2div"></div>
-					</div>
-
-				</div>
-			</div>
-			<div class="col">
-				<div class="card">
-
-					<div class="item no-bot-border">
-						<p class="card-title">Nine Inch Nails</p>
+						<p class="card-title">Latest Purchases</p>
 					</div>
 
 					<div class="item item-icon-left no-top-border">
