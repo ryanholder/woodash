@@ -27,7 +27,7 @@ angular.module('woodash.directives', [])
                     startDate: dateRange.startDate,
                     endDate : dateRange.endDate,
                     startDateFormated: dateRange.startDate.format('ll'),
-                    endDateFormated: dateRange.startDate.format('ll'),
+                    endDateFormated: dateRange.endDate.format('ll'),
                     minDate: false,
                     maxDate: false,
                     dateLimit: { days: 60 },

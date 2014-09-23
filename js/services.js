@@ -64,8 +64,8 @@ angular.module('woodash.services', [])
 
         DateRangeService.initRange = function () {
             var dateRange = {
-                startDate: moment().startOf('day'),
-                endDate: moment().endOf('day')
+                startDate: moment().startOf('month'),
+                endDate: moment().endOf('month')
             };
 
             console.log('test Init');
