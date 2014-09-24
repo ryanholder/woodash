@@ -109,19 +109,25 @@ angular.module('woodash', [
         RestangularProvider.setBaseUrl('https://wp.thewhatwhat.com/wc-api/v1');
         RestangularProvider.setDefaultRequestParams({
             consumer_key: "ck_45841d89825d617a00814f88e74face7",
-            consumer_secret: "cs_d6da0b74e1f26cdd1f6bb6c8a0207e90",
-            "filter[limit]": 99
+            consumer_secret: "cs_d6da0b74e1f26cdd1f6bb6c8a0207e90"
         });
 
         // add a response intereceptor
+        // todo: require due to "Response for getList SHOULD be an array and not an object or something else..."
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;
 
             // .. to look for getList operations
             if (operation === "getList") {
                 // .. and handle the data and meta data
-                extractedData = data[what];
+                if (what === '') {
+                    //todo: should I be converting retuned data to array or leave as object
+                    extractedData = _.toArray(data);
+                } else {
+                    extractedData = data[what];
+                }
             }
+
             return extractedData;
         });
 
