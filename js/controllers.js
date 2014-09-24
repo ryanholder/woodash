@@ -4,7 +4,13 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$scope', '$ionicLoading', '$state', 'xhrIdentityAuth', function ($scope, $ionicLoading, $state, xhrIdentityAuth) {
+	.controller('AppCtrl', ['$scope', '$ionicLoading', '$state', 'xhrIdentityAuth', 'initApp', function ($scope, $ionicLoading, $state, xhrIdentityAuth, initApp) {
+        //use vm to represent the binding scope
+        var app = this;
+
+        //returned data, store details for current site
+        //$scope.storeDetails = initApp.storeDetails.storeDetails[0];
+        app.storeDetails = initApp.storeDetails.storeDetails[0];
 		//want to make sure user information is displayed
 		var xhr_button, revoke_button;
 
@@ -105,18 +111,24 @@ angular.module('woodash.controllers', [])
 
 	.controller('OverviewCtrl', ['$scope', 'initOverview', function ($scope, initOverview) {
         //use vm to represent the binding scope
-        var vm = this;
+        var overview = this;
+
+        console.log($scope);
 
         //returned data
-        vm.orders = initOverview.orders;
-        vm.dateRange = initOverview.dateRange;
-        //vm.dateRange = initOverview.greeting;
+        overview.orders = initOverview.orders;
+        overview.dateRange = initOverview.dateRange;
+        //overview.dateRange = initOverview.greeting;
 
-        console.log(vm.dateRange);
-        console.log(vm.orders);
-        //console.log(vm.dateRange);
+        //$scope.storeDetails.name = 'test';
+        console.log(overview.dateRange);
+        console.log(overview.orders);
 
-        //var charDC = new DataCollection(vm.orders);
+
+        //$scope.storeDetails.name = 'test';
+        //console.log(overview.dateRange);
+
+        //var charDC = new DataCollection(overview.orders);
         //var bastards = charDC.query().sum('total');
         //
         //console.log(charDC);

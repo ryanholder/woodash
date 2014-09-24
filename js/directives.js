@@ -98,6 +98,7 @@ angular.module('woodash.directives', [])
                     var params = {
                         "filter[created_at_min]": val.startDate.toISOString(),
                         "filter[created_at_max]": val.endDate.toISOString(),
+                        "filter[limit]": 99,
                         "status": "completed"
                     };
 
@@ -121,8 +122,6 @@ angular.module('woodash.directives', [])
                         var charDC = new DataCollection(lineItems);
 
                         angular.forEach(lineItemsCount, function(value) {
-                            console.log(value);
-
                             var lineItemsProduct = charDC.query()
                                 .filter({product_id: Number(value[0])})
                                 .limit(1)
@@ -199,6 +198,7 @@ angular.module('woodash.directives', [])
                     var params = {
                         "filter[created_at_min]": val.startDate.toISOString(),
                         "filter[created_at_max]": val.endDate.toISOString(),
+                        "filter[limit]": 99,
                         "status": "completed"
                     };
 
@@ -262,13 +262,13 @@ angular.module('woodash.directives', [])
                     var params = {
                         "filter[created_at_min]": val.startDate.toISOString(),
                         "filter[created_at_max]": val.endDate.toISOString(),
+                        "filter[limit]": 99,
                         "status": "completed"
                     };
 
                     wcOrders.getList(params).then(function(orders) {
                         //var allOrders = [];
 
-                        console.log(orders);
                         var charDC = new DataCollection(orders);
                         $scope.totalRevenue = charDC.query().sum('total');
                         $scope.ordersPlaced = $filter('number')(orders.length, 0);

@@ -6,6 +6,17 @@ angular.module('woodash.services', [])
         return Restangular.service('orders');
     })
 
+    .factory('InitAppService', function($q, StoreDetailsService) {
+        var storeDetails = StoreDetailsService.getDetails();
+
+        return $q.all([storeDetails]).then(function(results){
+
+            return {
+                storeDetails: results[0]
+            };
+        });
+    })
+
     .factory('InitOverviewService', function(DateRangeService, OrdersService, $q) {
         //var InitOverviewService = {};
 
@@ -68,12 +79,10 @@ angular.module('woodash.services', [])
                 endDate: moment().endOf('month')
             };
 
-            console.log('test Init');
             return dateRange;
         };
 
         DateRangeService.getRange = function () {
-            console.log('test Get');
             return dateRange;
         };
 
@@ -83,12 +92,34 @@ angular.module('woodash.services', [])
                 endDate: end
             };
 
-            console.log('test Set');
             return dateRange;
         };
 
-
         return DateRangeService;
+    })
+
+    .factory('StoreDetailsService', function($q, Restangular, NotificationService) {
+        var StoreDetailsService = {};
+
+        StoreDetailsService.getDetails = function () {
+            var deferred = $q.defer();
+            Restangular.all('').getList().then(
+                function(data) {
+                    deferred.resolve({
+                        storeDetails: data
+                    });
+                },
+                function(error) {
+                    NotificationService.showError(error);
+                });
+            return deferred.promise;
+        };
+
+        StoreDetailsService.setDetails = function () {
+            // Service to update the store settings
+        };
+
+        return StoreDetailsService;
     })
 
     .factory('NotificationService', ['$q', function($q) {
