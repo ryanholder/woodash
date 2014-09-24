@@ -105,65 +105,38 @@ angular.module('woodash.directives', [])
 
                         console.log(orders);
                         var allOrders = [];
+                        var obj = {};
+                        var keys = [];
 
-                        var flatItemsB = _.chain(_.flatten(orders, 'line_items'))
+                        var lineItems = _.chain(_.flatten(orders, 'line_items'))
                             .union()
                             .value();
 
-                        var flatItemsC = _.chain(flatItemsB)
+                        var lineItemsCount = _.chain(lineItems)
                             .countBy("product_id")
-                            //.pick('name')
                             .pairs()
                             .sortBy(1).reverse()
-                            //.pluck(0)
-                            //.value();
+                            .first(5)
                             .value();
 
-                            //.sortBy();
-                            //.first()
-                            //.value();
-                            //_.chain(orders)
-                            //_.flatten('line_items');
-                            //_.countBy('product_id');
+                        var charDC = new DataCollection(lineItems);
 
-                        var categories = _.chain(_.flatten(orders, 'line_items'))
-                            .countBy("product_id")
-                            .pick('name')
-                            .pairs()
-                            .sortBy(1).reverse()
-                            //.pluck(0)
-                            .value();
-
-                        console.log(categories);
-
-                        //var youngest = _.chain(characters)
-                        //    .sortBy('age')
-                        //    .map(function(chr) { return chr.name + ' is ' + chr.age; })
-                        //    .first()
-                        //    .value();
-
-                        //console.log(flatItemsA);
-                        console.log(flatItemsB);
-                        console.log(flatItemsC);
-
-                        //var charDC = new DataCollection(orders);
-                        //var locations = charDC.query().distinct('product_id');
-                        //console.log(locations);
-
-                        var charDC = new DataCollection(flatItemsB);
-                        angular.forEach(flatItemsC, function(value) {
+                        angular.forEach(lineItemsCount, function(value) {
                             console.log(value);
-                            var theone = charDC.query()
+
+                            var lineItemsProduct = charDC.query()
                                 .filter({product_id: Number(value[0])})
+                                .limit(1)
                                 .values();
-                            //value.moment_date = moment(value.created_at).format('YYYY-MM-DD');
-                            //allOrders.push(value.line_items.product_id);
-                            console.log(theone);
+
+                            obj[lineItemsProduct[0].name] = value[1];
+
+                            keys.push(lineItemsProduct[0].name);
                         });
 
+                        allOrders.push(obj);
 
-
-                        initBestSellingProducts(element, attrs, allOrders);
+                        initBestSellingProducts(element, attrs, allOrders, keys);
                     })
                 };
 
@@ -282,7 +255,7 @@ angular.module('woodash.directives', [])
     });
 
 var initOrdersChart = function(element, attrs, data) {
-        console.log('da:' + element);
+        console.log(data);
     c3.generate({
         bindto: element[0],
         data: {
@@ -300,35 +273,15 @@ var initOrdersChart = function(element, attrs, data) {
     });
 };
 
-var initBestSellingProducts = function(element, attrs, data) {
-        console.log(element);
+var initBestSellingProducts = function(element, attrs, data, keys) {
     c3.generate({
         bindto: element[0],
         data: {
             json: data,
             keys: {
-                value: ['name', 'total']
+                value: keys
             },
             type: 'donut'
-        },
-        donut: {
-            title: "Iris Petal Width"
         }
     });
-
-    //c3.generate({
-    //    data: {
-    //        columns: [
-    //            ['data1', 30],
-    //            ['data2', 120],
-    //        ],
-    //        type : 'donut',
-    //        onclick: function (d, i) { console.log("onclick", d, i); },
-    //        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-    //        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-    //    },
-    //    donut: {
-    //        title: "Iris Petal Width"
-    //    }
-    //});
 };
