@@ -103,7 +103,6 @@ angular.module('woodash.directives', [])
 
                     wcOrders.getList(params).then(function(orders) {
 
-                        console.log(orders);
                         var allOrders = [];
                         var obj = {};
                         var keys = [];
@@ -140,6 +139,41 @@ angular.module('woodash.directives', [])
                     })
                 };
 
+                scope.$watchCollection(attrs.ngModel, function (val) {
+                    if (val) {
+                        scope.getOrders(val);
+                    }
+                });
+            }
+        }
+    })
+
+    .directive('latestPurchases', function (wcOrders) {
+        return {
+            restrict: 'EA',
+            replace: true,
+            scope: true,
+            template: [
+                '<ion-list>',
+                    '<ion-item ng-repeat="item in items">',
+                        '{{item.customer["first_name"]}} {{item.customer["last_name"]}} spent {{item.total | currency}} <span am-time-ago="item.created_at"></span>',
+                    '</ion-item>',
+                '</ion-list>'
+            ].join(''),
+            controller: ['$scope', function ($scope) {
+                $scope.getOrders = function (val) {
+                    var params = {
+                        "status": "completed"
+                    };
+
+                    wcOrders.getList(params).then(function(orders) {
+                        $scope.items = _.chain(orders)
+                            .first(5)
+                            .value();
+                    })
+                };
+            }],
+            link: function (scope, element, attrs) {
                 scope.$watchCollection(attrs.ngModel, function (val) {
                     if (val) {
                         scope.getOrders(val);

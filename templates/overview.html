@@ -3,8 +3,7 @@
 		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 	</ion-nav-buttons>
 	<ion-header-bar align-title="left" class="bar-subheader">
-		<h1 class="title">Overview for Store Name</h1>
-		<div class="buttons woodash-buttons">
+		<div class="buttons woodash-buttons pull-right">
 		    <div class="input-group">
                 <date-range></date-range>
 		    </div>
@@ -14,7 +13,10 @@
 		<div class="row">
 			<div class="col">
 				<div class="card">
-                    <orders-chart id="chartdiv" class="item" ng-model="dateRangeOptions"></orders-chart>
+                    <div class="item no-bot-border">
+                        <p class="card-title">Overview for Store Name</p>
+                    </div>
+                    <orders-chart id="chartdiv" class="item no-top-border no-padding" ng-model="dateRangeOptions"></orders-chart>
 				</div>
 			</div>
 		</div>
@@ -40,18 +42,12 @@
 						<p class="card-title">Latest Purchases</p>
 					</div>
 
-					<div class="item item-icon-left no-top-border">
-				    Enter home address
-				  </div>
+					<div class="item no-top-border no-padding">
+                        <latest-purchases id="latestpurchases" class="item" ng-model="dateRangeOptions"></latest-purchases>
+                    </div>
 
 				</div>
 			</div>
-			<!-- <div class="col">
-				<div class="woodash-numbers-desc">total orders ($)</div>
-				<div id="overviewpie1div"></div>
-			</div> -->
-			<!-- <div id="overviewpie2div" class="col"></div> -->
-			<!-- <div id="overviewpie3div" class="col"></div> -->
 		</div>
 	</ion-content>
 </ion-view>
