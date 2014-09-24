@@ -11,6 +11,7 @@ angular.module('woodash', [
     'restangular',
     'ui.router',
 	'ionic',
+    'angularMoment',
 	'woodash.filters',
 	'woodash.services',
 	'woodash.directives',
