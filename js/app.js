@@ -46,7 +46,12 @@ angular.module('woodash', [
                 url: "/app",
                 abstract: true,
                 templateUrl: "templates/menu/app.html",
-                controller: 'AppCtrl',
+                controller: 'AppCtrl as app',
+                resolve:{
+                    initApp: function(InitAppService) {
+                        return InitAppService;
+                    }
+                },
                 data: {
                     authenticate: true
                 }
