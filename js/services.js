@@ -6,10 +6,29 @@ angular.module('woodash.services', [])
         return Restangular.service('orders');
     })
 
-    .factory('InitAppService', function($q, StoreDetailsService) {
+    .factory('LoadingService', function($rootScope, $ionicLoading) {
+        var LoadingService = {};
+
+        LoadingService.show = function () {
+            $ionicLoading.show();
+        };
+
+        LoadingService.hide = function () {
+            $ionicLoading.hide();
+        };
+
+        return LoadingService;
+    })
+
+    .factory('InitAppService', function($q, StoreDetailsService, LoadingService) {
+
+        LoadingService.show();
+
         var storeDetails = StoreDetailsService.getDetails();
 
         return $q.all([storeDetails]).then(function(results){
+
+            LoadingService.hide();
 
             return {
                 storeDetails: results[0]
@@ -19,6 +38,7 @@ angular.module('woodash.services', [])
 
     .factory('InitOverviewService', function(DateRangeService, OrdersService, $q) {
         //var InitOverviewService = {};
+
 
         //InitOverviewService.loadOverview = function () {
             var dateRange = DateRangeService.initRange();
@@ -178,5 +198,3 @@ angular.module('woodash.services', [])
 
     // Simple value service.
     .value('version', '0.1');
-
-/* Services */

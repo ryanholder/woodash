@@ -131,4 +131,4 @@ angular.module('woodash', [
             return extractedData;
         });
 
-    })
+    });
