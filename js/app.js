@@ -27,6 +27,7 @@ angular.module('woodash', [
 
             $state.go('app.overview');
 
+            //todo: determine why this is needed ?
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
@@ -51,9 +52,6 @@ angular.module('woodash', [
                     initApp: function(InitAppService) {
                         return InitAppService;
                     }
-                },
-                data: {
-                    authenticate: true
                 }
             })
 

@@ -10,7 +10,9 @@ angular.module('woodash.services', [])
         var LoadingService = {};
 
         LoadingService.show = function () {
-            $ionicLoading.show();
+            $ionicLoading.show({
+                noBackdrop: true
+            });
         };
 
         LoadingService.hide = function () {
@@ -21,7 +23,6 @@ angular.module('woodash.services', [])
     })
 
     .factory('InitAppService', function($q, StoreDetailsService, LoadingService) {
-
         LoadingService.show();
 
         var storeDetails = StoreDetailsService.getDetails();

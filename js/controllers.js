@@ -111,6 +111,58 @@ angular.module('woodash.controllers', [])
 	}])
 
 	.controller('OverviewCtrl', ['$scope', 'initOverview', function ($scope, initOverview) {
+        var client = new Dropbox.Client({key: 'p287k5sblifqcoc'});
+
+        // Check to see if we're authenticated already.
+        client.authenticate({ interactive: false }, updateAuthenticationStatus);
+
+        // Called when the authentication status changes.
+        function updateAuthenticationStatus(err, client) {
+            // If the user is not authenticated, show the authentication modal
+            if (!client.isAuthenticated()) {
+                console.log('not authenticated');
+                client.authenticate(updateAuthenticationStatus);
+                //return;
+            } else {
+                console.log('authenticated');
+            }
+        }
+
+        $scope.go = function() {
+            var datastoreManager = client.getDatastoreManager();
+            datastoreManager.openDefaultDatastore(function (error, datastore) {
+                if (error) {
+                    console.log('Error opening default datastore: ' + error);
+                }
+
+                // Now you have a datastore. The next few examples can be included here.
+                var taskTable = datastore.getTable('tasks');
+                taskTable.setResolutionRule('level', 'max');
+
+                $scope.add = function() {
+                    var firstTask = taskTable.insert({
+                        taskname: 'Buy milk',
+                        completed: false,
+                        created: new Date()
+                    });
+
+                    console.log(firstTask);
+                }
+
+                $scope.edit = function() {
+                    var results = taskTable.query();
+
+                    var firstResult = results[0];
+
+                    firstResult.set('completed', true);
+
+                    console.log(firstResult);
+                };
+            });
+
+
+        };
+
         //use vm to represent the binding scope
         var overview = this;
 
@@ -137,6 +189,8 @@ angular.module('woodash.controllers', [])
 	}])
 
     .controller('CustomersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+
+
 
     }])
 

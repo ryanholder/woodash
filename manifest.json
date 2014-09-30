@@ -13,7 +13,12 @@
 		}
 	},
 	"permissions": [
+        "<all_urls>",
         "identity",
+        "contextMenus",
+        "notifications",
+        "storage",
+        "unlimitedStorage",
         "https://accounts.google.com/*",
         "https://www.googleapis.com/*",
         "https://wp.thewhatwhat.com/*",
