@@ -22,6 +22,38 @@ angular.module('woodash.services', [])
         return LoadingService;
     })
 
+    .factory('GoogleAuthService', function($rootScope, $q) {
+        var GoogleAuthService = {};
+
+        GoogleAuthService.getToken = function () {
+            chrome.identity.getAuthToken({ interactive: interactive }, function(token) {
+                if (chrome.runtime.lastError) {
+                    callback(chrome.runtime.lastError);
+                    return;
+                }
+
+                access_token = token;
+                requestStart();
+            });
+
+            chrome.identity.getAuthToken({ 'interactive': false }, function (token) {
+                if (chrome.runtime.lastError) {
+                    console.log(chrome.runtime.lastError);
+                    //				changeState(STATE_START);
+                } else {
+                    console.log('Token acquired:' + token);
+                    //				changeState(STATE_AUTHTOKEN_ACQUIRED);
+                }
+            });
+        };
+
+        GoogleAuthService.hide = function () {
+            $ionicLoading.hide();
+        };
+
+        return GoogleAuthService;
+    })
+
     .factory('InitAppService', function($q, StoreDetailsService, LoadingService) {
         LoadingService.show();
 
