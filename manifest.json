@@ -1,8 +1,10 @@
 {
 	"manifest_version": 2,
-	"name": "Woodash",
+	"name": "Woodash - Desktop WooCommerce Application",
+    "short_name": "Woodash",
 	"version": "0.1",
-	"minimum_chrome_version": "23",
+	"minimum_chrome_version": "33",
+    "description": "Woodash, a desktop application for WooCommerce",
 	"icons": {
 		"16": "img/icon_16.png",
 		"128": "img/icon_128.png"
@@ -21,13 +23,14 @@
         "unlimitedStorage",
         "https://accounts.google.com/*",
         "https://www.googleapis.com/*",
-        "https://wp.thewhatwhat.com/*",
-        "http://api.openweathermap.org/data/2.5/forecast/*"
+        "https://wp.thewhatwhat.com/*"
     ],
 	"oauth2": {
-		// client_id below is specifc to the application key. Follow the
-		// documentation to obtain one for your app.
-		"client_id": "348880477912-3nvo6e2lj6hdb3jjkr5u7tbrb43v79re.apps.googleusercontent.com",
-		"scopes": ["https://www.googleapis.com/auth/plus.login", "https://www.googleapis.com/auth/plus.profile.emails.read"]
+		"client_id": "950604327384-cjflr4bhlqovp7ptc5unvlp750o23bd9.apps.googleusercontent.com",
+		"scopes": [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/drive.appfolder"
+        ]
 	}
 }
