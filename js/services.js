@@ -22,33 +22,60 @@ angular.module('woodash.services', [])
         return LoadingService;
     })
 
-    .factory('GoogleAuthService', function($rootScope, $q) {
+    .factory('GoogleAuthService', function($q, Restangular) {
         var GoogleAuthService = {};
 
-        GoogleAuthService.getToken = function () {
+        GoogleAuthService.getToken = function (interactive, opt_callback) {
+            var interactive = typeof interactive !== 'undefined' ? interactive : true;
+
+            var deferred = $q.defer();
+
+            //deferred.notify('About to greet ');
+
             chrome.identity.getAuthToken({ interactive: interactive }, function(token) {
                 if (chrome.runtime.lastError) {
-                    callback(chrome.runtime.lastError);
-                    return;
-                }
-
-                access_token = token;
-                requestStart();
-            });
-
-            chrome.identity.getAuthToken({ 'interactive': false }, function (token) {
-                if (chrome.runtime.lastError) {
                     console.log(chrome.runtime.lastError);
-                    //				changeState(STATE_START);
+                    deferred.resolve({
+                        isAuthenticated: false,
+                        identityResponse: chrome.runtime.lastError
+                    });
                 } else {
-                    console.log('Token acquired:' + token);
-                    //				changeState(STATE_AUTHTOKEN_ACQUIRED);
+                    deferred.resolve({
+                        isAuthenticated: true,
+                        accessToken: token
+                    });
                 }
+
+
+                //GoogleAuthService.accessToken = token;
+                //opt_callback && opt_callback();
             });
+
+            return deferred.promise;
         };
 
-        GoogleAuthService.hide = function () {
-            $ionicLoading.hide();
+        GoogleAuthService.removeCachedToken = function (opt_callback) {
+            if (GoogleAuthService.accessToken) {
+                var accessToken = GoogleAuthService.accessToken;
+                GoogleAuthService.accessToken = null;
+
+                chrome.identity.removeCachedAuthToken({token: accessToken}, function() {
+                    opt_callback && opt_callback();
+                });
+            } else {
+                opt_callback && opt_callback();
+            }
+        };
+
+        GoogleAuthService.revokeToken = function (opt_callback) {
+            if (GoogleAuthService.accessToken) {
+                // Make a request to revoke token
+                var revokeToken = Restangular.customGET('https://accounts.google.com/o/oauth2/revoke', {token: GoogleAuthService.accessToken});
+                revokeToken.then(function(response) {
+                    console.log(response);
+                    GoogleAuthService.removeCachedToken(opt_callback);
+                });
+            }
         };
 
         return GoogleAuthService;

@@ -12,20 +12,39 @@ angular.module('woodash', [
     'ui.router',
 	'ionic',
     'angularMoment',
-	'woodash.filters',
-	'woodash.services',
-	'woodash.directives',
-	'woodash.controllers',
-	'mgcrea.ngStrap'
+    'mgcrea.ngStrap',
+    'woodash.filters',
+    'woodash.services',
+    'woodash.directives',
+    'woodash.controllers'
 ])
 
-    .run(['$rootScope', '$state', '$ionicPlatform', function ($rootScope, $state, $ionicPlatform) {
+    .run(['$rootScope', '$state', '$ionicPlatform', 'GoogleAuthService', function ($rootScope, $state, $ionicPlatform, GoogleAuthService) {
         $ionicPlatform.ready(function () {
             if ( !ionic.Platform.isIPad() || !ionic.Platform.isAndroid() ) {
                 ionic.Platform.platforms.push('chromeapp');
             }
 
-            $state.go('app.overview');
+            //GoogleAuthService.getToken();
+            //console.log('true');
+            GoogleAuthService.getToken().then(function(user) {
+                if (!user.isAuthenticated) {
+                    $state.go('app.overview');
+                }
+
+                $state.go('app.overview');
+            }, function(reason) {
+                console.dir(reason);
+            }, function(update) {
+                console.dir(update);
+            });
+            //console.log(authenticated);
+
+            //if (GoogleAuthService.getToken(true) === false) {
+            //    console.log('we need them to connect');
+            //}
+
+            //$state.go('app.overview');
 
             //todo: determine why this is needed ?
             if (window.StatusBar) {

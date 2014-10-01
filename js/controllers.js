@@ -4,12 +4,15 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$scope', '$state', 'xhrIdentityAuth', 'initApp', function ($scope, $state, xhrIdentityAuth, initApp) {
+	.controller('AppCtrl', ['$scope', '$state', 'xhrIdentityAuth', 'initApp', 'GoogleAuthService', function ($scope, $state, xhrIdentityAuth, initApp, GoogleAuthService) {
         //use vm to represent the binding scope
         var app = this;
 
         //returned data, store details for current site
         app.storeDetails = initApp.storeDetails.storeDetails[0];
+
+
+
 
 
 		//want to make sure user information is displayed
