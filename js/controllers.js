@@ -4,235 +4,41 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$scope', '$state', 'xhrIdentityAuth', 'GoogleAuthService', function ($scope, $state, xhrIdentityAuth, GoogleAuthService) {
-        //use vm to represent the binding scope
-        var app = this;
+	.controller('AppCtrl', function () {
 
-        //returned data, store details for current site
-        //app.storeDetails = initApp.storeDetails.storeDetails[0];
+	})
 
+    .controller('SiteCtrl', function () {
 
+    })
 
+    .controller('DashboardCtrl', ['$scope', 'initDashboard', function ($scope, initDashboard) {
+        this.googleConnected = initDashboard.googleAuth.isAuthenticated;
+        this.dropboxConnected = initDashboard.dropboxAuth.isAuthenticated;
 
-
-		//want to make sure user information is displayed
-		var xhr_button, revoke_button;
-
-		function xhrWithAuth(method, url, interactive, callback) {
-			var access_token;
-
-			var retry = true;
-
-			getToken();
-
-			function getToken() {
-				chrome.identity.getAuthToken({ interactive: interactive }, function (token) {
-					if (chrome.runtime.lastError) {
-						callback(chrome.runtime.lastError);
-						return;
-					}
-
-					access_token = token;
-					requestStart();
-				});
-			}
-
-			function requestStart() {
-				var xhr = new XMLHttpRequest();
-				xhr.open(method, url);
-				xhr.setRequestHeader('Authorization', 'Bearer ' + access_token);
-				xhr.onload = requestComplete;
-				xhr.send();
-			}
-
-			function requestComplete() {
-				if (this.status == 401 && retry) {
-					retry = false;
-					chrome.identity.removeCachedAuthToken({ token: access_token },
-						getToken);
-				} else {
-					callback(null, this.status, this.response);
-				}
-			}
-		}
-
-		function getUserInfo(interactive) {
-			xhrWithAuth('GET',
-				'https://www.googleapis.com/plus/v1/people/me',
-				interactive,
-				onUserInfoFetched);
-		}
-
-		// Code updating the user interface, when the user information has been
-		// fetched or displaying the error.
-		function onUserInfoFetched(error, status, response) {
-			if (!error && status == 200) {
-//				changeState(STATE_AUTHTOKEN_ACQUIRED);
-//				sampleSupport.log(response);
-				var user_info = JSON.parse(response);
-				populateUserInfo(user_info);
-			} else {
-//				changeState(STATE_START);
-			}
-		}
-
-		function populateUserInfo(user_info) {
-			// TODO: Not the right place to do this, perhaps a service to retrieve value
-			var user_info_div = document.querySelector('#user_info');
-
-			var email = user_info['emails'].filter(function (v) {
-				return v.type === 'account'; // Filter out the primary email
-			})[0].value;
-
-			user_info_div.innerHTML = "<span>" + user_info.displayName + "</span>";
-			fetchImageBytes(user_info);
-		}
-
-		function fetchImageBytes(user_info) {
-			if (!user_info || !user_info.image || !user_info.image.url) return;
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', user_info.image.url, true);
-			xhr.responseType = 'blob';
-			xhr.onload = onImageFetched;
-			xhr.send();
-		}
-
-		function onImageFetched(e) {
-			// TODO: Not the right place to do this, perhaps a service to retrieve value
-			var user_info_div = document.querySelector('#user_info');
-			if (this.status != 200) return;
-			var imgElem = document.createElement('img');
-			var objUrl = window.webkitURL.createObjectURL(this.response);
-			imgElem.src = objUrl;
-			imgElem.onload = function () {
-				window.webkitURL.revokeObjectURL(objUrl);
-			};
-//			user_info_div.insertAdjacentElement("afterbegin", imgElem);
-		}
-
-		getUserInfo();
-	}])
-
-    .controller('SiteCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
-
-    }])
-
-    .controller('DashboardCtrl', ['$rootScope', '$scope', 'initDashboard', function ($rootScope, $scope, initDashboard) {
-        var dashboard = this;
-
-        dashboard.googleConnected = initDashboard.googleAuth.isAuthenticated;
-        dashboard.dropboxConnected = initDashboard.dropboxAuth.isAuthenticated;
-
-        if (!dashboard.googleConnected && !dashboard.dropboxConnected) {
+        if (!this.googleConnected && !this.dropboxConnected) {
             //perform the modal popup/welcome with request to connect to one of the services
+            console.log('we need to connect to a service');
         }
 
     }])
 
 	.controller('OverviewCtrl', ['$scope', 'initOverview', function ($scope, initOverview) {
-        var client = new Dropbox.Client({key: 'p287k5sblifqcoc'});
+        this.orders = initOverview.orders;
+        this.dateRange = initOverview.dateRange;
 
-        // Check to see if we're authenticated already.
-        client.authenticate({ interactive: false }, updateAuthenticationStatus);
-
-        // Called when the authentication status changes.
-        function updateAuthenticationStatus(err, client) {
-            // If the user is not authenticated, show the authentication modal
-            if (!client.isAuthenticated()) {
-                console.log('not authenticated');
-                client.authenticate(updateAuthenticationStatus);
-                //return;
-            } else {
-                console.log('authenticated');
-            }
-        }
-
-        $scope.go = function() {
-            var datastoreManager = client.getDatastoreManager();
-            datastoreManager.openDefaultDatastore(function (error, datastore) {
-                if (error) {
-                    console.log('Error opening default datastore: ' + error);
-                }
-
-                // Now you have a datastore. The next few examples can be included here.
-                var taskTable = datastore.getTable('tasks');
-                taskTable.setResolutionRule('level', 'max');
-
-                $scope.add = function() {
-                    var firstTask = taskTable.insert({
-                        taskname: 'Buy milk',
-                        completed: false,
-                        created: new Date()
-                    });
-
-                    console.log(firstTask);
-                }
-
-                $scope.edit = function() {
-                    var results = taskTable.query();
-
-                    var firstResult = results[0];
-
-                    firstResult.set('completed', true);
-
-                    console.log(firstResult);
-                };
-            });
-
-
-        };
-
-        //use vm to represent the binding scope
-        var overview = this;
-
-        console.log($scope);
-
-        //returned data
-        overview.orders = initOverview.orders;
-        overview.dateRange = initOverview.dateRange;
-        //overview.dateRange = initOverview.greeting;
-
-        //$scope.storeDetails.name = 'test';
-        console.log(overview.dateRange);
-        console.log(overview.orders);
-
-
-        //$scope.storeDetails.name = 'test';
-        //console.log(overview.dateRange);
-
-        //var charDC = new DataCollection(overview.orders);
-        //var bastards = charDC.query().sum('total');
-        //
-        //console.log(charDC);
-        //console.log(bastards);
+        console.log(this.dateRange);
+        console.log(this.orders);
 	}])
 
-    .controller('CustomersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+    .controller('CustomersCtrl', ['$scope', function ($scope) {
 
     }])
 
-    .controller('ProductsCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+    .controller('ProductsCtrl', ['$scope', function ($scope) {
 
     }])
 
-    .controller('OrdersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+    .controller('OrdersCtrl', ['$scope', function ($scope) {
 
-    }])
-
-	.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function ($rootScope, $scope, $state) {
-		var signin_button = document.querySelector('#signin');
-		signin_button.addEventListener('click', interactiveSignIn);
-
-		function interactiveSignIn() {
-			chrome.identity.getAuthToken({ 'interactive': true }, function (token) {
-				if (chrome.runtime.lastError) {
-					console.log(chrome.runtime.lastError);
-				} else {
-					console.log('Token acquired:' + token +
-						'. See chrome://identity-internals for details.');
-					console.log($state);
-					$state.go('app.dashboard');
-				}
-			});
-		}
-	}]);
+    }]);
