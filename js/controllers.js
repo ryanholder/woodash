@@ -118,6 +118,14 @@ angular.module('woodash.controllers', [])
     }])
 
     .controller('DashboardCtrl', ['$rootScope', '$scope', 'initDashboard', function ($rootScope, $scope, initDashboard) {
+        var dashboard = this;
+
+        dashboard.googleConnected = initDashboard.googleAuth.isAuthenticated;
+        dashboard.dropboxConnected = initDashboard.dropboxAuth.isAuthenticated;
+
+        if (!dashboard.googleConnected && !dashboard.dropboxConnected) {
+            //perform the modal popup/welcome with request to connect to one of the services
+        }
 
     }])
 

@@ -10,11 +10,16 @@ angular.module('woodash.services', [])
         LoadingService.show();
 
         //client.authenticate({ interactive: false }, updateAuthenticationStatus);
-        GoogleAuthService.getToken({ interactive: false }).then(function(response) {
-            console.dir(response);
-        });
-        DropboxAuthService.getToken({ interactive: false }).then(function(response) {
-            console.dir(response);
+        var googleAuth = GoogleAuthService.getToken({ interactive: false });
+        var dropboxAuth = DropboxAuthService.getToken({ interactive: false });
+
+        return $q.all([googleAuth, dropboxAuth]).then(function(results){
+            LoadingService.hide();
+
+            return {
+                googleAuth: results[0],
+                dropboxAuth: results[1]
+            };
         });
 
         //console.dir(googleAuth);
@@ -38,7 +43,7 @@ angular.module('woodash.services', [])
         //
         //return $q.all([storeDetails]).then(function(results){
 
-            LoadingService.hide();
+            //LoadingService.hide();
 
             //return {
             //    storeDetails: results[0]
@@ -186,7 +191,7 @@ angular.module('woodash.services', [])
         return DropboxAuthService;
     })
 
-    .factory('InitAppService', function($q, StoreDetailsService, LoadingService) {
+    .factory('InitAppService', function($q, LoadingService, StoreDetailsService) {
         LoadingService.show();
 
         var storeDetails = StoreDetailsService.getDetails();

@@ -55,7 +55,7 @@ angular.module('woodash', [
                 views: {
                     'menuContent': {
                         templateUrl: "templates/dashboard.html",
-                        controller: 'DashboardCtrl',
+                        controller: 'DashboardCtrl as dashboard',
                         resolve:{
                             initDashboard: function(InitDashboardService) {
                                 return InitDashboardService;
