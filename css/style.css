@@ -8,6 +8,10 @@ ion-nav-view {
 	border-top-width: 1px;
 }
 
+.bar-footer {
+    height: 50px;
+}
+
 .has-header {
 	top: 50px;
 }
@@ -143,7 +147,8 @@ ion-nav-view {
 	/*padding: 14px 40px 14px 15px;*/
 }
 
-.woodash-menu .bar-header {
+.woodash-menu .bar-header,
+.woodash-menu .bar-footer {
 	background-color: transparent;
 	border-color: #3c3c3c;
 	padding: 0;

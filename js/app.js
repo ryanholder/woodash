@@ -27,24 +27,20 @@ angular.module('woodash', [
 
             //GoogleAuthService.getToken();
             //console.log('true');
-            GoogleAuthService.getToken().then(function(user) {
+/*            GoogleAuthService.getToken(false).then(function(user) {
                 if (!user.isAuthenticated) {
                     $state.go('app.overview');
                 }
 
                 $state.go('app.overview');
-            }, function(reason) {
-                console.dir(reason);
-            }, function(update) {
-                console.dir(update);
-            });
+            });*/
             //console.log(authenticated);
 
             //if (GoogleAuthService.getToken(true) === false) {
             //    console.log('we need them to connect');
             //}
 
-            //$state.go('app.overview');
+            $state.go('app.dashboard');
 
             //todo: determine why this is needed ?
             if (window.StatusBar) {
@@ -66,15 +62,32 @@ angular.module('woodash', [
                 url: "/app",
                 abstract: true,
                 templateUrl: "templates/menu/app.html",
-                controller: 'AppCtrl as app',
-                resolve:{
-                    initApp: function(InitAppService) {
-                        return InitAppService;
+                controller: 'AppCtrl as app'
+            })
+
+            .state('app.dashboard', {
+                url: "/dashboard",
+                views: {
+                    'menuContent': {
+                        templateUrl: "templates/dashboard.html",
+                        controller: 'DashboardCtrl',
+                        resolve:{
+                            initDashboard: function(InitDashboardService) {
+                                return InitDashboardService;
+                            }
+                        }
                     }
                 }
             })
 
-            .state('app.overview', {
+            .state('site', {
+                url: "/site",
+                abstract: true,
+                templateUrl: "templates/menu/site.html",
+                controller: 'SiteCtrl'
+            })
+
+            .state('site.overview', {
                 url: "/overview",
                 views: {
                     'menuContent': {
@@ -89,7 +102,7 @@ angular.module('woodash', [
                 }
             })
 
-            .state('app.customers', {
+            .state('site.customers', {
                 url: "/customers",
                 views: {
                     'menuContent': {
@@ -99,7 +112,7 @@ angular.module('woodash', [
                 }
             })
 
-            .state('app.products', {
+            .state('site.products', {
                 url: "/products",
                 views: {
                     'menuContent': {
@@ -109,7 +122,7 @@ angular.module('woodash', [
                 }
             })
 
-            .state('app.orders', {
+            .state('site.orders', {
                 url: "/orders",
                 views: {
                     'menuContent': {

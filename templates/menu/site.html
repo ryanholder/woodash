@@ -1,0 +1,49 @@
+<ion-side-menus>
+	<ion-side-menu-content drag-content="false">
+		<ion-nav-bar class="bar-light" delegate-handle="appNav">
+			<ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
+			<ion-nav-buttons side="right">
+				<!--<button class="button button-icon icon ion-ios7-bell-outline woodash-notification-icon"></button>-->
+				<button class="button button-icon icon ion-ios7-bell"></button>
+                <button class="button button-icon icon ion-person"></button>
+				<!--<button class="button button-icon icon ion-ios7-bell-outline woodash-notification-icon"></button>-->
+			</ion-nav-buttons>
+		</ion-nav-bar>
+		<ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
+	</ion-side-menu-content>
+
+	<ion-side-menu side="left" width="152" class="woodash-menu">
+		<ion-header-bar>
+			<ion-item nav-clear class="item-icon-left" menu-close href="#">
+				<i class="icon ion-stop"></i>
+				Current Site
+			</ion-item>
+		</ion-header-bar>
+		<ion-content overflow-scroll="true">
+			<ion-list>
+				<ion-item nav-clear class="item-icon-left overview" menu-close href="#/site/{{site.id}}/overview">
+					<i class="icon ion-stats-bars"></i>
+					Overview
+				</ion-item>
+				<ion-item nav-clear class="item-icon-left" menu-close href="#/site/{{site.id}}/customers">
+					<i class="icon ion-ios7-people"></i>
+					Customers
+				</ion-item>
+				<ion-item nav-clear class="item-icon-left" menu-close href="#/site/{{site.id}}/products">
+					Products
+					<i class="icon ion-ios7-cart"></i>
+				</ion-item>
+				<ion-item nav-clear class="item-icon-left" menu-close href="#/site/{{site.id}}/orders">
+					Orders
+					<i class="icon ion-ios7-copy"></i>
+				</ion-item>
+			</ion-list>
+		</ion-content>
+        <ion-footer-bar>
+            <ion-item nav-clear class="item-icon-left" menu-close href="#/app/dashboard">
+                <i class="icon ion-stop"></i> <!-- todo: this should be app icon -->
+                Preferences
+            </ion-item>
+        </ion-footer-bar>
+	</ion-side-menu>
+</ion-side-menus>

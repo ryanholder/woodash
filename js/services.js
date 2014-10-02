@@ -6,6 +6,21 @@ angular.module('woodash.services', [])
         return Restangular.service('orders');
     })
 
+    .factory('InitDashboardService', function($q, StoreDetailsService, LoadingService) {
+        LoadingService.show();
+
+        var storeDetails = StoreDetailsService.getDetails();
+
+        return $q.all([storeDetails]).then(function(results){
+
+            LoadingService.hide();
+
+            return {
+                storeDetails: results[0]
+            };
+        });
+    })
+
     .factory('LoadingService', function($rootScope, $ionicLoading) {
         var LoadingService = {};
 

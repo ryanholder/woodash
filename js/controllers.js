@@ -4,12 +4,12 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$scope', '$state', 'xhrIdentityAuth', 'initApp', 'GoogleAuthService', function ($scope, $state, xhrIdentityAuth, initApp, GoogleAuthService) {
+	.controller('AppCtrl', ['$scope', '$state', 'xhrIdentityAuth', 'GoogleAuthService', function ($scope, $state, xhrIdentityAuth, GoogleAuthService) {
         //use vm to represent the binding scope
         var app = this;
 
         //returned data, store details for current site
-        app.storeDetails = initApp.storeDetails.storeDetails[0];
+        //app.storeDetails = initApp.storeDetails.storeDetails[0];
 
 
 
@@ -113,6 +113,14 @@ angular.module('woodash.controllers', [])
 		getUserInfo();
 	}])
 
+    .controller('SiteCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+
+    }])
+
+    .controller('DashboardCtrl', ['$rootScope', '$scope', 'initDashboard', function ($rootScope, $scope, initDashboard) {
+
+    }])
+
 	.controller('OverviewCtrl', ['$scope', 'initOverview', function ($scope, initOverview) {
         var client = new Dropbox.Client({key: 'p287k5sblifqcoc'});
 
@@ -192,8 +200,6 @@ angular.module('woodash.controllers', [])
 	}])
 
     .controller('CustomersCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
-
-
 
     }])
 
