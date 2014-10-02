@@ -25,21 +25,6 @@ angular.module('woodash', [
                 ionic.Platform.platforms.push('chromeapp');
             }
 
-            //GoogleAuthService.getToken();
-            //console.log('true');
-/*            GoogleAuthService.getToken(false).then(function(user) {
-                if (!user.isAuthenticated) {
-                    $state.go('app.overview');
-                }
-
-                $state.go('app.overview');
-            });*/
-            //console.log(authenticated);
-
-            //if (GoogleAuthService.getToken(true) === false) {
-            //    console.log('we need them to connect');
-            //}
-
             $state.go('app.dashboard');
 
             //todo: determine why this is needed ?

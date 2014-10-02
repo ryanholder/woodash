@@ -6,19 +6,44 @@ angular.module('woodash.services', [])
         return Restangular.service('orders');
     })
 
-    .factory('InitDashboardService', function($q, StoreDetailsService, LoadingService) {
+    .factory('InitDashboardService', function($q, LoadingService, GoogleAuthService, DropboxAuthService) {
         LoadingService.show();
 
-        var storeDetails = StoreDetailsService.getDetails();
+        //client.authenticate({ interactive: false }, updateAuthenticationStatus);
+        GoogleAuthService.getToken({ interactive: false }).then(function(response) {
+            console.dir(response);
+        });
+        DropboxAuthService.getToken({ interactive: false }).then(function(response) {
+            console.dir(response);
+        });
 
-        return $q.all([storeDetails]).then(function(results){
+        //console.dir(googleAuth);
+        //console.dir(dropboxAuth);
+
+        //console.log('true');
+        /*GoogleAuthService.getToken(false).then(function(user) {
+            if (!user.isAuthenticated) {
+                $state.go('app.overview');
+            }
+
+                $state.go('app.overview');
+            });*/
+        //console.log(authenticated);
+
+        //if (GoogleAuthService.getToken(true) === false) {
+        //    console.log('we need them to connect');
+        //}
+
+        //var storeDetails = StoreDetailsService.getDetails();
+        //
+        //return $q.all([storeDetails]).then(function(results){
 
             LoadingService.hide();
 
-            return {
-                storeDetails: results[0]
-            };
-        });
+            //return {
+            //    storeDetails: results[0]
+            //};
+        //});
     })
 
     .factory('LoadingService', function($rootScope, $ionicLoading) {
@@ -26,7 +51,7 @@ angular.module('woodash.services', [])
 
         LoadingService.show = function () {
             $ionicLoading.show({
-                noBackdrop: true
+                //noBackdrop: true
             });
         };
 
@@ -41,30 +66,31 @@ angular.module('woodash.services', [])
         var GoogleAuthService = {};
 
         GoogleAuthService.getToken = function (interactive, opt_callback) {
-            var interactive = typeof interactive !== 'undefined' ? interactive : true;
-
             var deferred = $q.defer();
 
-            //deferred.notify('About to greet ');
+            deferred.notify('Checking for Google Drive Authentication');
 
-            chrome.identity.getAuthToken({ interactive: interactive }, function(token) {
+            chrome.identity.getAuthToken(interactive, function(token) {
                 if (chrome.runtime.lastError) {
-                    console.log(chrome.runtime.lastError);
+                    deferred.notify('Not currently authenticated to Google Drive');
                     deferred.resolve({
                         isAuthenticated: false,
-                        identityResponse: chrome.runtime.lastError
+                        errorMessage: chrome.runtime.lastError
                     });
                 } else {
+                    deferred.notify('Found the authenticated Google Drive account');
                     deferred.resolve({
                         isAuthenticated: true,
                         accessToken: token
                     });
                 }
 
+                GoogleAuthService.accessToken = token;
 
-                //GoogleAuthService.accessToken = token;
-                //opt_callback && opt_callback();
+                opt_callback && opt_callback();
             });
+
+            deferred.notify('Finished looking for authenticated Google Drive account');
 
             return deferred.promise;
         };
@@ -94,6 +120,70 @@ angular.module('woodash.services', [])
         };
 
         return GoogleAuthService;
+    })
+
+    .factory('DropboxAuthService', function($q, Restangular) {
+        var DropboxAuthService = {};
+
+        // todo: can this be moved to angular service/provider or similar ?
+        var dropbox = new Dropbox.Client({key: 'p287k5sblifqcoc'});
+
+        DropboxAuthService.getToken = function (interactive, opt_callback) {
+
+            var deferred = $q.defer();
+
+            deferred.notify('Checking for Dropbox Authentication');
+
+            dropbox.authenticate(interactive, function(error, client) {
+                if (!client.isAuthenticated()) {
+                    deferred.notify('Not currently authenticated to Dropbox');
+                    deferred.resolve({
+                        isAuthenticated: false,
+                        errorMessage: error
+                    });
+                } else {
+                    deferred.notify('Found the authenticated Dropbox account');
+                    deferred.resolve({
+                        isAuthenticated: true,
+                        dropboxClient: client
+                    });
+                }
+
+                DropboxAuthService.dropboxClient = client;
+
+                opt_callback && opt_callback();
+            });
+
+            deferred.notify('Finished looking for authenticated Dropbox account');
+
+            return deferred.promise;
+        };
+
+        DropboxAuthService.removeCachedToken = function (opt_callback) {
+            if (DropboxAuthService.accessToken) {
+                var accessToken = DropboxAuthService.accessToken;
+                DropboxAuthService.accessToken = null;
+
+                chrome.identity.removeCachedAuthToken({token: accessToken}, function() {
+                    opt_callback && opt_callback();
+                });
+            } else {
+                opt_callback && opt_callback();
+            }
+        };
+
+        DropboxAuthService.revokeToken = function (opt_callback) {
+            if (DropboxAuthService.accessToken) {
+                // Make a request to revoke token
+                var revokeToken = Restangular.customGET('https://accounts.google.com/o/oauth2/revoke', {token: DropboxAuthService.accessToken});
+                revokeToken.then(function(response) {
+                    console.log(response);
+                    DropboxAuthService.removeCachedToken(opt_callback);
+                });
+            }
+        };
+
+        return DropboxAuthService;
     })
 
     .factory('InitAppService', function($q, StoreDetailsService, LoadingService) {
