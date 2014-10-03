@@ -19,22 +19,6 @@ angular.module('woodash', [
     'woodash.controllers'
 ])
 
-    .run(['$rootScope', '$state', '$ionicPlatform', 'GoogleAuthService', function ($rootScope, $state, $ionicPlatform, GoogleAuthService) {
-        $ionicPlatform.ready(function () {
-            if ( !ionic.Platform.isIPad() || !ionic.Platform.isAndroid() ) {
-                ionic.Platform.platforms.push('chromeapp');
-            }
-
-            $state.go('app.dashboard');
-
-            //todo: determine why this is needed ?
-            if (window.StatusBar) {
-                // org.apache.cordova.statusbar required
-                StatusBar.styleDefault();
-            }
-        });
-    }])
-
     .config(function ($compileProvider) {
         $compileProvider
             .aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
@@ -43,36 +27,57 @@ angular.module('woodash', [
     .config(function ($compileProvider, $stateProvider) {
         $stateProvider
 
+            .state('signin', {
+                url: "/signin",
+                data: {
+                    roles: ['Admin']
+                },
+                templateUrl: "templates/dashboard.html"
+            })
+
             .state('app', {
                 url: "/app",
+                abstract: true,
+                resolve: {
+                    authorize: ['authorization',
+                        function(authorization) {
+                            return authorization.authorize();
+                        }
+                    ]
+                }
+            })
+
+            .state('app.console', {
+                url: "/console",
                 abstract: true,
                 templateUrl: "templates/menu/app.html",
                 controller: 'AppCtrl as app'
             })
 
-            .state('app.dashboard', {
+            .state('app.console.dashboard', {
                 url: "/dashboard",
+                data: {
+                    roles: ['Admin']
+                },
                 views: {
                     'menuContent': {
                         templateUrl: "templates/dashboard.html",
-                        controller: 'DashboardCtrl as dashboard',
-                        resolve:{
-                            initDashboard: function(InitDashboardService) {
-                                return InitDashboardService;
-                            }
-                        }
+                        controller: 'DashboardCtrl as dashboard'
                     }
+                },
+                onEnter: function(){
+                    console.log('hello onEnter');
                 }
             })
 
-            .state('site', {
+            .state('app.site', {
                 url: "/site",
                 abstract: true,
                 templateUrl: "templates/menu/site.html",
                 controller: 'SiteCtrl'
             })
 
-            .state('site.overview', {
+            .state('app.site.overview', {
                 url: "/overview",
                 views: {
                     'menuContent': {
@@ -87,7 +92,7 @@ angular.module('woodash', [
                 }
             })
 
-            .state('site.customers', {
+            .state('app.site.customers', {
                 url: "/customers",
                 views: {
                     'menuContent': {
@@ -97,7 +102,7 @@ angular.module('woodash', [
                 }
             })
 
-            .state('site.products', {
+            .state('app.site.products', {
                 url: "/products",
                 views: {
                     'menuContent': {
@@ -107,7 +112,7 @@ angular.module('woodash', [
                 }
             })
 
-            .state('site.orders', {
+            .state('app.site.orders', {
                 url: "/orders",
                 views: {
                     'menuContent': {
@@ -146,4 +151,48 @@ angular.module('woodash', [
             return extractedData;
         });
 
-    });
+    })
+
+    .run(['$rootScope', '$state', '$ionicPlatform', 'InitDashboardService', function ($rootScope, $state, $ionicPlatform, InitDashboardService) {
+        $ionicPlatform.ready(function () {
+            if ( !ionic.Platform.isIPad() || !ionic.Platform.isAndroid() ) {
+                ionic.Platform.platforms.push('chromeapp');
+            }
+
+            InitDashboardService.init();
+
+            //todo: determine why this is needed ?
+            if (window.StatusBar) {
+                // org.apache.cordova.statusbar required
+                StatusBar.styleDefault();
+            }
+        });
+    }])
+
+  /*  .run(function ($rootScope, $state) {
+        $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+            console.log('hello $stateChangeStart');
+            console.log('content loaded: ',event);
+            console.log(toState);
+            console.log(toParams);
+            //event.preventDefault();
+            //if (toState.authenticate && !AuthService.isAuthenticated()){
+            //    // User isn’t authenticated
+            //    $state.transitionTo("login");
+            //    event.preventDefault();
+            //}
+        });
+    })*/
+
+    .run(['$rootScope', '$state', '$stateParams', 'authorization', 'principal',
+        function($rootScope, $state, $stateParams, authorization, principal) {
+            $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+                // track the state the user wants to go to; authorization service needs this
+                $rootScope.toState = toState;
+                $rootScope.toStateParams = toStateParams;
+                // if the principal is resolved, do an authorization check immediately. otherwise,
+                // it'll be done when the state it resolved.
+                if (principal.isIdentityResolved()) authorization.authorize();
+            });
+        }
+    ]);

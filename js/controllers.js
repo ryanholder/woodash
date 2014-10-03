@@ -12,21 +12,38 @@ angular.module('woodash.controllers', [])
 
     })
 
-    .controller('DashboardCtrl', ['$scope', 'initDashboard', '$ionicModal', function ($scope, initDashboard, $ionicModal) {
-        this.googleConnected = initDashboard.googleAuth.isAuthenticated;
-        this.dropboxConnected = initDashboard.dropboxAuth.isAuthenticated;
+    .controller('DashboardCtrl', ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', function ($rootScope, $scope, $ionicModal, $ionicLoading) {
 
-        $ionicModal.fromTemplateUrl('templates/modals/dashboard.cloud.connect.html', {
-            scope: $scope,
+        console.log('hello dashboard');
+
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+                console.log('hello $stateChangeStart');
+                console.log('content loaded: ',event);
+                //event.preventDefault();
+                // transitionTo() promise will be rejected with
+                // a 'transition prevented' error
+            });
+
+/*        $scope.$on('$viewContentLoaded', function(event){
+            console.log('hello viewContentLoaded');
+            // Access to all the view config properties.
+            // and one special property 'targetView'
+            // viewConfig.targetView
+            console.log('content loaded: ',event)
+        });*/
+
+        /*$ionicModal.fromTemplateUrl('templates/modals/dashboard.cloud.connect.html', {
+            scope: $rootScope,
             animation: 'slide-in-up',
             backdropClickToClose: false,
             hardwareBackButtonClose: false
         }).then(function(modal) {
-            $scope.modal = modal;
+            //$scope.modal = modal;
             modal.show();
-        });
+        });*/
 
-        $scope.openModal = function() {
+
+     /*   $scope.openModal = function() {
             $scope.modal.show();
         };
 
@@ -47,13 +64,9 @@ angular.module('woodash.controllers', [])
         // Execute action on remove modal
         $scope.$on('modal.removed', function() {
             // Execute action
-        });
+        });*/
 
-        if (!this.googleConnected && !this.dropboxConnected) {
-            //perform the modal popup/welcome with request to connect to one of the services
-            console.log('we need to connect to a service');
-            //$scope.modal.show();
-        }
+
     }])
 
 	.controller('OverviewCtrl', ['$scope', 'initOverview', function ($scope, initOverview) {
