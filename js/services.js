@@ -16,22 +16,22 @@ angular.module('woodash.services', [])
             var dropboxAuth = DropboxAuthService.getToken({ interactive: false });
 
             $q.all([googleAuth, dropboxAuth]).then(function(results){
-                var cloudConnect = {
+                return {
                     googleAuth: results[0],
                     dropboxAuth: results[1]
                 };
 
-                console.dir(cloudConnect);
-
+                //console.dir(cloudConnect);
+                //
                 if (!cloudConnect.googleAuth.isAuthenticated && !cloudConnect.dropboxAuth.isAuthenticated) {
-                    $ionicLoading.hide();
-
-                    $state.go('app.console.dashboard');
-
-
-                } else {
-                    //determine if we have 1 or more sites setup, more than 1 we go to app.dashboard, only 1 we go to site.[id].overview
-                    $state.go('app.console.dashboard');
+                //    $ionicLoading.hide();
+                //
+                    $state.go('login');
+                //
+                //
+                //} else {
+                //    determine if we have 1 or more sites setup, more than 1 we go to app.dashboard, only 1 we go to site.[id].overview
+                    //$state.go('app.console.dashboard');
                 }
 
 
@@ -100,14 +100,10 @@ angular.module('woodash.services', [])
         };
     }])
 
-    .factory('CloudAuthService', ['$q', '$http', '$timeout', 'GoogleAuthService', 'DropboxAuthService', function($q, $http, $timeout, GoogleAuthService, DropboxAuthService) {
-        var CloudAuthService = {},
-            _identity = undefined,
-            _authenticated = false;
+    .factory('CloudAuthService', ['$q', '$http', '$timeout', '$state', 'GoogleAuthService', 'DropboxAuthService', function($q, $http, $timeout, $state, GoogleAuthService, DropboxAuthService) {
+        var CloudAuthService = {};
 
-
-        CloudAuthService.init = function () {
-            $ionicLoading.show();
+        CloudAuthService.isAuthenticated = function () {
 
             var googleAuth = GoogleAuthService.getToken({ interactive: false });
             var dropboxAuth = DropboxAuthService.getToken({ interactive: false });
@@ -118,92 +114,18 @@ angular.module('woodash.services', [])
                     dropboxAuth: results[1]
                 };
 
-                console.dir(cloudConnect);
+                //console.dir(cloudConnect);
 
                 if (!cloudConnect.googleAuth.isAuthenticated && !cloudConnect.dropboxAuth.isAuthenticated) {
-                    $ionicLoading.hide();
-
-                    $state.go('app.console.dashboard');
-
-
-                } else {
-                    //determine if we have 1 or more sites setup, more than 1 we go to app.dashboard, only 1 we go to site.[id].overview
-                    $state.go('app.console.dashboard');
+                    $state.go('login');
                 }
-
 
 
             });
 
         };
 
-        CloudAuthService.isIdentityResolved = function() {
-            return angular.isDefined(_identity);
-        };
-
-        CloudAuthService.isAuthenticated = function() {
-            return _authenticated;
-        };
-
-        CloudAuthService.isInRole = function(role) {
-            if (!_authenticated || !_identity.roles) return false;
-
-            return _identity.roles.indexOf(role) != -1;
-        };
-
-        CloudAuthService.isInAnyRole = function(roles) {
-            if (!_authenticated || !_identity.roles) return false;
-
-            for (var i = 0; i < roles.length; i++) {
-                if (this.isInRole(roles[i])) return true;
-            }
-
-            return false;
-        };
-
-        CloudAuthService.authenticate = function(identity) {
-            _identity = identity;
-            _authenticated = identity != null;
-        };
-
-        CloudAuthService.identity = function(force) {
-            var deferred = $q.defer();
-
-            if (force === true) _identity = undefined;
-
-            // check and see if we have retrieved the identity data from the server. if we have, reuse it by immediately resolving
-            if (angular.isDefined(_identity)) {
-                deferred.resolve(_identity);
-
-                return deferred.promise;
-            }
-
-            // otherwise, retrieve the identity data from the server, update the identity object, and then resolve.
-            //                   $http.get('/svc/account/identity', { ignoreErrors: true })
-            //                        .success(function(data) {
-            //                            _identity = data;
-            //                            _authenticated = true;
-            //                            deferred.resolve(_identity);
-            //                        })
-            //                        .error(function () {
-            //                            _identity = null;
-            //                            _authenticated = false;
-            //                            deferred.resolve(_identity);
-            //                        });
-
-            // for the sake of the demo, fake the lookup by using a timeout to create a valid
-            // fake identity. in reality,  you'll want something more like the $http request
-            // commented out above. in this example, we fake looking up to find the user is
-            // not logged in
-            var self = this;
-            $timeout(function() {
-                self.authenticate(null);
-                deferred.resolve(_identity);
-            }, 1000);
-
-            return deferred.promise;
-        }
-
+        return CloudAuthService;
     }])
 
     .factory('GoogleAuthService', function($q, Restangular) {
@@ -212,7 +134,7 @@ angular.module('woodash.services', [])
                 isAuthenticated: false,
                 errorMessage: '',
                 accessToken: undefined
-            }
+            };
 
         GoogleAuthService.getToken = function (interactive, opt_callback) {
             var deferred = $q.defer();
@@ -229,10 +151,11 @@ angular.module('woodash.services', [])
                     deferred.resolve(_identity);
                 } else {
                     deferred.notify('Found the authenticated Google Drive account');
-                    deferred.resolve({
+                    _identity = _.merge(_identity, {
                         isAuthenticated: true,
                         accessToken: token
                     });
+                    deferred.resolve(_identity);
                 }
 
                 GoogleAuthService.accessToken = token;
@@ -261,13 +184,16 @@ angular.module('woodash.services', [])
         GoogleAuthService.revokeToken = function (opt_callback) {
             if (GoogleAuthService.accessToken) {
                 // Make a request to revoke token
-                var revokeToken = Restangular.customGET('https://accounts.google.com/o/oauth2/revoke', {token: GoogleAuthService.accessToken});
-                revokeToken.then(function(response) {
-                    console.log(response);
-                    GoogleAuthService.removeCachedToken(opt_callback);
-                });
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://accounts.google.com/o/oauth2/revoke?token=' + GoogleAuthService.accessToken);
+                xhr.send();
+                //Restangular.customGET('https://accounts.google.com/o/oauth2/revoke', {token: GoogleAuthService.accessToken}).then(function(response) {
+                //    console.log(response);
+                GoogleAuthService.removeCachedToken(opt_callback);
+                //});
             }
         };
+
 
         return GoogleAuthService;
     })

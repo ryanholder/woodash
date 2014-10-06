@@ -8,21 +8,38 @@ angular.module('woodash.controllers', [])
 
 	})
 
-    .controller('SiteCtrl', function () {
+    .controller('LoginCtrl', function ($scope, GoogleAuthService, DropboxAuthService) {
+
+        $scope.loginGoogle = function() {
+            GoogleAuthService.getToken({ interactive: true }).then(function(results){
+                console.log(results);
+            });
+        };
+
+        $scope.loginDropbox = function() {
+            DropboxAuthService.getToken({ interactive: true }).then(function(results){
+                console.log(results);
+            });
+        }
 
     })
 
-    .controller('DashboardCtrl', ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', function ($rootScope, $scope, $ionicModal, $ionicLoading) {
+    .controller('DashboardCtrl', ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'GoogleAuthService', function ($rootScope, $scope, $ionicModal, $ionicLoading, GoogleAuthService) {
+
+        $scope.revokeGoogle = function() {
+            GoogleAuthService.revokeToken();
+        };
+
 
         console.log('hello dashboard');
 
-        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-                console.log('hello $stateChangeStart');
-                console.log('content loaded: ',event);
-                //event.preventDefault();
-                // transitionTo() promise will be rejected with
-                // a 'transition prevented' error
-            });
+        //$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        //        console.log('hello $stateChangeStart');
+        //        console.log('content loaded: ',event);
+        //        //event.preventDefault();
+        //        // transitionTo() promise will be rejected with
+        //        // a 'transition prevented' error
+        //    });
 
 /*        $scope.$on('$viewContentLoaded', function(event){
             console.log('hello viewContentLoaded');

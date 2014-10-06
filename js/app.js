@@ -24,103 +24,80 @@ angular.module('woodash', [
             .aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
     })
 
-    .config(function ($compileProvider, $stateProvider) {
+    .config(function ($compileProvider, $stateProvider, $urlRouterProvider) {
         $stateProvider
 
-            .state('signin', {
-                url: "/signin",
-                data: {
-                    roles: ['Admin']
-                },
-                templateUrl: "templates/dashboard.html"
+            .state('login', {
+                url: "/login",
+                templateUrl: "templates/login.html",
+                controller: 'LoginCtrl as login'
             })
 
             .state('app', {
                 url: "/app",
                 abstract: true,
-                resolve: {
-                    authorize: ['authorization',
-                        function(authorization) {
-                            return authorization.authorize();
-                        }
-                    ]
-                }
-            })
-
-            .state('app.console', {
-                url: "/console",
-                abstract: true,
                 templateUrl: "templates/menu/app.html",
-                controller: 'AppCtrl as app'
+                controller: 'AppCtrl as app',
+                resolves: {
+
+                },
+                onEnter: function(){
+                    console.log('hello onEnter');
+                }
+
             })
 
-            .state('app.console.dashboard', {
+            .state('app.dashboard', {
                 url: "/dashboard",
-                data: {
-                    roles: ['Admin']
-                },
                 views: {
                     'menuContent': {
                         templateUrl: "templates/dashboard.html",
                         controller: 'DashboardCtrl as dashboard'
                     }
-                },
-                onEnter: function(){
-                    console.log('hello onEnter');
                 }
             })
 
-            .state('app.site', {
-                url: "/site",
-                abstract: true,
-                templateUrl: "templates/menu/site.html",
-                controller: 'SiteCtrl'
-            })
-
-            .state('app.site.overview', {
+            .state('app.overview', {
                 url: "/overview",
                 views: {
                     'menuContent': {
                         templateUrl: "templates/overview.html",
-                        controller: 'OverviewCtrl',
-                        resolve:{
-                            initOverview: function(InitOverviewService) {
-                                return InitOverviewService;
-                            }
-                        }
+                        controller: 'OverviewCtrl as overview'
                     }
                 }
             })
 
-            .state('app.site.customers', {
+            .state('app.customers', {
                 url: "/customers",
                 views: {
                     'menuContent': {
                         templateUrl: "templates/customers.html",
-                        controller: 'CustomersCtrl'
+                        controller: 'CustomersCtrl as customers'
                     }
                 }
             })
 
-            .state('app.site.products', {
+            .state('app.products', {
                 url: "/products",
                 views: {
                     'menuContent': {
                         templateUrl: "templates/products.html",
-                        controller: 'ProductsCtrl'
+                        controller: 'ProductsCtrl as products'
                     }
                 }
             })
 
-            .state('app.site.orders', {
+            .state('app.orders', {
                 url: "/orders",
                 views: {
                     'menuContent': {
                         templateUrl: "templates/orders.html",
-                        controller: 'OrdersCtrl'
+                        controller: 'OrdersCtrl as orders'
                     }
                 }
-            })
+            });
+
+        $urlRouterProvider.otherwise("/app/dashboard");
 
     })
 
@@ -159,7 +136,8 @@ angular.module('woodash', [
                 ionic.Platform.platforms.push('chromeapp');
             }
 
-            InitDashboardService.init();
+            //InitDashboardService.init();
+            //$state.go('app.dashboard');
 
             //todo: determine why this is needed ?
             if (window.StatusBar) {
@@ -168,6 +146,16 @@ angular.module('woodash', [
             }
         });
     }])
+
+  /*  .run(function ($rootScope, $state, CloudAuthService) {
+
+
+        $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+            if (toState.data.authenticate && CloudAuthService.isAuthenticated()) {
+                console.log('test');
+            }
+        });
+    })*/
 
   /*  .run(function ($rootScope, $state) {
         $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
@@ -184,15 +172,59 @@ angular.module('woodash', [
         });
     })*/
 
-    .run(['$rootScope', '$state', '$stateParams', 'authorization', 'principal',
-        function($rootScope, $state, $stateParams, authorization, principal) {
-            $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
-                // track the state the user wants to go to; authorization service needs this
-                $rootScope.toState = toState;
-                $rootScope.toStateParams = toStateParams;
-                // if the principal is resolved, do an authorization check immediately. otherwise,
-                // it'll be done when the state it resolved.
-                if (principal.isIdentityResolved()) authorization.authorize();
-            });
-        }
-    ]);
+    .run(['$rootScope', '$state', '$stateParams', '$q', 'authorization', 'GoogleAuthService', 'DropboxAuthService', function($rootScope, $state, $stateParams, $q, authorization, GoogleAuthService, DropboxAuthService) {
+        $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams, fromState, fromStateParams) {
+            //track the state the user wants to go to; authorization service needs this
+            if(toState.name.indexOf('app') !== -1 ) {
+                event.preventDefault();
+                console.log('im app');
+                //console.log(toState);
+                //console.log(toStateParams);
+
+                var googleAuth = GoogleAuthService.getToken({ interactive: false });
+                var dropboxAuth = DropboxAuthService.getToken({ interactive: false });
+
+                $q.all([googleAuth, dropboxAuth]).then(function(results){
+                    var cloudConnect = {
+                        googleAuth: results[0],
+                        dropboxAuth: results[1]
+                    };
+
+                    console.dir(cloudConnect);
+                    //
+                    if (!cloudConnect.googleAuth.isAuthenticated && !cloudConnect.dropboxAuth.isAuthenticated) {
+                        //event.preventDefault();
+                        //    $ionicLoading.hide();
+                        //
+
+                        $state.go('login');
+                        //
+                        //
+                        //} else {
+                        //    determine if we have 1 or more sites setup, more than 1 we go to app.dashboard, only 1 we go to site.[id].overview
+                        //$state.go('app.console.dashboard');
+                    } else {
+                        console.log(event);
+                        console.log(toState);
+                        console.log(toStateParams);
+                        //$state.reload();
+                        //$state.go(toState.name, result.params, {notify: false});
+                        //$state.go(toState.name, toStateParams, { reload: false });
+                        //$state.transitionTo(toState.name);
+                        $state.go(toState.name, toStateParams, {notify: false}).then(function() {
+                            // line 907 state.js
+                            $rootScope.$broadcast('$stateChangeSuccess', toState, toStateParams, fromState, fromStateParams);
+                        });
+                        //$state.transitionTo(toState.name, toStateParams, {resume: true});
+                        //$state.go(toState.name,{notify: false});
+                    }
+
+
+
+                });
+
+                //CloudAuthService.isAuthenticated();
+            }
+
+        });
+    }]);
