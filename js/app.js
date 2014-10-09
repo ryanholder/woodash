@@ -130,6 +130,15 @@ angular.module('woodash', [
 
     })
 
+    .config(function ($urlRouterProvider) {
+
+        // Prevent $urlRouter from automatically intercepting URL changes;
+        // this allows you to configure custom behavior in between
+        // location changes and route synchronization:
+        $urlRouterProvider.deferIntercept();
+
+    })
+
     .run(['$rootScope', '$state', '$ionicPlatform', function ($rootScope, $state, $ionicPlatform) {
         $ionicPlatform.ready(function () {
             if ( !ionic.Platform.isIPad() || !ionic.Platform.isAndroid() ) {
@@ -147,8 +156,92 @@ angular.module('woodash', [
         });
     }])
 
-    .run(['$rootScope', '$state', '$q', 'GoogleAuthService', 'DropboxAuthService', function($rootScope, $state, $q, GoogleAuthService, DropboxAuthService) {
+    .run(function($rootScope, $urlRouter, $ionicLoading, GoogleAuthService, HelloWorld) {
+        $rootScope.$on('$locationChangeSuccess', function(evt) {
+
+            console.log(evt);
+
+            evt.preventDefault();
+
+            GoogleAuthService.getToken({ interactive: true }).then(function(token) {
+                // Once the user has logged in, sync the current URL
+                // to the router:
+                if (typeof token !== "undefined") {
+                    $urlRouter.sync();
+                }
+            });
+
+/*            GoogleAuthService.hasToken().then(function(token) {
+                console.log('b');
+                if (typeof token === "undefined") {
+
+                    console.log('a');
+                }
+
+                console.log(token);
+
+
+                console.log('c');
+                $urlRouter.sync();
+            });*/
+
+
+
+            //HelloWorld.getMessages().then(function(messages) {
+            //
+            //        //$ionicLoading.show();
+            //        //console.log('loading start');
+            //        //GoogleAuthService.getToken({ interactive: true })
+            //        //    .then(function(results) {
+            //        //        console.log(results);
+            //        //        if (results.isAuthenticated) {
+            //        //            $ionicLoading.hide();
+            //        //            console.log('loading stop');
+            //        //        }
+            //        //    });
+            //
+            //    console.log('a');
+            //    console.log(messages);
+            //    console.log('b');
+            //
+            //    console.log('c');
+            //    $urlRouter.sync();
+            //});
+
+
+
+
+            //console.log(HelloWorld.getMessages());
+            //var deferred = $q.defer();
+            //var promise = deferred.promise.then(firstFn).then(secondFn).then(thirdFn, errorFn);
+            //if (GoogleAuthService.hasToken()) return;
+            //
+            //// Halt state change from even starting
+            //evt.preventDefault();
+            //// Perform custom logic
+            //
+            ////var googleAuth = GoogleAuthService.getToken({ interactive: true });
+            //
+            ////var meetsRequirement = /* ... */
+            //
+            //console.log(evt);
+            //console.log($q);
+            //
+            //GoogleAuthService.getToken({ interactive: true }).then(function() {
+            //    // Once the user has logged in, sync the current URL
+            //    // to the router:
+            //
+            //    $urlRouter.sync();
+            //});
+            // Continue with the update and state transition if logic allows
+            //if (meetsRequirement) $urlRouter.sync();
+        });
+        $urlRouter.listen();
+    });
+
+ /*   .run(['$rootScope', '$state', '$q', 'GoogleAuthService', 'DropboxAuthService', function($rootScope, $state, $q, GoogleAuthService, DropboxAuthService) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams, fromState, fromStateParams) {
+            console.log('$stateChangeStart');
             if(toState.name.indexOf('app') !== -1 ) {
                 event.preventDefault();
 
@@ -174,4 +267,4 @@ angular.module('woodash', [
                 });
             }
         });
-    }]);
+    }]);*/

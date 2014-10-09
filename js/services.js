@@ -128,6 +128,30 @@ angular.module('woodash.services', [])
         return CloudAuthService;
     }])
 
+    .factory('HelloWorld', function($q, $timeout) {
+
+        var getMessages = function() {
+            var deferred = $q.defer();
+
+            chrome.identity.getAuthToken({ interactive: false }, function(token) {
+                if (!chrome.runtime.lastError) {
+                    deferred.resolve(token);
+                }
+            });
+
+            //$timeout(function() {
+            //    deferred.resolve(['Hello', 'world']);
+            //}, 2000);
+
+            return deferred.promise;
+        };
+
+        return {
+            getMessages: getMessages
+        };
+
+    })
+
     .factory('GoogleAuthService', function($q, Restangular) {
         var GoogleAuthService = {},
             _identity = {
@@ -135,6 +159,21 @@ angular.module('woodash.services', [])
                 errorMessage: '',
                 accessToken: undefined
             };
+
+        GoogleAuthService.hasToken = function (interactive, opt_callback) {
+            var deferred = $q.defer();
+
+            chrome.identity.getAuthToken({ interactive: false }, function(token) {
+                if (!chrome.runtime.lastError) {
+                    GoogleAuthService.accessToken = token;
+                    deferred.resolve(token);
+                } else {
+                    deferred.reject(token);
+                }
+            });
+
+            return deferred.promise;
+        };
 
         GoogleAuthService.getToken = function (interactive, opt_callback) {
             var deferred = $q.defer();
