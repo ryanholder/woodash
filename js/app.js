@@ -130,7 +130,7 @@ angular.module('woodash', [
 
     })
 
-    .run(['$rootScope', '$state', '$ionicPlatform', 'InitDashboardService', function ($rootScope, $state, $ionicPlatform, InitDashboardService) {
+    .run(['$rootScope', '$state', '$ionicPlatform', function ($rootScope, $state, $ionicPlatform) {
         $ionicPlatform.ready(function () {
             if ( !ionic.Platform.isIPad() || !ionic.Platform.isAndroid() ) {
                 ionic.Platform.platforms.push('chromeapp');
@@ -147,39 +147,10 @@ angular.module('woodash', [
         });
     }])
 
-  /*  .run(function ($rootScope, $state, CloudAuthService) {
-
-
-        $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-            if (toState.data.authenticate && CloudAuthService.isAuthenticated()) {
-                console.log('test');
-            }
-        });
-    })*/
-
-  /*  .run(function ($rootScope, $state) {
-        $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
-            console.log('hello $stateChangeStart');
-            console.log('content loaded: ',event);
-            console.log(toState);
-            console.log(toParams);
-            //event.preventDefault();
-            //if (toState.authenticate && !AuthService.isAuthenticated()){
-            //    // User isn’t authenticated
-            //    $state.transitionTo("login");
-            //    event.preventDefault();
-            //}
-        });
-    })*/
-
-    .run(['$rootScope', '$state', '$stateParams', '$q', 'authorization', 'GoogleAuthService', 'DropboxAuthService', function($rootScope, $state, $stateParams, $q, authorization, GoogleAuthService, DropboxAuthService) {
+    .run(['$rootScope', '$state', '$q', 'GoogleAuthService', 'DropboxAuthService', function($rootScope, $state, $q, GoogleAuthService, DropboxAuthService) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams, fromState, fromStateParams) {
-            //track the state the user wants to go to; authorization service needs this
             if(toState.name.indexOf('app') !== -1 ) {
                 event.preventDefault();
-                console.log('im app');
-                //console.log(toState);
-                //console.log(toStateParams);
 
                 var googleAuth = GoogleAuthService.getToken({ interactive: false });
                 var dropboxAuth = DropboxAuthService.getToken({ interactive: false });
@@ -190,41 +161,17 @@ angular.module('woodash', [
                         dropboxAuth: results[1]
                     };
 
-                    console.dir(cloudConnect);
-                    //
                     if (!cloudConnect.googleAuth.isAuthenticated && !cloudConnect.dropboxAuth.isAuthenticated) {
-                        //event.preventDefault();
-                        //    $ionicLoading.hide();
-                        //
-
                         $state.go('login');
-                        //
-                        //
-                        //} else {
-                        //    determine if we have 1 or more sites setup, more than 1 we go to app.dashboard, only 1 we go to site.[id].overview
-                        //$state.go('app.console.dashboard');
                     } else {
                         console.log(event);
                         console.log(toState);
                         console.log(toStateParams);
-                        //$state.reload();
-                        //$state.go(toState.name, result.params, {notify: false});
-                        //$state.go(toState.name, toStateParams, { reload: false });
-                        //$state.transitionTo(toState.name);
                         $state.go(toState.name, toStateParams, {notify: false}).then(function() {
-                            // line 907 state.js
                             $rootScope.$broadcast('$stateChangeSuccess', toState, toStateParams, fromState, fromStateParams);
                         });
-                        //$state.transitionTo(toState.name, toStateParams, {resume: true});
-                        //$state.go(toState.name,{notify: false});
                     }
-
-
-
                 });
-
-                //CloudAuthService.isAuthenticated();
             }
-
         });
     }]);

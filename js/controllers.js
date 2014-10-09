@@ -4,86 +4,51 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', function () {
+	.controller('AppCtrl', ['$scope', function ($scope) {
 
-	})
+	}])
 
-    .controller('LoginCtrl', function ($scope, GoogleAuthService, DropboxAuthService) {
+    .controller('LoginCtrl', ['$scope', '$state', '$stateParams', 'GoogleAuthService', 'DropboxAuthService', '$ionicLoading', function ($scope, $state, $stateParams, GoogleAuthService, DropboxAuthService, $ionicLoading) {
+
+        console.log($state);
+        console.log($stateParams);
 
         $scope.loginGoogle = function() {
-            GoogleAuthService.getToken({ interactive: true }).then(function(results){
-                console.log(results);
-            });
+            $ionicLoading.show();
+            console.log('loading start');
+            GoogleAuthService.getToken({ interactive: true })
+                .then(function(results) {
+                    console.log(results);
+                    if (results.isAuthenticated) {
+                        $ionicLoading.hide();
+                        console.log('loading stop');
+                        $state.go('app.dashboard');
+                    }
+
+                });
         };
 
         $scope.loginDropbox = function() {
-            DropboxAuthService.getToken({ interactive: true }).then(function(results){
-                console.log(results);
-            });
+            $ionicLoading.show();
+            DropboxAuthService.getToken({ interactive: true })
+                .then(function(results) {
+                    console.log(results);
+                    if (results.isAuthenticated) {
+                        $ionicLoading.hide();
+                        console.log('loading stop');
+                        $state.go('app.dashboard');
+                    }
+                });
         }
 
-    })
+    }])
 
     .controller('DashboardCtrl', ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'GoogleAuthService', function ($rootScope, $scope, $ionicModal, $ionicLoading, GoogleAuthService) {
-
         $scope.revokeGoogle = function() {
             GoogleAuthService.revokeToken();
         };
 
-
         console.log('hello dashboard');
-
-        //$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        //        console.log('hello $stateChangeStart');
-        //        console.log('content loaded: ',event);
-        //        //event.preventDefault();
-        //        // transitionTo() promise will be rejected with
-        //        // a 'transition prevented' error
-        //    });
-
-/*        $scope.$on('$viewContentLoaded', function(event){
-            console.log('hello viewContentLoaded');
-            // Access to all the view config properties.
-            // and one special property 'targetView'
-            // viewConfig.targetView
-            console.log('content loaded: ',event)
-        });*/
-
-        /*$ionicModal.fromTemplateUrl('templates/modals/dashboard.cloud.connect.html', {
-            scope: $rootScope,
-            animation: 'slide-in-up',
-            backdropClickToClose: false,
-            hardwareBackButtonClose: false
-        }).then(function(modal) {
-            //$scope.modal = modal;
-            modal.show();
-        });*/
-
-
-     /*   $scope.openModal = function() {
-            $scope.modal.show();
-        };
-
-        $scope.closeModal = function() {
-            $scope.modal.hide();
-        };
-
-        //Cleanup the modal when we're done with it!
-        $scope.$on('$destroy', function() {
-            $scope.modal.remove();
-        });
-
-        // Execute action on hide modal
-        $scope.$on('modal.hidden', function() {
-            // Execute action
-        });
-
-        // Execute action on remove modal
-        $scope.$on('modal.removed', function() {
-            // Execute action
-        });*/
-
-
     }])
 
 	.controller('OverviewCtrl', ['$scope', 'initOverview', function ($scope, initOverview) {
