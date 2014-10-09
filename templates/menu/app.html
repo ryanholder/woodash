@@ -1,7 +1,7 @@
 <ion-side-menus>
     <ion-side-menu-content drag-content="false">
         <ion-nav-bar class="bar-light" delegate-handle="appNav">
-            <ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
+            <!--<ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>-->
             <ion-nav-buttons side="right">
                 <!--<button class="button button-icon icon ion-ios7-bell-outline woodash-notification-icon"></button>-->
                 <button class="button button-icon icon ion-ios7-bell"></button>
@@ -21,19 +21,19 @@
         </ion-header-bar>
         <ion-content overflow-scroll="true">
             <ion-list>
-                <ion-item nav-clear class="item-icon-left overview" menu-close href="#/site/{{site.id}}/overview">
+                <ion-item nav-clear class="item-icon-left overview" menu-close href="#/app/overview">
                     <i class="icon ion-stats-bars"></i>
                     Overview
                 </ion-item>
-                <ion-item nav-clear class="item-icon-left" menu-close href="#/site/{{site.id}}/customers">
+                <ion-item nav-clear class="item-icon-left" menu-close href="#/app/customers">
                     <i class="icon ion-ios7-people"></i>
                     Customers
                 </ion-item>
-                <ion-item nav-clear class="item-icon-left" menu-close href="#/site/{{site.id}}/products">
+                <ion-item nav-clear class="item-icon-left" menu-close href="#/app/products">
                     Products
                     <i class="icon ion-ios7-cart"></i>
                 </ion-item>
-                <ion-item nav-clear class="item-icon-left" menu-close href="#/site/{{site.id}}/orders">
+                <ion-item nav-clear class="item-icon-left" menu-close href="#/app/orders">
                     Orders
                     <i class="icon ion-ios7-copy"></i>
                 </ion-item>
