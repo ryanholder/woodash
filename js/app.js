@@ -37,14 +37,7 @@ angular.module('woodash', [
                 url: "/app",
                 abstract: true,
                 templateUrl: "templates/menu/app.html",
-                controller: 'AppCtrl as app',
-                resolves: {
-
-                },
-                onEnter: function(){
-                    console.log('hello onEnter');
-                }
-
+                controller: 'AppCtrl as app'
             })
 
             .state('app.dashboard', {
@@ -130,23 +123,11 @@ angular.module('woodash', [
 
     })
 
-    .config(function ($urlRouterProvider) {
-
-        // Prevent $urlRouter from automatically intercepting URL changes;
-        // this allows you to configure custom behavior in between
-        // location changes and route synchronization:
-        $urlRouterProvider.deferIntercept();
-
-    })
-
     .run(['$rootScope', '$state', '$ionicPlatform', function ($rootScope, $state, $ionicPlatform) {
         $ionicPlatform.ready(function () {
             if ( !ionic.Platform.isIPad() || !ionic.Platform.isAndroid() ) {
                 ionic.Platform.platforms.push('chromeapp');
             }
-
-            //InitDashboardService.init();
-            //$state.go('app.dashboard');
 
             //todo: determine why this is needed ?
             if (window.StatusBar) {
@@ -156,90 +137,7 @@ angular.module('woodash', [
         });
     }])
 
-    .run(function($rootScope, $urlRouter, $ionicLoading, GoogleAuthService, HelloWorld) {
-        $rootScope.$on('$locationChangeSuccess', function(evt) {
-
-            console.log(evt);
-
-            evt.preventDefault();
-
-            GoogleAuthService.getToken({ interactive: true }).then(function(token) {
-                // Once the user has logged in, sync the current URL
-                // to the router:
-                if (typeof token !== "undefined") {
-                    $urlRouter.sync();
-                }
-            });
-
-/*            GoogleAuthService.hasToken().then(function(token) {
-                console.log('b');
-                if (typeof token === "undefined") {
-
-                    console.log('a');
-                }
-
-                console.log(token);
-
-
-                console.log('c');
-                $urlRouter.sync();
-            });*/
-
-
-
-            //HelloWorld.getMessages().then(function(messages) {
-            //
-            //        //$ionicLoading.show();
-            //        //console.log('loading start');
-            //        //GoogleAuthService.getToken({ interactive: true })
-            //        //    .then(function(results) {
-            //        //        console.log(results);
-            //        //        if (results.isAuthenticated) {
-            //        //            $ionicLoading.hide();
-            //        //            console.log('loading stop');
-            //        //        }
-            //        //    });
-            //
-            //    console.log('a');
-            //    console.log(messages);
-            //    console.log('b');
-            //
-            //    console.log('c');
-            //    $urlRouter.sync();
-            //});
-
-
-
-
-            //console.log(HelloWorld.getMessages());
-            //var deferred = $q.defer();
-            //var promise = deferred.promise.then(firstFn).then(secondFn).then(thirdFn, errorFn);
-            //if (GoogleAuthService.hasToken()) return;
-            //
-            //// Halt state change from even starting
-            //evt.preventDefault();
-            //// Perform custom logic
-            //
-            ////var googleAuth = GoogleAuthService.getToken({ interactive: true });
-            //
-            ////var meetsRequirement = /* ... */
-            //
-            //console.log(evt);
-            //console.log($q);
-            //
-            //GoogleAuthService.getToken({ interactive: true }).then(function() {
-            //    // Once the user has logged in, sync the current URL
-            //    // to the router:
-            //
-            //    $urlRouter.sync();
-            //});
-            // Continue with the update and state transition if logic allows
-            //if (meetsRequirement) $urlRouter.sync();
-        });
-        $urlRouter.listen();
-    });
-
- /*   .run(['$rootScope', '$state', '$q', 'GoogleAuthService', 'DropboxAuthService', function($rootScope, $state, $q, GoogleAuthService, DropboxAuthService) {
+    .run(['$rootScope', '$state', '$q', 'GoogleAuthService', 'DropboxAuthService', function($rootScope, $state, $q, GoogleAuthService, DropboxAuthService) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams, fromState, fromStateParams) {
             console.log('$stateChangeStart');
             if(toState.name.indexOf('app') !== -1 ) {
@@ -257,9 +155,8 @@ angular.module('woodash', [
                     if (!cloudConnect.googleAuth.isAuthenticated && !cloudConnect.dropboxAuth.isAuthenticated) {
                         $state.go('login');
                     } else {
-                        console.log(event);
-                        console.log(toState);
-                        console.log(toStateParams);
+                        $rootScope.$viewHistory.currentView = $rootScope.$viewHistory.backView;
+                        $rootScope.$viewHistory.backView = null;
                         $state.go(toState.name, toStateParams, {notify: false}).then(function() {
                             $rootScope.$broadcast('$stateChangeSuccess', toState, toStateParams, fromState, fromStateParams);
                         });
@@ -267,4 +164,4 @@ angular.module('woodash', [
                 });
             }
         });
-    }]);*/
+    }]);
