@@ -4,7 +4,10 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$scope', function ($scope) {
+	.controller('AppCtrl', ['$scope', '$ionicPopover', function ($scope, $ionicPopover) {
+        $ionicPopover.fromTemplateUrl('templates/popover.html', function(popover) {
+            $scope.popover = popover;
+        });
 
 	}])
 

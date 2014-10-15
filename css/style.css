@@ -20,6 +20,10 @@ ion-nav-view {
 	top: 50px;
 }
 
+.has-footer {
+    bottom: 50px;
+}
+
 .bar.bar-light {
 	border-color: #eee;
 }
@@ -313,6 +317,8 @@ ion-nav-view {
 
 .woodash-menu.menu .item {
 	border-left: 3px solid transparent;
+    border-top: 0;
+    border-bottom: 0;
 }
 
 .appoverview .woodash-menu.menu .overview.item {
@@ -508,6 +514,24 @@ a[href*="www.amcharts.com"] {
 
 .woodash-menu .bar {
     background-image: linear-gradient(0deg, #333, #333 50%, transparent 50%);
+}
+
+/*.menu-list-bottom {
+    position: absolute;
+    bottom: 0;
+}*/
+
+.menu-list-divider {
+    min-height: 1px;
+    background-color: #3c3c3c !important;
+    padding: 0;
+    border: 0;
+    margin: 10px 0;
+}
+
+.menu-list-divider-top {
+    min-height: 0;
+    margin: 0 0 10px 0;
 }
 
 /*

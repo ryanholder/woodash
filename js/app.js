@@ -102,7 +102,7 @@ angular.module('woodash', [
             consumer_secret: "cs_d6da0b74e1f26cdd1f6bb6c8a0207e90"
         });
 
-        // add a response intereceptor
+        // todo: add a response intereceptor
         // todo: require due to "Response for getList SHOULD be an array and not an object or something else..."
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;
@@ -111,7 +111,7 @@ angular.module('woodash', [
             if (operation === "getList") {
                 // .. and handle the data and meta data
                 if (what === '') {
-                    //todo: should I be converting retuned data to array or leave as object
+                    // todo: should I be converting returned data to array or leave as object
                     extractedData = _.toArray(data);
                 } else {
                     extractedData = data[what];
@@ -137,6 +137,9 @@ angular.module('woodash', [
         });
     }])
 
+    // todo: there must be a better way to handle if we are connected to google or dropbox
+    // todo: look in to using https://github.com/sahat/satellizer, jwt.io
+    // todo: the being connected to cloud service should appear as modal also use google identity listerner for change
     .run(['$rootScope', '$state', '$q', 'GoogleAuthService', 'DropboxAuthService', function($rootScope, $state, $q, GoogleAuthService, DropboxAuthService) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams, fromState, fromStateParams) {
             console.log('$stateChangeStart');
@@ -157,6 +160,8 @@ angular.module('woodash', [
                     } else {
                         $rootScope.$viewHistory.currentView = $rootScope.$viewHistory.backView;
                         $rootScope.$viewHistory.backView = null;
+                        console.log($rootScope);
+                        console.log($state);
                         $state.go(toState.name, toStateParams, {notify: false}).then(function() {
                             $rootScope.$broadcast('$stateChangeSuccess', toState, toStateParams, fromState, fromStateParams);
                         });

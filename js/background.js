@@ -14,7 +14,7 @@ chrome.app.runtime.onLaunched.addListener(function () {
 	chrome.app.window.create(
 		'index.html',
 		{
-			id: "UppApp",
+			id: "Woodash",
 			bounds: {
 				width: width,
 				height: height,

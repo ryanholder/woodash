@@ -4,8 +4,8 @@
             <ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
             <ion-nav-buttons side="right">
                 <!--<button class="button button-icon icon ion-ios7-bell-outline woodash-notification-icon"></button>-->
-                <button class="button button-icon icon ion-ios7-bell"></button>
-                <button class="button button-icon icon ion-person"></button>
+                <!--<button class="button button-icon icon ion-ios7-bell"></button>-->
+                <!--<button class="button button-icon icon ion-person"></button>-->
                 <!--<button class="button button-icon icon ion-ios7-bell-outline woodash-notification-icon"></button>-->
             </ion-nav-buttons>
         </ion-nav-bar>
@@ -16,11 +16,13 @@
         <ion-header-bar>
             <ion-item nav-clear class="item-icon-left" menu-close href="#">
                 <i class="icon ion-stop"></i>
-                Current Site
+                Site Name
+                <i class="icon ion-ios7-telephone-outline icon-right"></i>
             </ion-item>
         </ion-header-bar>
         <ion-content overflow-scroll="true">
             <ion-list>
+                <div class="item item-divider menu-list-divider menu-list-divider-top"></div>
                 <ion-item nav-clear class="item-icon-left overview" menu-close href="#/app/overview">
                     <i class="icon ion-stats-bars"></i>
                     Overview
@@ -33,17 +35,55 @@
                     Products
                     <i class="icon ion-ios7-cart"></i>
                 </ion-item>
-                <ion-item nav-clear class="item-icon-left" menu-close href="#/app/orders">
+                <ion-item nav-clear class="item-icon-left col-bottom" menu-close href="#/app/orders">
                     Orders
                     <i class="icon ion-ios7-copy"></i>
                 </ion-item>
+                <div class="item item-divider menu-list-divider"></div>
+                <ion-item nav-clear class="item-icon-left col-bottom" menu-close href="#/app/profile">
+                    User Name
+                    <i class="icon ion-person"></i>
+                </ion-item>
             </ion-list>
+<!--            <ion-list class="menu-list-bottom">
+                <ion-item nav-clear class="item-icon-left col-bottom" menu-close href="#/app/profile">
+                    User Name
+                    <i class="icon ion-person"></i>
+                </ion-item>
+            </ion-list>-->
         </ion-content>
+
         <ion-footer-bar>
-            <ion-item nav-clear class="item-icon-left" menu-close href="#/app/dashboard">
-                <i class="icon ion-stop"></i> <!-- todo: this should be app icon -->
-                Preferences
-            </ion-item>
+            <div class="item item-button-left">
+                More
+                <button class="button button-clear button-positive" ng-click="popover.show($event)">
+                    <i class="icon ion-more"></i>
+                </button>
+            </div>
+
+            <!--<ion-item nav-clear class="item-icon-left" menu-close ng-click="popover.show($event)">-->
+
+                <!--<i class="icon ion-more"></i> &lt;!&ndash; todo: this should be app icon &ndash;&gt;-->
+                <!--More-->
+            <!--</ion-item>-->
         </ion-footer-bar>
     </ion-side-menu>
 </ion-side-menus>
+
+<script id="templates/popover.html" type="text/ng-template">
+    <ion-popover-view>
+        <ion-content>
+            <div class="list">
+                <a class="item" href="http://learn.ionicframework.com/" target="_blank">
+                    App Settings
+                </a>
+                <a class="item" href="http://ionicframework.com/docs/" target="_blank">
+                    Support
+                </a>
+                <a class="item" href="http://ionicframework.com/submit-issue/" target="_blank">
+                    Submit an Issue
+                </a>
+            </div>
+        </ion-content>
+    </ion-popover-view>
+</script>
