@@ -5,14 +5,48 @@
 angular.module('woodash.controllers', [])
 
 	.controller('AppCtrl', ['$scope', '$ionicPopover', '$ionicModal', 'GoogleAuthService', function ($scope, $ionicPopover, $ionicModal, GoogleAuthService) {
+        // todo: local storage items should not be collected each time AppCtril is run
         chrome.storage.local.get('google_auth', function(storage) {
-            $scope.settingsList = [
+            $scope.cloudConnectList = [
                 { id: 'google_auth', text: "Google Drive", checked: storage.google_auth.isAuthenticated }
             ];
         });
 
+        // todo: should be using single object for entire app in local storage
+        chrome.storage.local.get('app_general_settings', function(storage) {
+            if (_.isEmpty(storage)) {
+                var appGeneralSettings = {
+                    collapsedMenu: {
+                        text: 'Collapsed Menu',
+                        checked: false
+                    }
+                };
+
+                chrome.storage.local.set({'app_general_settings': appGeneralSettings});
+
+                $scope.collapsedMenu = appGeneralSettings.collapsedMenu ;
+            } else {
+                $scope.collapsedMenu = storage.app_general_settings.collapsedMenu;
+            }
+            console.log($scope.collapsedMenu);
+        });
+
+        $scope.collapsedMenuChange = function(setting) {
+            console.log(setting);
+            chrome.storage.local.set({'app_general_settings': {
+                collapsedMenu: setting
+            }});
+            if (setting.checked) {
+                //chrome.storage.local.set({'collapsedMenu': setting});
+                console.log('true');
+            } else {
+                console.log('false');
+            }
+
+        };
+
         $scope.cloudConnectChange = function(cloud) {
-            if (cloud.id == 'google_auth' && cloud.checked == false) {
+            if (cloud.id == 'google_auth' && !cloud.checked) {
                 GoogleAuthService.revokeToken();
             }
 
