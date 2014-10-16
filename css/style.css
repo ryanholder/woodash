@@ -534,6 +534,11 @@ a[href*="www.amcharts.com"] {
     margin: 0 0 10px 0;
 }
 
+.settings-tab-pane {
+    position: absolute;
+    width: 100%;
+}
+
 /*
 
 .loader {

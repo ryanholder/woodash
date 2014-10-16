@@ -56,11 +56,10 @@
         <ion-footer-bar>
             <div class="item item-button-left">
                 More
-                <button class="button button-clear button-positive" ng-click="popover.show($event)">
+                <button class="button button-clear button-positive" ng-click="modal.show()">
                     <i class="icon ion-more"></i>
                 </button>
             </div>
-
             <!--<ion-item nav-clear class="item-icon-left" menu-close ng-click="popover.show($event)">-->
 
                 <!--<i class="icon ion-more"></i> &lt;!&ndash; todo: this should be app icon &ndash;&gt;-->
@@ -69,21 +68,3 @@
         </ion-footer-bar>
     </ion-side-menu>
 </ion-side-menus>
-
-<script id="templates/popover.html" type="text/ng-template">
-    <ion-popover-view>
-        <ion-content>
-            <div class="list">
-                <a class="item" href="http://learn.ionicframework.com/" target="_blank">
-                    App Settings
-                </a>
-                <a class="item" href="http://ionicframework.com/docs/" target="_blank">
-                    Support
-                </a>
-                <a class="item" href="http://ionicframework.com/submit-issue/" target="_blank">
-                    Submit an Issue
-                </a>
-            </div>
-        </ion-content>
-    </ion-popover-view>
-</script>

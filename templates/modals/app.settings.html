@@ -1,0 +1,54 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive has-tabs-top" align-title="left">
+        <h1 class="title">App Settings</h1>
+        <button class="button button-clear button-primary" ng-click="modal.hide()">Close</button>
+    </ion-header-bar>
+    <ion-tabs class="tabs-striped tabs-top tabs-background-positive tabs-light">
+
+        <ion-tab title="General" icon-on="ion-ios7-gear" icon-off="ion-ios7-gear-outline">
+            <div class="has-tabs-top settings-tab-pane">
+                This is home content
+            </div>
+        </ion-tab>
+
+        <ion-tab title="Sites" icon-on="ion-ios7-albums" icon-off="ion-ios7-albums-outline">
+            <div class="has-tabs-top settings-tab-pane">
+                This is about content
+            </div>
+        </ion-tab>
+
+        <ion-tab title="Cloud Connect" icon-on="ion-ios7-cloud" icon-off="ion-ios7-cloud-outline">
+            <div class="has-tabs-top settings-tab-pane">
+
+                <ul class="list">
+                    <div class="item item-divider">
+                        Connected cloud options
+                    </div>
+                    <ion-toggle ng-repeat="item in settingsList"
+                                ng-model="item.checked"
+                                ng-checked="item.checked"
+                                ng-change="pushNotificationChange()">
+                        {{ item.text }}
+                    </ion-toggle>
+                    <li class="item item-toggle">
+                        HTML5
+                        <label class="toggle toggle-balanced">
+                            <input type="checkbox">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </li>
+
+                </ul>
+                <button nav-clear id="revokegoogle" class="button button-positive" ng-click="revokeGoogle()">
+                    Google
+                </button>
+                <button nav-clear id="signindropbox" class="button button-positive" ng-click="loginDropbox()">
+                    Dropbox
+                </button>
+            </div>
+        </ion-tab>
+
+    </ion-tabs>
+</ion-modal-view>

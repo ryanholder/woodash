@@ -4,10 +4,46 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$scope', '$ionicPopover', function ($scope, $ionicPopover) {
-        $ionicPopover.fromTemplateUrl('templates/popover.html', function(popover) {
-            $scope.popover = popover;
+	.controller('AppCtrl', ['$scope', '$ionicPopover', '$ionicModal', 'GoogleAuthService', function ($scope, $ionicPopover, $ionicModal, GoogleAuthService) {
+        $scope.settingsList = [
+            { text: "Wireless", checked: true },
+            { text: "GPS", checked: false },
+            { text: "Bluetooth", checked: false }
+        ];
+
+        $scope.pushNotificationChange = function() {
+            console.log('Push Notification Change');
+        };
+
+        $scope.revokeGoogle = function() {
+            GoogleAuthService.revokeToken();
+        };
+
+        $ionicModal.fromTemplateUrl('templates/modals/app.settings.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.modal = modal;
         });
+        $scope.openModal = function() {
+            $scope.modal.show();
+        };
+        $scope.closeModal = function() {
+            $scope.modal.hide();
+        };
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hidden', function() {
+            // Execute action
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function() {
+            // Execute action
+        });
+
 
 	}])
 
@@ -46,11 +82,7 @@ angular.module('woodash.controllers', [])
 
     }])
 
-    .controller('DashboardCtrl', ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'GoogleAuthService', function ($rootScope, $scope, $ionicModal, $ionicLoading, GoogleAuthService) {
-        $scope.revokeGoogle = function() {
-            GoogleAuthService.revokeToken();
-        };
-
+    .controller('DashboardCtrl', ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', function ($rootScope, $scope, $ionicModal, $ionicLoading) {
         console.log('hello dashboard');
     }])
 
