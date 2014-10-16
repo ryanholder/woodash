@@ -296,7 +296,7 @@ ion-nav-view {
 	padding-left: 4px !important;
 }
 
-.menu-content {
+/*.menu-content {
 	left: 68px !important;
 	width: calc(100% - 68px) !important;
 }
@@ -307,7 +307,7 @@ ion-nav-view {
 
 .item-complex.item-icon-left .item-content {
 	padding-left: 68px;
-}
+}*/
 
 .item-icon-left .icon {
 	left: 15px;

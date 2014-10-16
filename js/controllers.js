@@ -4,7 +4,12 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$scope', '$ionicPopover', '$ionicModal', 'GoogleAuthService', function ($scope, $ionicPopover, $ionicModal, GoogleAuthService) {
+	.controller('AppCtrl', ['$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', function ($scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService) {
+
+        $scope.toggleLeft = function() {
+            $ionicSideMenuDelegate.toggleLeft();
+        };
+
         // todo: local storage items should not be collected each time AppCtril is run
         chrome.storage.local.get('google_auth', function(storage) {
             $scope.cloudConnectList = [
