@@ -19,7 +19,6 @@
 
         <ion-tab title="Cloud Connect" icon-on="ion-ios7-cloud" icon-off="ion-ios7-cloud-outline">
             <div class="has-tabs-top settings-tab-pane">
-
                 <ul class="list">
                     <div class="item item-divider">
                         Connected cloud options
@@ -27,26 +26,10 @@
                     <ion-toggle ng-repeat="item in settingsList"
                                 ng-model="item.checked"
                                 ng-checked="item.checked"
-                                ng-change="pushNotificationChange()">
+                                ng-change="cloudConnectChange(item)">
                         {{ item.text }}
                     </ion-toggle>
-                    <li class="item item-toggle">
-                        HTML5
-                        <label class="toggle toggle-balanced">
-                            <input type="checkbox">
-                            <div class="track">
-                                <div class="handle"></div>
-                            </div>
-                        </label>
-                    </li>
-
                 </ul>
-                <button nav-clear id="revokegoogle" class="button button-positive" ng-click="revokeGoogle()">
-                    Google
-                </button>
-                <button nav-clear id="signindropbox" class="button button-positive" ng-click="loginDropbox()">
-                    Dropbox
-                </button>
             </div>
         </ion-tab>
 

@@ -5,18 +5,22 @@
 angular.module('woodash.controllers', [])
 
 	.controller('AppCtrl', ['$scope', '$ionicPopover', '$ionicModal', 'GoogleAuthService', function ($scope, $ionicPopover, $ionicModal, GoogleAuthService) {
-        $scope.settingsList = [
-            { text: "Wireless", checked: true },
-            { text: "GPS", checked: false },
-            { text: "Bluetooth", checked: false }
-        ];
+        chrome.storage.local.get('google_auth', function(storage) {
+            $scope.settingsList = [
+                { id: 'google_auth', text: "Google Drive", checked: storage.google_auth.isAuthenticated }
+            ];
+        });
 
-        $scope.pushNotificationChange = function() {
-            console.log('Push Notification Change');
+        $scope.cloudConnectChange = function(cloud) {
+            if (cloud.id == 'google_auth' && cloud.checked == false) {
+                GoogleAuthService.revokeToken();
+            }
+
+            console.dir(cloud);
         };
 
         $scope.revokeGoogle = function() {
-            GoogleAuthService.revokeToken();
+
         };
 
         $ionicModal.fromTemplateUrl('templates/modals/app.settings.html', {

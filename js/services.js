@@ -163,6 +163,7 @@ angular.module('woodash.services', [])
                         isAuthenticated: false,
                         errorMessage: chrome.runtime.lastError
                     });
+                    chrome.storage.local.set({'google_auth': _identity});
                     deferred.resolve(_identity);
                 } else {
                     deferred.notify('Found the authenticated Google Drive account');
@@ -170,6 +171,7 @@ angular.module('woodash.services', [])
                         isAuthenticated: true,
                         accessToken: token
                     });
+                    chrome.storage.local.set({'google_auth': _identity});
                     deferred.resolve(_identity);
                 }
 
@@ -198,10 +200,12 @@ angular.module('woodash.services', [])
 
         GoogleAuthService.revokeToken = function (opt_callback) {
             if (GoogleAuthService.accessToken) {
+                chrome.storage.local.remove('google_auth');
                 // Make a request to revoke token
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', 'https://accounts.google.com/o/oauth2/revoke?token=' + GoogleAuthService.accessToken);
                 xhr.send();
+
                 //Restangular.customGET('https://accounts.google.com/o/oauth2/revoke', {token: GoogleAuthService.accessToken}).then(function(response) {
                 //    console.log(response);
                 GoogleAuthService.removeCachedToken(opt_callback);
