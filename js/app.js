@@ -98,7 +98,7 @@ angular.module('woodash', [
                 }
             });
 
-        $urlRouterProvider.otherwise("/app/dashboard");
+        $urlRouterProvider.otherwise("/app/overview");
 
     })
 

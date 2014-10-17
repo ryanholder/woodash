@@ -110,12 +110,12 @@ angular.module('woodash.controllers', [])
         console.log('hello dashboard');
     }])
 
-	.controller('OverviewCtrl', ['$scope', 'initOverview', function ($scope, initOverview) {
-        this.orders = initOverview.orders;
-        this.dateRange = initOverview.dateRange;
+	.controller('OverviewCtrl', ['$scope', function ($scope) {
+        //this.orders = initOverview.orders;
+        //this.dateRange = initOverview.dateRange;
 
-        console.log(this.dateRange);
-        console.log(this.orders);
+        //console.log(this.dateRange);
+        //console.log(this.orders);
 	}])
 
     .controller('CustomersCtrl', ['$scope', function ($scope) {

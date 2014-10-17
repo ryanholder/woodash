@@ -31,6 +31,7 @@ ion-nav-view {
 .bar-header .title {
 	line-height: 50px;
     height: 50px;
+    color: #ccc;
 	/*font-family: 'open sans';
 	font-weight: 500;*/
 }
@@ -535,6 +536,12 @@ a[href*="www.amcharts.com"] {
 .menu-content {
 	left: 68px !important;
 	width: calc(100% - 68px) !important;
+}
+
+.woodash-menu .bar-header .button-clear {
+    max-height: 52px;
+    padding-left: 19px;
+    padding-right: 15px;
 }
 
 /*.item-complex.item-icon-left .item-content {

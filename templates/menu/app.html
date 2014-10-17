@@ -12,11 +12,9 @@
 
     <ion-side-menu class="woodash-menu" width="182" side="left">
         <ion-header-bar ng-if="siteConnectList.connected">
-            <ion-item nav-clear class="item-icon-left" menu-close href="#">
-                <i class="icon ion-stop"></i>
-                Site Name
-                <i class="icon ion-ios7-telephone-outline icon-right"></i>
-            </ion-item>
+            <button class="button button-clear button-positive button-icon icon ion-stop"></button>
+            <h1 class="title">Site Title</h1>
+            <button class="button button-clear button-positive button-icon icon ion-ios7-gear"></button>
         </ion-header-bar>
         <ion-content overflow-scroll="true" ng-if="siteConnectList.connected" class="has-header">
             <ion-list>
