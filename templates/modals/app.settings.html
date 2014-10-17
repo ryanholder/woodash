@@ -11,10 +11,11 @@
                     <div class="item item-divider">
                         General settings
                     </div>
-                    <ion-toggle ng-model="collapsedMenu.checked"
-                                ng-checked="collapsedMenu.checked"
-                                ng-change="collapsedMenuChange(collapsedMenu)" toggle-class="toggle-balanced">
-                        {{ collapsedMenu.text }}
+                    <ion-toggle ng-repeat="setting in generalSettingsList"
+                                ng-model="setting.checked"
+                                ng-checked="setting.checked"
+                                ng-change="collapsedMenuChange(setting)" toggle-class="toggle-balanced">
+                        {{ setting.text }}
                     </ion-toggle>
                 </div>
             </div>

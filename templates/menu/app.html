@@ -1,8 +1,8 @@
-<ion-side-menus>
+<ion-side-menus ng-class="{ 'collapsed-menu': $root.collapsedMenu.checked }">
     <ion-side-menu-content drag-content="false">
         <ion-nav-bar class="bar-light" delegate-handle="appNav">
             <ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
-            <button class="button button-icon ion-navicon" ng-click="toggleLeft()" ng-hide="$exposeAside.active"></button>
+            <button class="button button-icon ion-navicon" ng-click="toggleLeft()"></button>
             <ion-nav-buttons side="right">
                 <!--<button class="button button-icon icon ion-ios7-bell-outline woodash-notification-icon"></button>-->
                 <!--<button class="button button-icon icon ion-ios7-bell"></button>-->
@@ -13,7 +13,7 @@
         <ion-nav-view name="menuContent"></ion-nav-view> <!-- removed animation="slide-left-right" -->
     </ion-side-menu-content>
 
-    <ion-side-menu class="woodash-menu" width="250" expose-aside-when="large"> <!-- removed width="152" -->
+    <ion-side-menu class="woodash-menu" width="182" side="left"> <!-- removed width=152 -->
         <ion-header-bar>
             <ion-item nav-clear class="item-icon-left" menu-close href="#">
                 <i class="icon ion-stop"></i>

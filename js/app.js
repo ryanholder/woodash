@@ -129,6 +129,24 @@ angular.module('woodash', [
                 ionic.Platform.platforms.push('chromeapp');
             }
 
+            // todo: should be using single object for entire app in local storage
+            // todo: should also consider moving to factory and call on route resolves
+            chrome.storage.local.get('app_general_settings', function(settings) {
+                if (_.isEmpty(settings)) {
+                    var appGeneralSettings = {
+                        collapsed_menu: {
+                            text: 'Collapsed Menu',
+                            checked: false
+                        }
+                    };
+                    chrome.storage.local.set({'app_general_settings': appGeneralSettings}, function() {
+                        $rootScope.collapsedMenu = appGeneralSettings.collapsed_menu ;
+                    });
+                } else {
+                    $rootScope.collapsedMenu = settings.app_general_settings.collapsed_menu;
+                }
+            });
+
             //todo: determine why this is needed ?
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required

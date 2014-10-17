@@ -4,8 +4,9 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', function ($scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService) {
+	.controller('AppCtrl', ['$rootScope','$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', function ($rootScope, $scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService) {
 
+        console.log($ionicSideMenuDelegate);
         $scope.toggleLeft = function() {
             $ionicSideMenuDelegate.toggleLeft();
         };
@@ -17,8 +18,12 @@ angular.module('woodash.controllers', [])
             ];
         });
 
+        $scope.generalSettingsList = [$rootScope.collapsedMenu];
+
+        $scope.sidebarWidth = $rootScope.collapsedMenu.width;
+
         // todo: should be using single object for entire app in local storage
-        chrome.storage.local.get('app_general_settings', function(storage) {
+        /*chrome.storage.local.get('app_general_settings', function(storage) {
             if (_.isEmpty(storage)) {
                 var appGeneralSettings = {
                     collapsedMenu: {
@@ -34,32 +39,24 @@ angular.module('woodash.controllers', [])
                 $scope.collapsedMenu = storage.app_general_settings.collapsedMenu;
             }
             console.log($scope.collapsedMenu);
-        });
+        });*/
 
         $scope.collapsedMenuChange = function(setting) {
-            console.log(setting);
-            chrome.storage.local.set({'app_general_settings': {
-                collapsedMenu: setting
-            }});
             if (setting.checked) {
-                //chrome.storage.local.set({'collapsedMenu': setting});
-                console.log('true');
+                $scope.sideMenuContentTranslateX = 182
             } else {
-                console.log('false');
+                $scope.sideMenuContentTranslateX = 250
             }
 
+            chrome.storage.local.set({'app_general_settings': {
+                collapsed_menu: setting
+            }});
         };
 
         $scope.cloudConnectChange = function(cloud) {
             if (cloud.id == 'google_auth' && !cloud.checked) {
                 GoogleAuthService.revokeToken();
             }
-
-            console.dir(cloud);
-        };
-
-        $scope.revokeGoogle = function() {
-
         };
 
         $ionicModal.fromTemplateUrl('templates/modals/app.settings.html', {

@@ -296,24 +296,9 @@ ion-nav-view {
 	padding-left: 4px !important;
 }
 
-/*.menu-content {
-	left: 68px !important;
-	width: calc(100% - 68px) !important;
-}
-
-.menu-left {
-	width: 220px !important;
-}
-
-.item-complex.item-icon-left .item-content {
-	padding-left: 68px;
-}*/
-
 .item-icon-left .icon {
 	left: 15px;
 }
-
-
 
 .woodash-menu.menu .item {
 	border-left: 3px solid transparent;
@@ -538,6 +523,30 @@ a[href*="www.amcharts.com"] {
     position: absolute;
     width: 100%;
 }
+
+.woodash-menu.menu {
+    width: 250px !important;
+}
+
+
+/*
+.collapsed-menu .menu-left {
+    width: 190px !important;
+}
+*/
+
+.menu-content {
+    width: 100%;
+}
+
+.collapsed-menu .menu-content {
+	left: 68px !important;
+	width: calc(100% - 68px) !important;
+}
+
+/*.item-complex.item-icon-left .item-content {
+	padding-left: 68px;
+}*/
 
 /*
 
