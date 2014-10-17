@@ -539,7 +539,7 @@ a[href*="www.amcharts.com"] {
     width: 100%;
 }
 
-.collapsed-menu .menu-content {
+.menu-content {
 	left: 68px !important;
 	width: calc(100% - 68px) !important;
 }

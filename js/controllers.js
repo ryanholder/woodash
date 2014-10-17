@@ -6,11 +6,6 @@ angular.module('woodash.controllers', [])
 
 	.controller('AppCtrl', ['$rootScope','$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', function ($rootScope, $scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService) {
 
-        console.log($ionicSideMenuDelegate);
-        $scope.toggleLeft = function() {
-            $ionicSideMenuDelegate.toggleLeft();
-        };
-
         // todo: local storage items should not be collected each time AppCtril is run
         chrome.storage.local.get('google_auth', function(storage) {
             $scope.cloudConnectList = [
@@ -18,46 +13,17 @@ angular.module('woodash.controllers', [])
             ];
         });
 
-        $scope.generalSettingsList = [$rootScope.collapsedMenu];
-
-        $scope.sidebarWidth = $rootScope.collapsedMenu.width;
-
-        // todo: should be using single object for entire app in local storage
-        /*chrome.storage.local.get('app_general_settings', function(storage) {
-            if (_.isEmpty(storage)) {
-                var appGeneralSettings = {
-                    collapsedMenu: {
-                        text: 'Collapsed Menu',
-                        checked: false
-                    }
-                };
-
-                chrome.storage.local.set({'app_general_settings': appGeneralSettings});
-
-                $scope.collapsedMenu = appGeneralSettings.collapsedMenu ;
-            } else {
-                $scope.collapsedMenu = storage.app_general_settings.collapsedMenu;
-            }
-            console.log($scope.collapsedMenu);
-        });*/
-
-        $scope.collapsedMenuChange = function(setting) {
-            if (setting.checked) {
-                $scope.sideMenuContentTranslateX = 182
-            } else {
-                $scope.sideMenuContentTranslateX = 250
-            }
-
-            chrome.storage.local.set({'app_general_settings': {
-                collapsed_menu: setting
-            }});
-        };
-
         $scope.cloudConnectChange = function(cloud) {
             if (cloud.id == 'google_auth' && !cloud.checked) {
                 GoogleAuthService.revokeToken();
             }
         };
+
+/*        $scope.collapsedMenuChange = function(setting) {
+            chrome.storage.local.set({'app_general_settings': {
+                collapsed_menu: setting
+            }});
+        };*/
 
         $ionicModal.fromTemplateUrl('templates/modals/app.settings.html', {
             scope: $scope,
@@ -83,12 +49,9 @@ angular.module('woodash.controllers', [])
         $scope.$on('modal.removed', function() {
             // Execute action
         });
-
-
 	}])
 
     .controller('LoginCtrl', ['$scope', '$state', '$stateParams', 'GoogleAuthService', 'DropboxAuthService', '$ionicLoading', function ($scope, $state, $stateParams, GoogleAuthService, DropboxAuthService, $ionicLoading) {
-
         console.log($state);
         console.log($stateParams);
 

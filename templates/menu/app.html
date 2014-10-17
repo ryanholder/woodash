@@ -1,19 +1,16 @@
-<ion-side-menus ng-class="{ 'collapsed-menu': $root.collapsedMenu.checked }">
+<ion-side-menus>
+
     <ion-side-menu-content drag-content="false">
         <ion-nav-bar class="bar-light" delegate-handle="appNav">
             <ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
-            <button class="button button-icon ion-navicon" ng-click="toggleLeft()"></button>
+            <button menu-toggle="left" class="button button-icon ion-navicon"></button>
             <ion-nav-buttons side="right">
-                <!--<button class="button button-icon icon ion-ios7-bell-outline woodash-notification-icon"></button>-->
-                <!--<button class="button button-icon icon ion-ios7-bell"></button>-->
-                <!--<button class="button button-icon icon ion-person"></button>-->
-                <!--<button class="button button-icon icon ion-ios7-bell-outline woodash-notification-icon"></button>-->
             </ion-nav-buttons>
         </ion-nav-bar>
-        <ion-nav-view name="menuContent"></ion-nav-view> <!-- removed animation="slide-left-right" -->
+        <ion-nav-view name="menuContent"></ion-nav-view>
     </ion-side-menu-content>
 
-    <ion-side-menu class="woodash-menu" width="182" side="left"> <!-- removed width=152 -->
+    <ion-side-menu class="woodash-menu" width="182" side="left">
         <ion-header-bar>
             <ion-item nav-clear class="item-icon-left" menu-close href="#">
                 <i class="icon ion-stop"></i>
@@ -46,14 +43,7 @@
                     <i class="icon ion-person"></i>
                 </ion-item>
             </ion-list>
-<!--            <ion-list class="menu-list-bottom">
-                <ion-item nav-clear class="item-icon-left col-bottom" menu-close href="#/app/profile">
-                    User Name
-                    <i class="icon ion-person"></i>
-                </ion-item>
-            </ion-list>-->
         </ion-content>
-
         <ion-footer-bar>
             <div class="item item-button-left">
                 More
@@ -61,11 +51,7 @@
                     <i class="icon ion-more"></i>
                 </button>
             </div>
-            <!--<ion-item nav-clear class="item-icon-left" menu-close ng-click="popover.show($event)">-->
-
-                <!--<i class="icon ion-more"></i> &lt;!&ndash; todo: this should be app icon &ndash;&gt;-->
-                <!--More-->
-            <!--</ion-item>-->
         </ion-footer-bar>
     </ion-side-menu>
+
 </ion-side-menus>

@@ -131,6 +131,8 @@ angular.module('woodash', [
 
             // todo: should be using single object for entire app in local storage
             // todo: should also consider moving to factory and call on route resolves
+            // todo: prevent general settings being set till better side menu solution in place
+/*
             chrome.storage.local.get('app_general_settings', function(settings) {
                 if (_.isEmpty(settings)) {
                     var appGeneralSettings = {
@@ -146,6 +148,7 @@ angular.module('woodash', [
                     $rootScope.collapsedMenu = settings.app_general_settings.collapsed_menu;
                 }
             });
+*/
 
             //todo: determine why this is needed ?
             if (window.StatusBar) {
