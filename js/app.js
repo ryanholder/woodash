@@ -19,6 +19,14 @@ angular.module('woodash', [
     'woodash.controllers'
 ])
 
+
+    .constant('appSiteConfig', {
+        'site_url': 'https://wp.thewhatwhat.com/wc-api/v1',
+        'consumer_key': 'ck_45841d89825d617a00814f88e74face7',
+        'consumer_secret': 'cs_d6da0b74e1f26cdd1f6bb6c8a0207e90',
+        'connected': false
+    })
+
     .config(function ($compileProvider) {
         $compileProvider
             .aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
@@ -94,12 +102,12 @@ angular.module('woodash', [
 
     })
 
-    .config(function(RestangularProvider) {
+    .config(function(appSiteConfig, RestangularProvider) {
 
-        RestangularProvider.setBaseUrl('https://wp.thewhatwhat.com/wc-api/v1');
+        RestangularProvider.setBaseUrl(appSiteConfig.site_url);
         RestangularProvider.setDefaultRequestParams({
-            consumer_key: "ck_45841d89825d617a00814f88e74face7",
-            consumer_secret: "cs_d6da0b74e1f26cdd1f6bb6c8a0207e90"
+            consumer_key: appSiteConfig.consumer_key,
+            consumer_secret: appSiteConfig.consumer_secret
         });
 
         // todo: add a response intereceptor
@@ -128,6 +136,8 @@ angular.module('woodash', [
             if ( !ionic.Platform.isIPad() || !ionic.Platform.isAndroid() ) {
                 ionic.Platform.platforms.push('chromeapp');
             }
+
+
 
             // todo: should be using single object for entire app in local storage
             // todo: should also consider moving to factory and call on route resolves

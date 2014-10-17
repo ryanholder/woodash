@@ -23,7 +23,23 @@
 
         <ion-tab title="Sites" icon-on="ion-ios7-albums" icon-off="ion-ios7-albums-outline">
             <div class="has-tabs-top settings-tab-pane">
-                This is about content
+                <div class="list">
+                    <div class="item item-divider">
+                        Connect to site
+                    </div>
+                    <label class="item item-input">
+                        <input type="text" placeholder="Site Address" ng-model="site.url">>
+                    </label>
+                    <label class="item item-input">
+                        <input type="text" placeholder="Consumer Key" ng-model="site.client_key">
+                    </label>
+                    <label class="item item-input">
+                        <input type="text" placeholder="Secret Key" ng-model="site.secret_key">
+                    </label>
+                </div>
+                <div class="padding">
+                    <button class="button button-block button-balanced" ng-click="siteConnect(site)">Connect</button>
+                </div>
             </div>
         </ion-tab>
 

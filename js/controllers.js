@@ -13,6 +13,25 @@ angular.module('woodash.controllers', [])
             ];
         });
 
+        $scope.siteConnect = function(site) {
+            // todo: function to check we are connected, dummy for now
+            var AppSitesService = function (site) {
+                console.log('we connected yay!!');
+                site.connected = true;
+                return site;
+            };
+
+            AppSitesService(site);
+
+            if (site.connected) {
+                chrome.storage.local.set({'app_site': site}, function() {
+                    $rootScope.appSites = site;
+                });
+            }
+
+            console.log(site);
+        };
+
         $scope.cloudConnectChange = function(cloud) {
             if (cloud.id == 'google_auth' && !cloud.checked) {
                 GoogleAuthService.revokeToken();
