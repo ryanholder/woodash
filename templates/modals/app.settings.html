@@ -28,17 +28,17 @@
                         Connect to site
                     </div>
                     <label class="item item-input">
-                        <input type="text" placeholder="Site Address" ng-model="site.url">>
+                        <input type="text" placeholder="Site Address" ng-model="siteConnectList.site_url">
                     </label>
                     <label class="item item-input">
-                        <input type="text" placeholder="Consumer Key" ng-model="site.client_key">
+                        <input type="text" placeholder="Consumer Key" ng-model="siteConnectList.consumer_key">
                     </label>
                     <label class="item item-input">
-                        <input type="text" placeholder="Secret Key" ng-model="site.secret_key">
+                        <input type="text" placeholder="Secret Key" ng-model="siteConnectList.consumer_secret">
                     </label>
                 </div>
                 <div class="padding">
-                    <button class="button button-block button-balanced" ng-click="siteConnect(site)">Connect</button>
+                    <button class="button button-block button-balanced" ng-click="siteConnect(siteConnectList)">Connect</button>
                 </div>
             </div>
         </ion-tab>

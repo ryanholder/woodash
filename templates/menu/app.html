@@ -11,14 +11,14 @@
     </ion-side-menu-content>
 
     <ion-side-menu class="woodash-menu" width="182" side="left">
-        <ion-header-bar ng-if="$root.appSites.connected">
+        <ion-header-bar ng-if="siteConnectList.connected">
             <ion-item nav-clear class="item-icon-left" menu-close href="#">
                 <i class="icon ion-stop"></i>
                 Site Name
                 <i class="icon ion-ios7-telephone-outline icon-right"></i>
             </ion-item>
         </ion-header-bar>
-        <ion-content overflow-scroll="true" ng-if="$root.appSites.connected">
+        <ion-content overflow-scroll="true" ng-if="siteConnectList.connected" class="has-header">
             <ion-list>
                 <div class="item item-divider menu-list-divider menu-list-divider-top"></div>
                 <ion-item nav-clear class="item-icon-left overview" menu-close href="#/app/overview">

@@ -13,6 +13,8 @@ angular.module('woodash.controllers', [])
             ];
         });
 
+        $scope.siteConnectList = $rootScope.appSites;
+
         $scope.siteConnect = function(site) {
             // todo: function to check we are connected, dummy for now
             var AppSitesService = function (site) {
@@ -25,7 +27,7 @@ angular.module('woodash.controllers', [])
 
             if (site.connected) {
                 chrome.storage.local.set({'app_site': site}, function() {
-                    $rootScope.appSites = site;
+                    $rootScope.appSites = site.app_site;
                 });
             }
 

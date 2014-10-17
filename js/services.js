@@ -6,62 +6,6 @@ angular.module('woodash.services', [])
         return Restangular.service('orders');
     })
 
-    //provider style, full blown, configurable version
-    .provider('AppSitesProvider', function() {
-        // In the provider function, you cannot inject any
-        // service or factory. This can only be done at the
-        // "$get" method.
-        chrome.storage.local.get('app_site', function(sites) {
-            if (_.isEmpty(sites)) {
-                var appSites = {
-                    site_url: '',
-                    consumer_key: '',
-                    consumer_secret: '',
-                    connected: false
-                };
-                chrome.storage.local.set({'app_site': appSites}, function() {
-                    $rootScope.appSites = appSites;
-                });
-            } else {
-                $rootScope.appSites = sites;
-            }
-        });
-        this.name = 'Default';
-
-        this.$get = function() {
-            var name = this.name;
-            return {
-                sayHello: function() {
-                    return "Hello, " + name + "!"
-                }
-            }
-        };
-
-        this.setName = function(name) {
-            this.name = name;
-        };
-    })
-
-    .factory('AppSitesService', function($rootScope) {
-        chrome.storage.local.get('app_site', function(sites) {
-            if (_.isEmpty(sites)) {
-                var appSites = {
-                    site_url: '',
-                    consumer_key: '',
-                    consumer_secret: '',
-                    connected: false
-                };
-                chrome.storage.local.set({'app_site': appSites}, function() {
-                    $rootScope.appSites = appSites;
-                });
-            } else {
-                $rootScope.appSites = sites;
-            }
-        });
-
-        return $rootScope.appSites;
-    })
-
     .factory('InitDashboardService', function($rootScope, $q, $state, $ionicLoading, $ionicModal, GoogleAuthService, DropboxAuthService) {
         var InitDashboardService = {};
 
