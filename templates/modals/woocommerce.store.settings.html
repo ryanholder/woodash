@@ -1,0 +1,28 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive has-tabs-top" align-title="left">
+        <h1 class="title">Woocommerce Store Settings</h1>
+        <button class="button button-clear button-primary" ng-click="app.wcStoreSettingsModal.hide()">Close</button>
+    </ion-header-bar>
+    <ion-pane>
+        <ion-list>
+            <ion-item>
+                URL: {{app.wcApiStoreData.URL}}
+            </ion-item>
+            <ion-item>
+                Name: {{app.wcApiStoreData.name}}
+            </ion-item>
+            <ion-item>
+                Description: {{app.wcApiStoreData.description}}
+            </ion-item>
+            <ion-item>
+                Currency: {{app.wcApiStoreData.meta.currency}}
+            </ion-item>
+            <ion-item>
+                Dimension unit: {{app.wcApiStoreData.meta.dimension_unit}}
+            </ion-item>
+            <ion-item>
+                Weight unit: {{app.wcApiStoreData.meta.weight_unit}}
+            </ion-item>
+        </ion-list>
+    </ion-pane>
+</ion-modal-view>

@@ -13,8 +13,8 @@
     <ion-side-menu class="woodash-menu" width="182" side="left">
         <ion-header-bar ng-if="siteConnectList.connected">
             <button class="button button-clear button-positive button-icon icon ion-stop"></button>
-            <h1 class="title">Site Title</h1>
-            <button class="button button-clear button-positive button-icon icon ion-ios7-gear"></button>
+            <h1 class="title">{{app.wcApiStoreData.name}}</h1>
+            <button class="button button-clear button-positive button-icon icon ion-ios7-gear" ng-click="app.wcStoreSettingsModal.show()"></button>
         </ion-header-bar>
         <ion-content overflow-scroll="true" ng-if="siteConnectList.connected" class="has-header">
             <ion-list>
@@ -45,7 +45,7 @@
         <ion-footer-bar>
             <div class="item item-button-left">
                 More
-                <button class="button button-clear button-positive" ng-click="modal.show()">
+                <button class="button button-clear button-positive" ng-click="app.settingsModal.show()">
                     <i class="icon ion-more"></i>
                 </button>
             </div>

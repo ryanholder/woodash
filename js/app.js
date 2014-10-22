@@ -21,7 +21,7 @@ angular.module('woodash', [
 
 
     .constant('appSiteConfig', {
-        'site_url': 'https://wp.thewhatwhat.com/wc-api/v1',
+        'site_url': 'https://wp.thewhatwhat.com/wc-api/v2',
         'consumer_key': 'ck_45841d89825d617a00814f88e74face7',
             'consumer_secret': 'cs_d6da0b74e1f26cdd1f6bb6c8a0207e90',
         'connected': false
@@ -45,7 +45,19 @@ angular.module('woodash', [
                 url: "/app",
                 abstract: true,
                 templateUrl: "templates/menu/app.html",
-                controller: 'AppCtrl as app'
+                controller: 'AppCtrl as app',
+                resolve: {
+                    wcApiStoreData: function($q, Restangular) {
+                        var deferred = $q.defer();
+
+                        Restangular.all('').getList().then(function(store) {
+                            //console.log(store.plain()[0]);
+                            deferred.resolve(store.plain()[0]);
+                        });
+
+                        return deferred.promise;
+                    }
+                }
             })
 
             .state('app.dashboard', {
@@ -110,10 +122,18 @@ angular.module('woodash', [
             consumer_secret: appSiteConfig.consumer_secret
         });
 
+        //RestangularProvider.setResponseExtractor(function(response, operation) {
+        //    console.log(response);
+        //    return response.data;
+        //});
+
         // todo: add a response intereceptor
         // todo: require due to "Response for getList SHOULD be an array and not an object or something else..."
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;
+
+            console.log(data);
+            console.log(what);
 
             // .. to look for getList operations
             if (operation === "getList") {
@@ -126,6 +146,7 @@ angular.module('woodash', [
                 }
             }
 
+            console.log(extractedData);
             return extractedData;
         });
 

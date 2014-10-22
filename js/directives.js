@@ -112,6 +112,8 @@ angular.module('woodash.directives', [])
                             .union()
                             .value();
 
+                        console.log(lineItems);
+
                         var lineItemsCount = _.chain(lineItems)
                             .countBy("product_id")
                             .pairs()

@@ -4,9 +4,21 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$rootScope','$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', function ($rootScope, $scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService) {
+	.controller('AppCtrl', ['$rootScope','$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', 'wcApiStoreData', function ($rootScope, $scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService, wcApiStoreData) {
 
-        // todo: local storage items should not be collected each time AppCtril is run
+        var app = this;
+
+        console.dir(wcApiStoreData);
+
+        app.wcApiStoreData = wcApiStoreData;
+        app.siteName = wcApiStoreData.name;
+        chrome.storage.local.get('app_site', function(site) {
+            site = site.app_site;
+            site.store = wcApiStoreData;
+            chrome.storage.local.set({'app_site': site});
+        });
+
+        // todo: local storage items should not be collected each time AppCtrl is run
         chrome.storage.local.get('google_auth', function(storage) {
             $scope.cloudConnectList = [
                 { id: 'google_auth', text: "Google Drive", checked: storage.google_auth.isAuthenticated }
@@ -18,7 +30,6 @@ angular.module('woodash.controllers', [])
         $scope.siteConnect = function(site) {
             // todo: function to check we are connected, dummy for now
             var AppSitesService = function (site) {
-                console.log('we connected yay!!');
                 site.connected = true;
                 return site;
             };
@@ -30,8 +41,6 @@ angular.module('woodash.controllers', [])
                     $rootScope.appSites = site.app_site;
                 });
             }
-
-            console.log(site);
         };
 
         $scope.cloudConnectChange = function(cloud) {
@@ -40,36 +49,21 @@ angular.module('woodash.controllers', [])
             }
         };
 
-/*        $scope.collapsedMenuChange = function(setting) {
-            chrome.storage.local.set({'app_general_settings': {
-                collapsed_menu: setting
-            }});
-        };*/
-
         $ionicModal.fromTemplateUrl('templates/modals/app.settings.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
-            $scope.modal = modal;
+            app.settingsModal = modal;
         });
-        $scope.openModal = function() {
-            $scope.modal.show();
-        };
-        $scope.closeModal = function() {
-            $scope.modal.hide();
-        };
-        //Cleanup the modal when we're done with it!
-        $scope.$on('$destroy', function() {
-            $scope.modal.remove();
+
+        $ionicModal.fromTemplateUrl('templates/modals/woocommerce.store.settings.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            app.wcStoreSettingsModal = modal;
         });
-        // Execute action on hide modal
-        $scope.$on('modal.hidden', function() {
-            // Execute action
-        });
-        // Execute action on remove modal
-        $scope.$on('modal.removed', function() {
-            // Execute action
-        });
+
+
 	}])
 
     .controller('LoginCtrl', ['$scope', '$state', '$stateParams', 'GoogleAuthService', 'DropboxAuthService', '$ionicLoading', function ($scope, $state, $stateParams, GoogleAuthService, DropboxAuthService, $ionicLoading) {
