@@ -1,8 +1,24 @@
 <ion-view title="Customers">
-    <ion-nav-buttons side="left">
-        <!--<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>-->
-    </ion-nav-buttons>
     <ion-content class="has-header">
 
+<!--        <div class="list">
+
+            <a class="item item-avatar" href="#">
+                <img src="venkman.jpg">
+                <h2>Venkman</h2>
+                <p>Back off, man. I'm a scientist.</p>
+            </a>
+
+            ...
+
+        </div>-->
+
+        <ion-list>
+            <ion-item ng-repeat="customer in customers.list" class="item-thumbnail-left">
+                <img ng-src="{{customer.avatar_url}}">
+                <h2>{{customer.first_name}}</h2>
+                <p>{{customer.username}}</p>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>

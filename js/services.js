@@ -6,6 +6,10 @@ angular.module('woodash.services', [])
         return Restangular.service('orders');
     })
 
+    .factory('wcCustomers', function(Restangular) {
+        return Restangular.service('customers');
+    })
+
     .factory('InitDashboardService', function($rootScope, $q, $state, $ionicLoading, $ionicModal, GoogleAuthService, DropboxAuthService) {
         var InitDashboardService = {};
 
