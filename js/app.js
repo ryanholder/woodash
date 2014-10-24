@@ -142,8 +142,8 @@ angular.module('woodash', [
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;
 
-            console.log(data);
-            console.log(what);
+            //console.log(data);
+            //console.log(what);
 
             // .. to look for getList operations
             if (operation === "getList") {
@@ -156,7 +156,7 @@ angular.module('woodash', [
                 }
             }
 
-            console.log(extractedData);
+            //console.log(extractedData);
             return extractedData;
         });
 
@@ -237,8 +237,8 @@ angular.module('woodash', [
                     } else {
                         $rootScope.$viewHistory.currentView = $rootScope.$viewHistory.backView;
                         $rootScope.$viewHistory.backView = null;
-                        console.log($rootScope);
-                        console.log($state);
+                        //console.log($rootScope);
+                        //console.log($state);
                         $state.go(toState.name, toStateParams, {notify: false}).then(function() {
                             $rootScope.$broadcast('$stateChangeSuccess', toState, toStateParams, fromState, fromStateParams);
                         });

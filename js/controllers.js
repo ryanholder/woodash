@@ -8,6 +8,8 @@ angular.module('woodash.controllers', [])
 
         var app = this;
 
+
+
         console.dir(wcApiStoreData);
 
         app.wcApiStoreData = wcApiStoreData;
@@ -129,7 +131,7 @@ angular.module('woodash.controllers', [])
             //console.log(url);
             $http.get(url, {responseType: 'blob'}).success(function(blob, status, headers, config) {
 
-                console.log(blob, status, headers, config);
+                //console.log(blob, status, headers, config);
 
                 //blob.name = doc.iconFilename; // Add icon filename to blob.
 
@@ -189,7 +191,7 @@ angular.module('woodash.controllers', [])
             $scope.list.forEach(function(record) {
                 $http.get(record.avatar_url, {responseType: 'blob'}).success(function(blob, status, headers, config) {
 
-                    console.log(blob, status, headers, config);
+                    //console.log(blob, status, headers, config);
 
                     record.avatar_url = window.URL.createObjectURL(blob);
                     //blob.name = doc.iconFilename; // Add icon filename to blob.
@@ -207,7 +209,7 @@ angular.module('woodash.controllers', [])
                     //    $scope.docs.sort(Util.sortByDate);
                     //}
                 });
-                console.log(record);
+                //console.log(record);
             });
         })
 
