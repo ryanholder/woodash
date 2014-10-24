@@ -91,7 +91,7 @@ angular.module('woodash', [
             })
 
             .state('app.customers.detail', {
-                url: "/detail",
+                url: "/detail/:id",
                 views: {
                     '@app.customers': {
                         templateUrl: "templates/customers.detail.html",

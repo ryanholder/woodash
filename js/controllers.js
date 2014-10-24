@@ -216,10 +216,12 @@ angular.module('woodash.controllers', [])
 
     }])
 
-    .controller('CustomersDetailCtrl', ['$scope', function ($scope) {
-
-
+    .controller('CustomersDetailCtrl', ['$scope', '$stateParams', function ($scope, $stateParams) {
         $scope.detailView.display = true;
+
+        $scope.customerId = $stateParams.id;
+
+
     }])
 
     .controller('ProductsCtrl', ['$scope', function ($scope) {
