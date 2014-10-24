@@ -1,25 +1,7 @@
 <ion-view title="Customers" class="list-pane">
     <ion-content>
-
-<!--        <div class="list">
-
-            <a class="item item-avatar" href="#">
-                <img src="venkman.jpg">
-                <h2>Venkman</h2>
-                <p>Back off, man. I'm a scientist.</p>
-            </a>
-
-            ...
-
-        </div>-->
-
-<!--        <div ng-repeat="customer in list">
-            <img ng-src="{{customer.avatar_url}}">
-            <h2>{{customer.first_name}}</h2>
-            <p>{{customer.username}}</p>
-        </div>-->
         <ion-list>
-            <ion-item ng-repeat="customer in list" href="#/app/customers/detail/{{customer.id}}" class="item-thumbnail-left">
+            <ion-item ng-repeat="customer in list" ui-sref="app.customers.detail({id:customer.id})" ui-sref-active="active" class="item-thumbnail-left">
                 <img ng-src="{{customer.avatar_url}}">
                 <h2>{{customer.first_name}}</h2>
                 <p>{{customer.username}}</p>
