@@ -544,6 +544,16 @@ a[href*="www.amcharts.com"] {
     padding-right: 15px;
 }
 
+.parent-pane,
+.parent-pane-header {
+    width: 33%;
+}
+
+.child-pane {
+    width: 67%;
+    left: 33%;
+}
+
 /*.item-complex.item-icon-left .item-content {
 	padding-left: 68px;
 }*/

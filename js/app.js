@@ -86,6 +86,10 @@ angular.module('woodash', [
                     'menuContent': {
                         templateUrl: "templates/customers.html",
                         controller: 'CustomersCtrl as customers'
+                    },
+                    'menuContentChild': {
+                        templateUrl: "templates/customers.detail.html",
+                        controller: 'CustomersDetailCtrl as customersdetail'
                     }
                 }
             })
