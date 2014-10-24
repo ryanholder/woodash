@@ -25,6 +25,8 @@ angular.module('woodash.controllers', [])
             ];
         });
 
+        $scope.detailView = {display: false};
+
         $scope.siteConnectList = $rootScope.appSites;
 
         $scope.siteConnect = function(site) {
@@ -105,6 +107,8 @@ angular.module('woodash.controllers', [])
     }])
 
 	.controller('OverviewCtrl', ['$scope', function ($scope) {
+        //todo: wheter we are in display/split screen view should be handled possibly in resolves
+        $scope.detailView.display = false;
         //this.orders = initOverview.orders;
         //this.dateRange = initOverview.dateRange;
 
@@ -210,6 +214,12 @@ angular.module('woodash.controllers', [])
 
 
 
+    }])
+
+    .controller('CustomersDetailCtrl', ['$scope', function ($scope) {
+
+
+        $scope.detailView.display = true;
     }])
 
     .controller('ProductsCtrl', ['$scope', function ($scope) {

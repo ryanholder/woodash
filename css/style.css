@@ -544,12 +544,12 @@ a[href*="www.amcharts.com"] {
     padding-right: 15px;
 }
 
-.parent-pane,
-.parent-pane-header {
+.list-pane,
+.list-pane-header {
     width: 33%;
 }
 
-.child-pane {
+.detail-pane {
     width: 67%;
     left: 33%;
 }

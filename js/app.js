@@ -86,8 +86,14 @@ angular.module('woodash', [
                     'menuContent': {
                         templateUrl: "templates/customers.html",
                         controller: 'CustomersCtrl as customers'
-                    },
-                    'menuContentChild': {
+                    }
+                }
+            })
+
+            .state('app.customers.detail', {
+                url: "/detail",
+                views: {
+                    '@app.customers': {
                         templateUrl: "templates/customers.detail.html",
                         controller: 'CustomersDetailCtrl as customersdetail'
                     }
