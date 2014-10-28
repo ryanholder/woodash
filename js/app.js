@@ -82,6 +82,7 @@ angular.module('woodash', [
 
             .state('app.customers', {
                 url: "/customers",
+                abstract: true,
                 views: {
                     'menuContent': {
                         templateUrl: "templates/customers.html",
@@ -91,7 +92,7 @@ angular.module('woodash', [
             })
 
             .state('app.customers.detail', {
-                url: "/detail/{id:[0-9]{1,8}}",
+                url: "/detail/{id}",
                 views: {
                     '@app.customers': {
                         templateUrl: "templates/customers.detail.html",

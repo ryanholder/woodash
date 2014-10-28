@@ -212,18 +212,18 @@ angular.module('woodash.controllers', [])
                 //console.log(record);
             });
         })
-
-
-
-
     }])
 
-    .controller('CustomersDetailCtrl', ['$scope', '$stateParams', function ($scope, $stateParams) {
+    .controller('CustomersDetailCtrl', ['$scope', '$stateParams', '$state', function ($scope, $stateParams, $state) {
         $scope.detailView.display = true;
+
+        if ( typeof $stateParams === 'undefined' ) {
+            $state.go('app.customers.detail', {id: 4});
+        }
 
         $scope.customerId = $stateParams.id;
 
-
+        console.log($stateParams);
     }])
 
     .controller('ProductsCtrl', ['$scope', function ($scope) {
