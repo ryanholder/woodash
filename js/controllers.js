@@ -4,68 +4,68 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$rootScope','$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', 'wcApiStoreData', function ($rootScope, $scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService, wcApiStoreData) {
+	.controller('AppCtrl', ['$rootScope','$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', function ($rootScope, $scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService) {
 
         var app = this;
 
+        console.log('in AppCtrl');
 
+        app.varTest = 'test';
 
-        console.dir(wcApiStoreData);
-
-        app.wcApiStoreData = wcApiStoreData;
-        app.siteName = wcApiStoreData.name;
-        chrome.storage.local.get('app_site', function(site) {
-            site = site.app_site;
-            site.store = wcApiStoreData;
-            chrome.storage.local.set({'app_site': site});
-        });
+        //app.wcApiStoreData = wcApiStoreData;
+        //app.siteName = wcApiStoreData.name;
+        //chrome.storage.local.get('app_site', function(site) {
+        //    site = site.app_site;
+        //    site.store = wcApiStoreData;
+        //    chrome.storage.local.set({'app_site': site});
+        //});
 
         // todo: local storage items should not be collected each time AppCtrl is run
-        chrome.storage.local.get('google_auth', function(storage) {
-            $scope.cloudConnectList = [
-                { id: 'google_auth', text: "Google Drive", checked: storage.google_auth.isAuthenticated }
-            ];
-        });
+        //chrome.storage.local.get('google_auth', function(storage) {
+        //    $scope.cloudConnectList = [
+        //        { id: 'google_auth', text: "Google Drive", checked: storage.google_auth.isAuthenticated }
+        //    ];
+        //});
 
-        $scope.detailView = {display: false};
-
+        //$scope.detailView = {display: false};
+        //
         $scope.siteConnectList = $rootScope.appSites;
+        //
+        //$scope.siteConnect = function(site) {
+        //    todo: function to check we are connected, dummy for now
+            //var AppSitesService = function (site) {
+            //    site.connected = true;
+            //    return site;
+            //};
+            //
+            //AppSitesService(site);
+            //
+            //if (site.connected) {
+            //    chrome.storage.local.set({'app_site': site}, function() {
+            //        $rootScope.appSites = site.app_site;
+            //    });
+            //}
+        //};
 
-        $scope.siteConnect = function(site) {
-            // todo: function to check we are connected, dummy for now
-            var AppSitesService = function (site) {
-                site.connected = true;
-                return site;
-            };
+        //$scope.cloudConnectChange = function(cloud) {
+        //    if (cloud.id == 'google_auth' && !cloud.checked) {
+        //        GoogleAuthService.revokeToken();
+        //    }
+        //};
 
-            AppSitesService(site);
-
-            if (site.connected) {
-                chrome.storage.local.set({'app_site': site}, function() {
-                    $rootScope.appSites = site.app_site;
-                });
-            }
-        };
-
-        $scope.cloudConnectChange = function(cloud) {
-            if (cloud.id == 'google_auth' && !cloud.checked) {
-                GoogleAuthService.revokeToken();
-            }
-        };
-
-        $ionicModal.fromTemplateUrl('templates/modals/app.settings.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-            app.settingsModal = modal;
-        });
-
-        $ionicModal.fromTemplateUrl('templates/modals/woocommerce.store.settings.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-            app.wcStoreSettingsModal = modal;
-        });
+        //$ionicModal.fromTemplateUrl('templates/modals/app.settings.html', {
+        //    scope: $scope,
+        //    animation: 'slide-in-up'
+        //}).then(function(modal) {
+        //    app.settingsModal = modal;
+        //});
+        //
+        //$ionicModal.fromTemplateUrl('templates/modals/woocommerce.store.settings.html', {
+        //    scope: $scope,
+        //    animation: 'slide-in-up'
+        //}).then(function(modal) {
+        //    app.wcStoreSettingsModal = modal;
+        //});
 
 
 	}])
@@ -108,9 +108,11 @@ angular.module('woodash.controllers', [])
         console.log('hello dashboard');
     }])
 
-	.controller('OverviewCtrl', ['$scope', function ($scope) {
+	.controller('OverviewCtrl', ['$scope', 'appInit', function ($scope, appInit) {
         //todo: wheter we are in display/split screen view should be handled possibly in resolves
-        $scope.detailView.display = false;
+
+        console.log(appInit);
+        //$scope.detailView.display = false;
         //this.orders = initOverview.orders;
         //this.dateRange = initOverview.dateRange;
 
@@ -124,8 +126,6 @@ angular.module('woodash.controllers', [])
         var params = {
             "filter[limit]": 99
         };
-
-
 
         $scope.getCustomerImage = function(url) {
             //console.log(url);
@@ -190,26 +190,8 @@ angular.module('woodash.controllers', [])
             //RAL.Queue.start();
             $scope.list.forEach(function(record) {
                 $http.get(record.avatar_url, {responseType: 'blob'}).success(function(blob, status, headers, config) {
-
-                    //console.log(blob, status, headers, config);
-
                     record.avatar_url = window.URL.createObjectURL(blob);
-                    //blob.name = doc.iconFilename; // Add icon filename to blob.
-
-                    //writeFile(blob); // Write is async, but that's ok.
-
-                    //var localImage = window.URL.createObjectURL(blob);
-                    //return localImage;
-
-                    //dataset.avatar_url_local = localImage;
-                    //$scope.docs.push(doc);
-
-                    // Only sort when last entry is seen.
-                    //if (totalEntries - 1 == i) {
-                    //    $scope.docs.sort(Util.sortByDate);
-                    //}
                 });
-                //console.log(record);
             });
         })
     }])
@@ -227,9 +209,9 @@ angular.module('woodash.controllers', [])
     }])
 
     .controller('ProductsCtrl', ['$scope', function ($scope) {
-
+        //$scope.detailView.display = false;
     }])
 
     .controller('OrdersCtrl', ['$scope', function ($scope) {
-
+        //$scope.detailView.display = false;
     }]);

@@ -23,7 +23,7 @@ angular.module('woodash', [
     .constant('appSiteConfig', {
         'site_url': 'https://wp.thewhatwhat.com/wc-api/v2',
         'consumer_key': 'ck_45841d89825d617a00814f88e74face7',
-            'consumer_secret': 'cs_d6da0b74e1f26cdd1f6bb6c8a0207e90',
+        'consumer_secret': 'cs_d6da0b74e1f26cdd1f6bb6c8a0207e90',
         'connected': false
     })
 
@@ -45,19 +45,7 @@ angular.module('woodash', [
                 url: "/app",
                 abstract: true,
                 templateUrl: "templates/menu/app.html",
-                controller: 'AppCtrl as app',
-                resolve: {
-                    wcApiStoreData: function($q, Restangular) {
-                        var deferred = $q.defer();
-
-                        Restangular.all('').getList().then(function(store) {
-                            //console.log(store.plain()[0]);
-                            deferred.resolve(store.plain()[0]);
-                        });
-
-                        return deferred.promise;
-                    }
-                }
+                controller: 'AppCtrl as app'
             })
 
             .state('app.dashboard', {
@@ -77,12 +65,17 @@ angular.module('woodash', [
                         templateUrl: "templates/overview.html",
                         controller: 'OverviewCtrl as overview'
                     }
+                },
+                resolve: {
+                    appInit: function(WooCommerceDataService) {
+                        var endpoints = ['store', 'customers', 'orders'];
+                        return WooCommerceDataService.loadData(endpoints);
+                    }
                 }
             })
 
             .state('app.customers', {
                 url: "/customers",
-                abstract: true,
                 views: {
                     'menuContent': {
                         templateUrl: "templates/customers.html",
@@ -133,18 +126,10 @@ angular.module('woodash', [
             consumer_secret: appSiteConfig.consumer_secret
         });
 
-        //RestangularProvider.setResponseExtractor(function(response, operation) {
-        //    console.log(response);
-        //    return response.data;
-        //});
-
         // todo: add a response intereceptor
         // todo: require due to "Response for getList SHOULD be an array and not an object or something else..."
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;
-
-            //console.log(data);
-            //console.log(what);
 
             // .. to look for getList operations
             if (operation === "getList") {
@@ -157,10 +142,8 @@ angular.module('woodash', [
                 }
             }
 
-            //console.log(extractedData);
             return extractedData;
         });
-
     })
 
     .run(['$rootScope', '$state', '$ionicPlatform', function ($rootScope, $state, $ionicPlatform) {
@@ -213,14 +196,13 @@ angular.module('woodash', [
                 StatusBar.styleDefault();
             }
         });
-    }])
+    }]);
 
     // todo: there must be a better way to handle if we are connected to google or dropbox
     // todo: look in to using https://github.com/sahat/satellizer, jwt.io
     // todo: the being connected to cloud service should appear as modal also use google identity listerner for change
-    .run(['$rootScope', '$state', '$q', 'GoogleAuthService', 'DropboxAuthService', function($rootScope, $state, $q, GoogleAuthService, DropboxAuthService) {
+ /*   .run(['$rootScope', '$state', '$q', 'GoogleAuthService', 'DropboxAuthService', function($rootScope, $state, $q, GoogleAuthService, DropboxAuthService) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams, fromState, fromStateParams) {
-            console.log('$stateChangeStart');
             if(toState.name.indexOf('app') !== -1 ) {
                 event.preventDefault();
 
@@ -247,4 +229,4 @@ angular.module('woodash', [
                 });
             }
         });
-    }]);
+    }]);*/

@@ -10,6 +10,142 @@ angular.module('woodash.services', [])
         return Restangular.service('customers');
     })
 
+    .factory('wcProducts', function(Restangular) {
+        return Restangular.service('products');
+    })
+
+
+
+
+    .factory('WooCommerceDataService', function($rootScope, $q, $timeout, $ionicLoading, Restangular) {
+        var WooCommerceDataService = {};
+
+        WooCommerceDataService.globalParams = {
+            //todo: default params go here and are merged with params in functions
+        };
+
+        WooCommerceDataService.loadData = function (endpoints) {
+            var deferred = $q.defer();
+
+            $ionicLoading.show();
+
+            chrome.storage.local.get('app_site', function(data) {
+                var appData = (data.app_site === undefined) ? {} : data.app_site;
+
+                //function to check if the app storage for app_site has the data we are loading
+                // in the case of overview I need customers, products and orders
+                var promises = [];
+
+                for (var i=0, tot=endpoints.length; i < tot; i++) {
+                    var endpoint = (endpoints[i] === 'store') ? '' : endpoints[i];
+                    var promise =  Restangular.all(endpoint).getList().then(function(results) {
+                        return results;
+                        //return results.plain()[0];
+                        //chrome.storage.local.set({'app_site': data});
+                    });
+
+                    promises.push(promise);
+                }
+
+                $q.all(promises).then(function(result) {
+                    $ionicLoading.hide();
+                    deferred.resolve(result);
+                });
+            });
+
+            return deferred.promise;
+        };
+
+        WooCommerceDataService.getStoreOld = function () {
+            var deferred = $q.defer();
+
+            chrome.storage.local.get('app_site', function(site) {
+                site = site.app_site;
+
+                if (site.store === undefined) {
+                    Restangular.all('').getList().then(function(results) {
+                        var plainResults = results.plain()[0];
+                        console.log(plainResults);
+                        deferred.resolve(plainResults);
+                        site.store = plainResults;
+                        chrome.storage.local.set({'app_site': site});
+                    });
+                } else {
+                    deferred.resolve(site.store);
+                }
+            });
+
+            return deferred.promise;
+        };
+
+        WooCommerceDataService.getStore = function () {
+            var deferred = $q.defer();
+
+            chrome.storage.local.get('app_site', function(site) {
+                site = site.app_site;
+
+                if (site.store === undefined) {
+                    Restangular.all('').getList().then(function(results) {
+                        var plainResults = results.plain()[0];
+                        console.log(plainResults);
+                        deferred.resolve(plainResults);
+                        site.store = plainResults;
+                        chrome.storage.local.set({'app_site': site});
+                    });
+                } else {
+                    deferred.resolve(site.store);
+                }
+            });
+
+            return deferred.promise;
+        };
+
+        WooCommerceDataService.getOrders = function () {
+            var deferred = $q.defer();
+            var params = {
+                "filter[limit]": 99
+            };
+
+            Restangular.all('orders').getList(params).then(function(results) {
+                deferred.resolve(results);
+            });
+
+            return deferred.promise;
+        };
+
+        WooCommerceDataService.getCustomers = function () {
+            var deferred = $q.defer();
+            var params = {
+                "filter[limit]": 99
+            };
+
+            Restangular.all('customers').getList(params).then(function(results) {
+                deferred.resolve(results);
+            });
+
+            return deferred.promise;
+        };
+
+        WooCommerceDataService.getProducts = function () {
+            var deferred = $q.defer();
+            var params = {
+                "filter[limit]": 99
+            };
+
+            Restangular.all('products').getList(params).then(function(results) {
+                console.log(results);
+                deferred.resolve(results);
+            });
+
+            return deferred.promise;
+        };
+
+        return WooCommerceDataService;
+    })
+
+
+
+
     .factory('InitDashboardService', function($rootScope, $q, $state, $ionicLoading, $ionicModal, GoogleAuthService, DropboxAuthService) {
         var InitDashboardService = {};
 
@@ -282,21 +418,6 @@ angular.module('woodash.services', [])
         };
 
         return DropboxAuthService;
-    })
-
-    .factory('InitAppService', function($q, $ionicLoading, StoreDetailsService) {
-        $ionicLoading.show();
-
-        var storeDetails = StoreDetailsService.getDetails();
-
-        return $q.all([storeDetails]).then(function(results){
-
-            $ionicLoading.hide();
-
-            return {
-                storeDetails: results[0]
-            };
-        });
     })
 
     .factory('InitOverviewService', function(DateRangeService, OrdersService, $q) {
