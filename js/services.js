@@ -20,37 +20,32 @@ angular.module('woodash.services', [])
     .factory('WooCommerceDataService', function($rootScope, $q, $timeout, $ionicLoading, Restangular) {
         var WooCommerceDataService = {};
 
+        //todo: default params go here and are merged with params in functions
         WooCommerceDataService.globalParams = {
-            //todo: default params go here and are merged with params in functions
+            "filter[limit]": 99
         };
 
         WooCommerceDataService.loadData = function (endpoints) {
             var deferred = $q.defer();
 
+            var params = _.merge(WooCommerceDataService.globalParams, {});
+
+            var promises = [];
+
             $ionicLoading.show();
 
-            chrome.storage.local.get('app_site', function(data) {
-                var appData = (data.app_site === undefined) ? {} : data.app_site;
-
-                //function to check if the app storage for app_site has the data we are loading
-                // in the case of overview I need customers, products and orders
-                var promises = [];
-
-                for (var i=0, tot=endpoints.length; i < tot; i++) {
-                    var endpoint = (endpoints[i] === 'store') ? '' : endpoints[i];
-                    var promise =  Restangular.all(endpoint).getList().then(function(results) {
-                        return results;
-                        //return results.plain()[0];
-                        //chrome.storage.local.set({'app_site': data});
-                    });
-
-                    promises.push(promise);
-                }
-
-                $q.all(promises).then(function(result) {
-                    $ionicLoading.hide();
-                    deferred.resolve(result);
+            for (var i=0, tot=endpoints.length; i < tot; i++) {
+                var endpoint = (endpoints[i] === 'store') ? '' : endpoints[i];
+                var promise =  Restangular.all(endpoint).getList(params).then(function(results) {
+                    return results;
                 });
+
+                promises.push(promise);
+            }
+
+            $q.all(promises).then(function(result) {
+                $ionicLoading.hide();
+                deferred.resolve(result);
             });
 
             return deferred.promise;

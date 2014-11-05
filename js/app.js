@@ -68,8 +68,11 @@ angular.module('woodash', [
                 },
                 resolve: {
                     appInit: function(WooCommerceDataService) {
-                        var endpoints = ['store', 'customers', 'orders'];
-                        return WooCommerceDataService.loadData(endpoints);
+                        return WooCommerceDataService.loadData([
+                            'store',
+                            'customers',
+                            'orders'
+                        ]);
                     }
                 }
             })
@@ -154,12 +157,12 @@ angular.module('woodash', [
 
             // todo: should be moved some provider or service
             chrome.storage.local.get('app_site', function(sites) {
-                if (_.isEmpty(sites)) {
+                if (_.isEmpty(sites) || _.isUndefined(sites)) {
                     var appSites = {
-                        site_url: '',
-                        consumer_key: '',
-                        consumer_secret: '',
-                        connected: false
+                        site_url: 'https://wp.thewhatwhat.com/wc-api/v2',
+                        consumer_key: 'ck_45841d89825d617a00814f88e74face7',
+                        consumer_secret: 'cs_d6da0b74e1f26cdd1f6bb6c8a0207e90',
+                        connected: true
                     };
                     chrome.storage.local.set({'app_site': appSites}, function() {
                         $rootScope.appSites = appSites;
