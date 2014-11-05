@@ -17,18 +17,18 @@ angular.module('woodash.services', [])
 
 
 
-    .factory('WooCommerceDataService', function($rootScope, $q, $timeout, $ionicLoading, Restangular) {
-        var WooCommerceDataService = {};
+    .factory('WooComDataService', function($rootScope, $q, $timeout, $ionicLoading, Restangular) {
+        var WooComDataService = {};
 
         //todo: default params go here and are merged with params in functions
-        WooCommerceDataService.globalParams = {
+        WooComDataService.globalParams = {
             "filter[limit]": 99
         };
 
-        WooCommerceDataService.loadData = function (endpoints) {
+        WooComDataService.loadData = function (endpoints) {
             var deferred = $q.defer();
 
-            var params = _.merge(WooCommerceDataService.globalParams, {});
+            var params = _.merge(WooComDataService.globalParams, {});
 
             var promises = [];
 
@@ -51,7 +51,7 @@ angular.module('woodash.services', [])
             return deferred.promise;
         };
 
-        WooCommerceDataService.getStoreOld = function () {
+        WooComDataService.getStoreOld = function () {
             var deferred = $q.defer();
 
             chrome.storage.local.get('app_site', function(site) {
@@ -73,7 +73,7 @@ angular.module('woodash.services', [])
             return deferred.promise;
         };
 
-        WooCommerceDataService.getStore = function () {
+        WooComDataService.getStore = function () {
             var deferred = $q.defer();
 
             chrome.storage.local.get('app_site', function(site) {
@@ -95,7 +95,7 @@ angular.module('woodash.services', [])
             return deferred.promise;
         };
 
-        WooCommerceDataService.getOrders = function () {
+        WooComDataService.getOrders = function () {
             var deferred = $q.defer();
             var params = {
                 "filter[limit]": 99
@@ -108,7 +108,7 @@ angular.module('woodash.services', [])
             return deferred.promise;
         };
 
-        WooCommerceDataService.getCustomers = function () {
+        WooComDataService.getCustomers = function () {
             var deferred = $q.defer();
             var params = {
                 "filter[limit]": 99
@@ -121,7 +121,7 @@ angular.module('woodash.services', [])
             return deferred.promise;
         };
 
-        WooCommerceDataService.getProducts = function () {
+        WooComDataService.getProducts = function () {
             var deferred = $q.defer();
             var params = {
                 "filter[limit]": 99
@@ -135,7 +135,7 @@ angular.module('woodash.services', [])
             return deferred.promise;
         };
 
-        return WooCommerceDataService;
+        return WooComDataService;
     })
 
 

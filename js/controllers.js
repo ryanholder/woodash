@@ -4,11 +4,13 @@
 
 angular.module('woodash.controllers', [])
 
-	.controller('AppCtrl', ['$rootScope','$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', function ($rootScope, $scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService) {
+	.controller('AppCtrl', ['$rootScope','$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', 'appData', function ($rootScope, $scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService, appData) {
 
         var app = this;
 
         console.log('in AppCtrl');
+
+        console.log(appData);
 
         app.varTest = 'test';
 
@@ -108,10 +110,10 @@ angular.module('woodash.controllers', [])
         console.log('hello dashboard');
     }])
 
-	.controller('OverviewCtrl', ['$scope', 'appInit', function ($scope, appInit) {
+	.controller('OverviewCtrl', ['$scope', 'stateData', function ($scope, stateData) {
         //todo: wheter we are in display/split screen view should be handled possibly in resolves
 
-        console.log(appInit);
+        console.log(stateData);
         //$scope.detailView.display = false;
         //this.orders = initOverview.orders;
         //this.dateRange = initOverview.dateRange;
@@ -208,8 +210,9 @@ angular.module('woodash.controllers', [])
         console.log($stateParams);
     }])
 
-    .controller('ProductsCtrl', ['$scope', function ($scope) {
+    .controller('ProductsCtrl', ['$scope', 'stateData', function ($scope, stateData) {
         //$scope.detailView.display = false;
+        console.log(stateData);
     }])
 
     .controller('OrdersCtrl', ['$scope', function ($scope) {

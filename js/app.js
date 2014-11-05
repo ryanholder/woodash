@@ -45,7 +45,14 @@ angular.module('woodash', [
                 url: "/app",
                 abstract: true,
                 templateUrl: "templates/menu/app.html",
-                controller: 'AppCtrl as app'
+                controller: 'AppCtrl as app',
+                resolve: {
+                    appData: function(WooComDataService) {
+                        return WooComDataService.loadData([
+                            'store'
+                        ]);
+                    }
+                }
             })
 
             .state('app.dashboard', {
@@ -67,9 +74,8 @@ angular.module('woodash', [
                     }
                 },
                 resolve: {
-                    appInit: function(WooCommerceDataService) {
-                        return WooCommerceDataService.loadData([
-                            'store',
+                    stateData: function(WooComDataService) {
+                        return WooComDataService.loadData([
                             'customers',
                             'orders'
                         ]);
@@ -83,6 +89,13 @@ angular.module('woodash', [
                     'menuContent': {
                         templateUrl: "templates/customers.html",
                         controller: 'CustomersCtrl as customers'
+                    }
+                },
+                resolve: {
+                    stateData: function(WooComDataService) {
+                        return WooComDataService.loadData([
+                            'customers'
+                        ]);
                     }
                 }
             })
@@ -104,6 +117,13 @@ angular.module('woodash', [
                         templateUrl: "templates/products.html",
                         controller: 'ProductsCtrl as products'
                     }
+                },
+                resolve: {
+                    stateData: function(WooComDataService) {
+                        return WooComDataService.loadData([
+                            'products'
+                        ]);
+                    }
                 }
             })
 
@@ -114,15 +134,20 @@ angular.module('woodash', [
                         templateUrl: "templates/orders.html",
                         controller: 'OrdersCtrl as orders'
                     }
+                },
+                resolve: {
+                    stateData: function(WooComDataService) {
+                        return WooComDataService.loadData([
+                            'orders'
+                        ]);
+                    }
                 }
             });
 
         $urlRouterProvider.otherwise("/app/overview");
-
     })
 
     .config(function(appSiteConfig, RestangularProvider) {
-
         RestangularProvider.setBaseUrl(appSiteConfig.site_url);
         RestangularProvider.setDefaultRequestParams({
             consumer_key: appSiteConfig.consumer_key,
