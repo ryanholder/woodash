@@ -93,9 +93,7 @@ angular.module('woodash', [
                 },
                 resolve: {
                     stateData: function(WooComDataService) {
-                        return WooComDataService.loadData([
-                            'customers'
-                        ]);
+                        return WooComDataService.loadData(['customers']);
                     }
                 }
             })

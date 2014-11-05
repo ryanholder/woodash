@@ -13,7 +13,7 @@
     <ion-side-menu class="woodash-menu" width="182" side="left">
         <ion-header-bar ng-if="siteConnectList.connected">
             <button class="button button-clear button-positive button-icon icon ion-stop"></button>
-            <h1 class="title">{{app.wcApiStoreData.name}}</h1>
+            <h1 class="title">{{app.siteName}}</h1>
             <button class="button button-clear button-positive button-icon icon ion-ios7-gear" ng-click="app.wcStoreSettingsModal.show()"></button>
         </ion-header-bar>
         <ion-content overflow-scroll="true" ng-if="siteConnectList.connected" class="has-header">
