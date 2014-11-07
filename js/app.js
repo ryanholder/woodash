@@ -36,15 +36,15 @@ angular.module('woodash', [
         $stateProvider
 
             .state('login', {
-                url: "/login",
-                templateUrl: "templates/login.html",
+                url: '/login',
+                templateUrl: 'templates/login.html',
                 controller: 'LoginCtrl as login'
             })
 
             .state('app', {
-                url: "/app",
+                url: '/app',
                 abstract: true,
-                templateUrl: "templates/menu/app.html",
+                templateUrl: 'templates/menu/app.html',
                 controller: 'AppCtrl as app',
                 resolve: {
                     appData: function(WooCommDataService) {
@@ -56,20 +56,20 @@ angular.module('woodash', [
             })
 
             .state('app.dashboard', {
-                url: "/dashboard",
+                url: '/dashboard',
                 views: {
                     'menuContent': {
-                        templateUrl: "templates/dashboard.html",
+                        templateUrl: 'templates/dashboard.html',
                         controller: 'DashboardCtrl as dashboard'
                     }
                 }
             })
 
             .state('app.overview', {
-                url: "/overview",
+                url: '/overview',
                 views: {
                     'menuContent': {
-                        templateUrl: "templates/overview.html",
+                        templateUrl: 'templates/overview.html',
                         controller: 'OverviewCtrl as overview'
                     }
                 },
@@ -84,10 +84,10 @@ angular.module('woodash', [
             })
 
             .state('app.customers', {
-                url: "/customers",
+                url: '/customers',
                 views: {
                     'menuContent': {
-                        templateUrl: "templates/customers.html",
+                        templateUrl: 'templates/customers.html',
                         controller: 'CustomersCtrl as customers'
                     }
                 },
@@ -99,27 +99,27 @@ angular.module('woodash', [
             })
 
             .state('app.customers.detail', {
-                url: "/{id}",
+                url: '/{id}',
                 views: {
                     '@app.customers': {
-                        templateUrl: "templates/customers.detail.html",
+                        templateUrl: 'templates/customers.detail.html',
                         controller: 'CustomersDetailCtrl as customersdetail'
                     }
                 },
                 resolve: {
                     firstCustomer: function($stateParams, WooCommDataService, stateData) {
                         if ($stateParams.id === undefined) {
-                            $stateParams.id = WooCommDataService.getFirstItem(stateData);
+                            $stateParams.id = WooCommDataService.getFirstItem(stateData.customers);
                         }
                     }
                 }
             })
 
             .state('app.products', {
-                url: "/products",
+                url: '/products',
                 views: {
                     'menuContent': {
-                        templateUrl: "templates/products.html",
+                        templateUrl: 'templates/products.html',
                         controller: 'ProductsCtrl as products'
                     }
                 },
@@ -133,10 +133,10 @@ angular.module('woodash', [
             })
 
             .state('app.orders', {
-                url: "/orders",
+                url: '/orders',
                 views: {
                     'menuContent': {
-                        templateUrl: "templates/orders.html",
+                        templateUrl: 'templates/orders.html',
                         controller: 'OrdersCtrl as orders'
                     }
                 },
@@ -149,7 +149,7 @@ angular.module('woodash', [
                 }
             });
 
-        $urlRouterProvider.otherwise("/app/overview");
+        $urlRouterProvider.otherwise('/app/overview');
     })
 
     .config(function(appSiteConfig, RestangularProvider) {
@@ -162,12 +162,12 @@ angular.module('woodash', [
 
         RestangularProvider.setDefaultHttpFields({cache: true});
 
-        // todo: require due to "Response for getList SHOULD be an array and not an object or something else..."
+        // todo: require due to 'Response for getList SHOULD be an array and not an object or something else...'
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;
 
             // .. to look for getList operations
-            if (operation === "getList") {
+            if (operation === 'getList') {
                 // .. and handle the data and meta data
                 if (what === '') {
                     // todo: should I be converting returned data to array or leave as object
