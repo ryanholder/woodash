@@ -77,7 +77,8 @@ angular.module('woodash', [
                     stateData: function(WooCommDataService) {
                         return WooCommDataService.loadData([
                             'customers',
-                            'orders'
+                            'orders',
+                            'products'
                         ]);
                     }
                 }
@@ -125,9 +126,7 @@ angular.module('woodash', [
                 },
                 resolve: {
                     stateData: function(WooCommDataService) {
-                        return WooCommDataService.loadData([
-                            'products'
-                        ]);
+                        return WooCommDataService.loadData(['products']);
                     }
                 }
             })
@@ -142,9 +141,7 @@ angular.module('woodash', [
                 },
                 resolve: {
                     stateData: function(WooCommDataService) {
-                        return WooCommDataService.loadData([
-                            'orders'
-                        ]);
+                        return WooCommDataService.loadData(['orders']);
                     }
                 }
             });
