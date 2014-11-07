@@ -99,11 +99,18 @@ angular.module('woodash', [
             })
 
             .state('app.customers.detail', {
-                url: "/detail/{id}",
+                url: "/{id}",
                 views: {
                     '@app.customers': {
                         templateUrl: "templates/customers.detail.html",
                         controller: 'CustomersDetailCtrl as customersdetail'
+                    }
+                },
+                resolve: {
+                    firstCustomer: function($stateParams, WooCommDataService, stateData) {
+                        if ($stateParams.id === undefined) {
+                            $stateParams.id = WooCommDataService.getFirstItem(stateData);
+                        }
                     }
                 }
             })
@@ -154,7 +161,7 @@ angular.module('woodash', [
         });
 
         RestangularProvider.setDefaultHttpFields({cache: true});
-        
+
         // todo: require due to "Response for getList SHOULD be an array and not an object or something else..."
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;

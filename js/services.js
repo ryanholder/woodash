@@ -51,6 +51,10 @@ angular.module('woodash.services', [])
             return deferred.promise;
         };
 
+        WooCommDataService.getFirstItem = function (data) {
+            return data[0][0]['id'];
+        };
+
         WooCommDataService.getStoreOld = function () {
             var deferred = $q.defer();
 

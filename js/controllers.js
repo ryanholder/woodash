@@ -19,7 +19,7 @@ angular.module('woodash.controllers', [])
         //    ];
         //});
 
-        //$scope.detailView = {display: false};
+        $scope.detailView = {display: false};
 
         $scope.siteConnectList = $rootScope.appSites;
 
@@ -101,19 +101,37 @@ angular.module('woodash.controllers', [])
     .controller('CustomersCtrl', ['$scope', '$http', 'stateData', function ($scope, $http, stateData) {
         var customers = this;
 
+        $scope.detailView.display = true;
+
         //todo: move to services
         angular.forEach(stateData[0], function(value, key) {
+            console.log(value);
+            console.log(key);
             $http.get(value.avatar_url, {responseType: 'blob'}).success(function(blob, status, headers, config) {
-                value.avatar_url = window.URL.createObjectURL(blob);
+                value.avatar_url_blob = window.URL.createObjectURL(blob);
             });
 
-            value.avatar_url = "";
+            //value.avatar_url = "";
         });
 
         customers.list = stateData[0];
+        console.log(customers.list);
+
+        customers.test = stateData;
+        console.log(customers.test);
     }])
 
-    .controller('CustomersDetailCtrl', ['$scope', '$stateParams', '$state', function ($scope, $stateParams, $state) {
+    .controller('CustomersDetailCtrl', ['$scope', '$stateParams', '$state', 'stateData', 'firstCustomer', function ($scope, $stateParams, $state, stateData, firstCustomer) {
+        var customersdetail = this;
+
+        angular.forEach(stateData[0], function(value, key) {
+            if (value.id === $stateParams.id) {
+                var selectedCustomer = stateData[0].plain()[key];
+                console.log(selectedCustomer);
+            }
+        });
+        //customersdetail.id = $stateParams.id;
+        //console.log(stateData);
         //$scope.detailView.display = true;
         //
         //if ( typeof $stateParams === 'undefined' ) {
