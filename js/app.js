@@ -47,8 +47,8 @@ angular.module('woodash', [
                 templateUrl: "templates/menu/app.html",
                 controller: 'AppCtrl as app',
                 resolve: {
-                    appData: function(WooComDataService) {
-                        return WooComDataService.loadData([
+                    appData: function(WooCommDataService) {
+                        return WooCommDataService.loadData([
                             'store'
                         ]);
                     }
@@ -74,8 +74,8 @@ angular.module('woodash', [
                     }
                 },
                 resolve: {
-                    stateData: function(WooComDataService) {
-                        return WooComDataService.loadData([
+                    stateData: function(WooCommDataService) {
+                        return WooCommDataService.loadData([
                             'customers',
                             'orders'
                         ]);
@@ -92,8 +92,8 @@ angular.module('woodash', [
                     }
                 },
                 resolve: {
-                    stateData: function(WooComDataService) {
-                        return WooComDataService.loadData(['customers']);
+                    stateData: function(WooCommDataService) {
+                        return WooCommDataService.loadData(['customers']);
                     }
                 }
             })
@@ -117,8 +117,8 @@ angular.module('woodash', [
                     }
                 },
                 resolve: {
-                    stateData: function(WooComDataService) {
-                        return WooComDataService.loadData([
+                    stateData: function(WooCommDataService) {
+                        return WooCommDataService.loadData([
                             'products'
                         ]);
                     }
@@ -134,8 +134,8 @@ angular.module('woodash', [
                     }
                 },
                 resolve: {
-                    stateData: function(WooComDataService) {
-                        return WooComDataService.loadData([
+                    stateData: function(WooCommDataService) {
+                        return WooCommDataService.loadData([
                             'orders'
                         ]);
                     }
