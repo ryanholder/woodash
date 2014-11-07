@@ -147,12 +147,14 @@ angular.module('woodash', [
 
     .config(function(appSiteConfig, RestangularProvider) {
         RestangularProvider.setBaseUrl(appSiteConfig.site_url);
+
         RestangularProvider.setDefaultRequestParams({
             consumer_key: appSiteConfig.consumer_key,
             consumer_secret: appSiteConfig.consumer_secret
         });
 
-        // todo: add a response intereceptor
+        RestangularProvider.setDefaultHttpFields({cache: true});
+        
         // todo: require due to "Response for getList SHOULD be an array and not an object or something else..."
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;
