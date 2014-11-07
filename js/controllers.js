@@ -7,9 +7,10 @@ angular.module('woodash.controllers', [])
 	.controller('AppCtrl', ['$rootScope','$scope', '$ionicPopover', '$ionicModal', '$ionicSideMenuDelegate', 'GoogleAuthService', 'appData', function ($rootScope, $scope, $ionicPopover, $ionicModal, $ionicSideMenuDelegate, GoogleAuthService, appData) {
 
         var app = this;
-        var storeData = appData[0].plain()[0];
+        console.log(appData);
+        //var storeData = appData[0].plain()[0];
 
-        app.siteName = storeData.name;
+        //app.siteName = storeData.name;
 
 
         // todo: local storage items should not be collected each time AppCtrl is run
@@ -104,9 +105,9 @@ angular.module('woodash.controllers', [])
         $scope.detailView.display = true;
 
         //todo: move to services
-        angular.forEach(stateData[0], function(value, key) {
-            console.log(value);
-            console.log(key);
+        angular.forEach(stateData.customers, function(value, key) {
+            //console.log(value);
+            //console.log(key);
             $http.get(value.avatar_url, {responseType: 'blob'}).success(function(blob, status, headers, config) {
                 value.avatar_url_blob = window.URL.createObjectURL(blob);
             });
@@ -114,23 +115,21 @@ angular.module('woodash.controllers', [])
             //value.avatar_url = "";
         });
 
-        customers.list = stateData[0];
+        customers.list = stateData.customers;
         console.log(customers.list);
-
-        customers.test = stateData;
-        console.log(customers.test);
     }])
 
     .controller('CustomersDetailCtrl', ['$scope', '$stateParams', '$state', 'stateData', 'firstCustomer', function ($scope, $stateParams, $state, stateData, firstCustomer) {
         var customersdetail = this;
 
-        angular.forEach(stateData[0], function(value, key) {
+        angular.forEach(stateData.customers, function(value, key) {
             if (value.id === $stateParams.id) {
-                var selectedCustomer = stateData[0].plain()[key];
+                var selectedCustomer = stateData.customers.plain()[key];
                 console.log(selectedCustomer);
             }
         });
-        //customersdetail.id = $stateParams.id;
+
+        customersdetail.id = $stateParams.id;
         //console.log(stateData);
         //$scope.detailView.display = true;
         //

@@ -52,7 +52,7 @@ angular.module('woodash.services', [])
         };
 
         WooCommDataService.getFirstItem = function (data) {
-            return data[0][0]['id'];
+            return data[0].id;
         };
 
         WooCommDataService.getStoreOld = function () {
