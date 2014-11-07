@@ -30,7 +30,7 @@ angular.module('woodash.services', [])
 
             var params = _.merge(WooCommDataService.globalParams, {});
 
-            var promises = [];
+            var promises = {};
 
             $ionicLoading.show();
 
@@ -40,7 +40,7 @@ angular.module('woodash.services', [])
                     return results;
                 });
 
-                promises.push(promise);
+                promises[endpoints[i]] = promise;
             }
 
             $q.all(promises).then(function(result) {
