@@ -106,13 +106,9 @@ angular.module('woodash.controllers', [])
 
         //todo: move to services
         angular.forEach(stateData.customers, function(value, key) {
-            //console.log(value);
-            //console.log(key);
             $http.get(value.avatar_url, {responseType: 'blob'}).success(function(blob, status, headers, config) {
                 value.avatar_url_blob = window.URL.createObjectURL(blob);
             });
-
-            //value.avatar_url = "";
         });
 
         customers.list = stateData.customers;
@@ -124,22 +120,9 @@ angular.module('woodash.controllers', [])
 
         angular.forEach(stateData.customers, function(value, key) {
             if (value.id === $stateParams.id) {
-                var selectedCustomer = stateData.customers.plain()[key];
-                console.log(selectedCustomer);
+                return customersdetail.selectedCustomer = stateData.customers[key];
             }
         });
-
-        customersdetail.id = $stateParams.id;
-        //console.log(stateData);
-        //$scope.detailView.display = true;
-        //
-        //if ( typeof $stateParams === 'undefined' ) {
-        //    $state.go('app.customers.detail', {id: 4});
-        //}
-        //
-        //$scope.customerId = $stateParams.id;
-        //
-        //console.log($stateParams);
     }])
 
     .controller('ProductsCtrl', ['$scope', 'stateData', function ($scope, stateData) {
