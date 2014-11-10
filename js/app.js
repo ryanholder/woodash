@@ -144,6 +144,23 @@ angular.module('woodash', [
                         return WooCommDataService.loadData(['orders']);
                     }
                 }
+            })
+
+            .state('app.orders.detail', {
+                url: '/{id}',
+                views: {
+                    '@app.orders': {
+                        templateUrl: 'templates/orders.detail.html',
+                        controller: 'OrdersDetailCtrl as ordersdetail'
+                    }
+                },
+                resolve: {
+                    firstOrder: function($stateParams, WooCommDataService, stateData) {
+                        if ($stateParams.id === undefined) {
+                            $stateParams.id = WooCommDataService.getFirstItem(stateData.orders);
+                        }
+                    }
+                }
             });
 
         $urlRouterProvider.otherwise('/app/overview');

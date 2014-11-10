@@ -146,6 +146,41 @@ angular.module('woodash.controllers', [])
         console.log(stateData);
     }])
 
-    .controller('OrdersCtrl', ['$scope', function ($scope) {
-        //$scope.detailView.display = false;
+    .controller('OrdersCtrl', ['$scope', '$http', 'stateData', function ($scope, $http, stateData) {
+        var orders = this;
+
+        $scope.detailView.display = true;
+
+        orders.list = stateData.orders;
+
+        //todo: move to services
+        angular.forEach(stateData.orders, function(value, key) {
+            var orderResource = stateData.orders[key];
+
+            //todo: switch to using restangular
+
+/*            orderResource.getList('orders').then( function (orders) {
+                if (orders.length > 0) {
+                    orderResource.orders = orders;
+                }
+            });*/
+        });
+    }])
+
+    .controller('OrdersDetailCtrl', ['$scope', '$stateParams', '$state', 'stateData', 'firstOrder', function ($scope, $stateParams, $state, stateData, firstOrder) {
+        var ordersdetail = this;
+
+        angular.forEach(stateData.orders, function(value, key) {
+            if (value.id === $stateParams.id) {
+                return ordersdetail.info = stateData.orders[key];
+            }
+        });
+
+        if (typeof ordersdetail.info.orders !== 'undefined') {
+            ordersdetail.orders = ordersdetail.info.orders.plain();
+        }
+
+        console.log(ordersdetail.orders);
+
+        //console.log(ordersdetail.orders);
     }]);

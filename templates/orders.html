@@ -1,8 +1,11 @@
 <ion-view title="Orders">
-    <ion-nav-buttons side="left">
-        <!--<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>-->
-    </ion-nav-buttons>
-    <ion-content class="has-header">
-
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="order in orders.list" ui-sref="app.orders.detail({id:order.id})" ui-sref-active="active" class="item-thumbnail-left" nav-clear>
+                <h2>{{order.order_number}}</h2>
+                <p>{{order.customer_id}} - {{order.total}}</p>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>
+<ion-nav-view class="detail-pane"></ion-nav-view>
