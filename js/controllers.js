@@ -104,15 +104,23 @@ angular.module('woodash.controllers', [])
 
         $scope.detailView.display = true;
 
+        customers.list = stateData.customers;
+
         //todo: move to services
         angular.forEach(stateData.customers, function(value, key) {
+            var customerResource = stateData.customers[key];
+
+            //todo: switch to using restangular
             $http.get(value.avatar_url, {responseType: 'blob'}).success(function(blob, status, headers, config) {
                 value.avatar_url_blob = window.URL.createObjectURL(blob);
             });
-        });
 
-        customers.list = stateData.customers;
-        console.log(customers.list);
+            customerResource.getList('orders').then( function (orders) {
+                if (orders.length > 0) {
+                    customerResource.orders = orders;
+                }
+            });
+        });
     }])
 
     .controller('CustomersDetailCtrl', ['$scope', '$stateParams', '$state', 'stateData', 'firstCustomer', function ($scope, $stateParams, $state, stateData, firstCustomer) {
@@ -120,9 +128,17 @@ angular.module('woodash.controllers', [])
 
         angular.forEach(stateData.customers, function(value, key) {
             if (value.id === $stateParams.id) {
-                return customersdetail.selectedCustomer = stateData.customers[key];
+                return customersdetail.info = stateData.customers[key];
             }
         });
+
+        if (typeof customersdetail.info.orders !== 'undefined') {
+            customersdetail.orders = customersdetail.info.orders.plain();
+        }
+
+        console.log(customersdetail.orders);
+
+        //console.log(customersdetail.orders);
     }])
 
     .controller('ProductsCtrl', ['$scope', 'stateData', function ($scope, stateData) {
