@@ -131,6 +131,23 @@ angular.module('woodash', [
                 }
             })
 
+            .state('app.products.detail', {
+                url: '/{id}',
+                views: {
+                    '@app.products': {
+                        templateUrl: 'templates/products.detail.html',
+                        controller: 'ProductsDetailCtrl as productsdetail'
+                    }
+                },
+                resolve: {
+                    firstProduct: function($stateParams, WooCommDataService, stateData) {
+                        if ($stateParams.id === undefined) {
+                            $stateParams.id = WooCommDataService.getFirstItem(stateData.products);
+                        }
+                    }
+                }
+            })
+
             .state('app.orders', {
                 url: '/orders',
                 views: {

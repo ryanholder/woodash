@@ -141,9 +141,43 @@ angular.module('woodash.controllers', [])
         //console.log(customersdetail.orders);
     }])
 
-    .controller('ProductsCtrl', ['$scope', 'stateData', function ($scope, stateData) {
-        //$scope.detailView.display = false;
-        console.log(stateData);
+    .controller('ProductsCtrl', ['$scope', '$http', 'stateData', function ($scope, $http, stateData) {
+        var products = this;
+
+        $scope.detailView.display = true;
+
+        products.list = stateData.products;
+
+        //todo: move to services
+        angular.forEach(stateData.products, function(value, key) {
+            var productResource = stateData.products[key];
+
+            //todo: switch to using restangular
+
+            /*            productResource.getList('products').then( function (products) {
+             if (products.length > 0) {
+             productResource.products = products;
+             }
+             });*/
+        });
+    }])
+
+    .controller('ProductsDetailCtrl', ['$scope', '$stateParams', '$state', 'stateData', 'firstProduct', function ($scope, $stateParams, $state, stateData, firstProduct) {
+        var productsdetail = this;
+
+        angular.forEach(stateData.products, function(value, key) {
+            if (value.id === $stateParams.id) {
+                return productsdetail.info = stateData.products[key];
+            }
+        });
+
+        if (typeof productsdetail.info.products !== 'undefined') {
+            productsdetail.products = productsdetail.info.products.plain();
+        }
+
+        console.log(productsdetail.products);
+
+        //console.log(productsdetail.products);
     }])
 
     .controller('OrdersCtrl', ['$scope', '$http', 'stateData', function ($scope, $http, stateData) {

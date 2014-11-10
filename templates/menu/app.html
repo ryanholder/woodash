@@ -19,15 +19,15 @@
         <ion-content overflow-scroll="true" ng-if="siteConnectList.connected" class="has-header">
             <ion-list>
                 <div class="item item-divider menu-list-divider menu-list-divider-top"></div>
-                <ion-item nav-clear class="item-icon-left overview" menu-close href="#/app/overview">
+                <ion-item nav-clear class="item-icon-left overview" menu-close ui-sref="app.overview" ui-sref-active="active">
                     <i class="icon ion-stats-bars"></i>
                     Overview
                 </ion-item>
-                <ion-item nav-clear class="item-icon-left" menu-close ui-sref="app.customers.detail">
+                <ion-item nav-clear class="item-icon-left" menu-close ui-sref="app.customers.detail" ui-sref-active="active">
                     <i class="icon ion-ios7-people"></i>
                     Customers
                 </ion-item>
-                <ion-item nav-clear class="item-icon-left" menu-close ui-sref="app.products" ui-sref-active="active">
+                <ion-item nav-clear class="item-icon-left" menu-close ui-sref="app.products.detail" ui-sref-active="active">
                     Products
                     <i class="icon ion-ios7-cart"></i>
                 </ion-item>
