@@ -14,7 +14,11 @@ chrome.app.runtime.onLaunched.addListener(function () {
 	chrome.app.window.create(
 		'index.html',
 		{
-			id: "Woodash",
+			id: 'Woodash',
+            frame: {
+                color: '#303F9F',
+                inactiveColor: '#00ff00'
+            },
 			bounds: {
 				width: width,
 				height: height,
