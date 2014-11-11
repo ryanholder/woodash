@@ -1,5 +1,8 @@
 <ion-view>
-    <ion-content class="no-header">
+    <ion-content>
         {{customersdetail.info.id}}
+        <div ng-repeat="order in customersdetail.orders">
+            <a ui-sref="app.customers.detail.order({order:order.id})">{{order.id}}</a>
+        </div>
     </ion-content>
 </ion-view>

@@ -1,7 +1,7 @@
-<ion-view title="Customers" class="list-pane" hide-back-button="true">
+<ion-view title="Customers" class="list-pane">
     <ion-content>
         <ion-list>
-            <ion-item ng-repeat="customer in customers.list" ui-sref="app.customers.detail({id:customer.id})" ui-sref-active="active" class="item-thumbnail-left" nav-clear>
+                <ion-item nav-clear ng-repeat="customer in customers.list" ui-sref="app.customers.detail({id:customer.id})" ui-sref-active="active" class="item-thumbnail-left">
                 <img ng-src="{{customer.avatar_url_blob}}">
                 <h2>{{customer.first_name}}</h2>
                 <p>{{customer.username}}</p>
@@ -9,4 +9,7 @@
         </ion-list>
     </ion-content>
 </ion-view>
-<ion-nav-view class="detail-pane"></ion-nav-view>
+<ion-nav-bar class="bar-light detail-pane" delegate-handle="detailNav">
+    <ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
+</ion-nav-bar>
+<ion-nav-view name="detailContent" class="detail-pane"></ion-nav-view>

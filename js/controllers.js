@@ -120,7 +120,7 @@ angular.module('woodash.controllers', [])
         customers.list = stateData.customers;
     }])
 
-    .controller('CustomersDetailCtrl', ['$scope', '$stateParams', '$state', 'stateData', 'firstCustomer', function ($scope, $stateParams, $state, stateData, firstCustomer) {
+    .controller('CustomersDetailCtrl', ['$rootScope', '$scope', '$stateParams', '$state', 'stateData', function ($rootScope, $scope, $stateParams, $state, stateData) {
         var customersdetail = this;
 
         angular.forEach(stateData.customers, function(value, key) {
@@ -134,10 +134,22 @@ angular.module('woodash.controllers', [])
                 customersdetail.orders = orders.plain();
             }
         });
-    
-        console.log(customersdetail.orders);
+    }])
 
-        //console.log(customersdetail.orders);
+    .controller('CustomersOrderCtrl', ['$scope', '$stateParams', '$state', 'stateData', function ($scope, $stateParams, $state, stateData) {
+        var customersorder = this;
+
+/*        angular.forEach(stateData.customers, function(value, key) {
+            if (value.id === $stateParams.id) {
+                return customersorder.info = stateData.customers[key];
+            }
+        });
+
+        if (typeof customersorder.info.orders !== 'undefined') {
+            customersorder.orders = customersorder.info.orders.plain();
+        }
+
+        console.log(customersorder.orders);*/
     }])
 
     .controller('ProductsCtrl', ['$scope', '$http', 'stateData', function ($scope, $http, stateData) {

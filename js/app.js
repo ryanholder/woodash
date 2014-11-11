@@ -102,7 +102,7 @@ angular.module('woodash', [
             .state('app.customers.detail', {
                 url: '/{id}',
                 views: {
-                    '@app.customers': {
+                    'detailContent@app.customers': {
                         templateUrl: 'templates/customers.detail.html',
                         controller: 'CustomersDetailCtrl as customersdetail'
                     }
@@ -112,6 +112,16 @@ angular.module('woodash', [
                         if ($stateParams.id === undefined) {
                             $stateParams.id = WooCommDataService.getFirstItem(stateData.customers);
                         }
+                    }
+                }
+            })
+
+            .state('app.customers.detail.order', {
+                url: '/order/{order}',
+                views: {
+                    'detailContent@app.customers': {
+                        templateUrl: 'templates/customers.order.html',
+                        controller: 'CustomersOrderCtrl as customersorder'
                     }
                 }
             })
