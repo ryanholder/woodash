@@ -104,8 +104,6 @@ angular.module('woodash.controllers', [])
 
         $scope.detailView.display = true;
 
-        customers.list = stateData.customers;
-
         //todo: move to services
         angular.forEach(stateData.customers, function(value, key) {
             var customerResource = stateData.customers[key];
@@ -115,12 +113,11 @@ angular.module('woodash.controllers', [])
                 value.avatar_url_blob = window.URL.createObjectURL(blob);
             });
 
-            customerResource.getList('orders').then( function (orders) {
-                if (orders.length > 0) {
-                    customerResource.orders = orders;
-                }
-            });
+            customerResource.orders = customerResource.getList('orders');
+
         });
+
+        customers.list = stateData.customers;
     }])
 
     .controller('CustomersDetailCtrl', ['$scope', '$stateParams', '$state', 'stateData', 'firstCustomer', function ($scope, $stateParams, $state, stateData, firstCustomer) {
@@ -132,10 +129,12 @@ angular.module('woodash.controllers', [])
             }
         });
 
-        if (typeof customersdetail.info.orders !== 'undefined') {
-            customersdetail.orders = customersdetail.info.orders.plain();
-        }
-
+        customersdetail.info.orders.then( function (orders) {
+            if (orders.length > 0) {
+                customersdetail.orders = orders.plain();
+            }
+        });
+    
         console.log(customersdetail.orders);
 
         //console.log(customersdetail.orders);
