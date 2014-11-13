@@ -1,4 +1,4 @@
-<ion-view title="Customers" class="list-pane">
+<ion-view view-title="Customers" class="list-pane" nav-transition="none">
     <ion-content>
         <ion-list>
                 <ion-item nav-clear ng-repeat="customer in customers.list" ui-sref="app.customers.detail({id:customer.id})" ui-sref-active="active" class="item-thumbnail-left">

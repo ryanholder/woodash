@@ -2,12 +2,12 @@
 
     <ion-side-menu-content drag-content="false">
         <ion-nav-bar class="bar-light" ng-class="{ 'list-pane-header': detailView.display }" delegate-handle="appNav">
-            <button menu-toggle="left" class="button button-icon ion-navicon"></button>
+            <button menu-toggle="primary" class="button button-icon ion-navicon"></button>
         </ion-nav-bar>
         <ion-nav-view name="menuContent"></ion-nav-view>
     </ion-side-menu-content>
 
-    <ion-side-menu class="woodash-menu" width="182" side="left">
+    <ion-side-menu class="woodash-menu" width="182" side="primary">
         <ion-header-bar ng-if="siteConnectList.connected">
             <button class="button button-clear button-positive button-icon icon ion-stop"></button>
             <h1 class="title">{{app.siteName}}</h1>
