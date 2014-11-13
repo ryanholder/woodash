@@ -1,15 +1,24 @@
-<ion-view view-title="Customers" class="list-pane" nav-transition="none">
+<ion-pane class="list-pane">
+    <ion-header-bar align-title="center" class="bar-positive">
+        <div class="buttons">
+            <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+        </div>
+        <h1 class="title">Customers</h1>
+    </ion-header-bar>
     <ion-content>
         <ion-list>
-                <ion-item nav-clear ng-repeat="customer in customers.list" ui-sref="app.customers.detail({id:customer.id})" ui-sref-active="active" class="item-thumbnail-left">
+            <ion-item ng-repeat="customer in customers.list" ng-click="customers.clearHistory()" ui-sref="app.customers.detail({id:customer.id})" ui-sref-active="active" class="item-thumbnail-left">
                 <img ng-src="{{customer.avatar_url_blob}}">
                 <h2>{{customer.first_name}}</h2>
                 <p>{{customer.username}}</p>
             </ion-item>
         </ion-list>
     </ion-content>
-</ion-view>
-<ion-nav-bar class="bar-light detail-pane" delegate-handle="detailNav">
-    <ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
-</ion-nav-bar>
-<ion-nav-view name="detailContent" class="detail-pane"></ion-nav-view>
+</ion-pane>
+
+<ion-pane class="detail-pane">
+    <ion-nav-bar class="bar-light" delegate-handle="detailNav">
+        <ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view name="detailContent"></ion-nav-view>
+</ion-pane>

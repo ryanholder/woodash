@@ -99,8 +99,14 @@ angular.module('woodash.controllers', [])
         //console.log(this.orders);
 	}])
 
-    .controller('CustomersCtrl', ['$scope', '$http', 'stateData', function ($scope, $http, stateData) {
+    .controller('CustomersCtrl', ['$scope', '$http', 'stateData', '$ionicViewSwitcher', '$ionicHistory', function ($scope, $http, stateData, $ionicViewSwitcher, $ionicHistory) {
         var customers = this;
+
+        //todo: This clearHistory function might be heavy as an onclick, look to perform check on state change.
+        customers.clearHistory = function () {
+            $ionicViewSwitcher.nextTransition('none');
+            $ionicHistory.resetHistory();
+        };
 
         $scope.detailView.display = true;
 

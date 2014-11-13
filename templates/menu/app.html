@@ -1,13 +1,10 @@
-<ion-side-menus>
+<ion-side-menus enable-menu-with-back-views="false">
 
     <ion-side-menu-content drag-content="false">
-        <ion-nav-bar class="bar-light" ng-class="{ 'list-pane-header': detailView.display }" delegate-handle="appNav">
-            <button menu-toggle="primary" class="button button-icon ion-navicon"></button>
-        </ion-nav-bar>
-        <ion-nav-view name="menuContent"></ion-nav-view>
+        <ui-view name="menuContent"></ui-view>
     </ion-side-menu-content>
 
-    <ion-side-menu class="woodash-menu" width="182" side="primary">
+    <ion-side-menu class="woodash-menu" width="182" side="left">
         <ion-header-bar ng-if="siteConnectList.connected">
             <button class="button button-clear button-positive button-icon icon ion-stop"></button>
             <h1 class="title">{{app.siteName}}</h1>
