@@ -2843,7 +2843,7 @@ body,
   color: #000;
   word-wrap: break-word;
   font-size: 14px;
-  font-family: "Helvetica Neue", "Roboto" sans-serif;
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
   line-height: 20px;
   text-rendering: optimizeLegibility;
   -webkit-backface-visibility: hidden;
@@ -3081,32 +3081,32 @@ ion-infinite-scroll {
 
 /* If you change these, change platform.scss as well */
 .has-header {
-  top: 44px; }
+  top: 64px; }
 
 .no-header {
   top: 0; }
 
 .has-subheader {
-  top: 88px; }
+  top: 128px; }
 
 .has-tabs-top {
-  top: 93px; }
+  top: 113px; }
 
 .has-header.has-subheader.has-tabs-top {
-  top: 137px; }
+  top: 177px; }
 
 .has-footer {
-  bottom: 44px; }
+  bottom: 64px; }
 
 .has-subfooter {
-  bottom: 88px; }
+  bottom: 128px; }
 
 .has-tabs,
 .bar-footer.has-tabs {
   bottom: 49px; }
 
 .has-footer.has-tabs {
-  bottom: 93px; }
+  bottom: 113px; }
 
 .pane {
   -webkit-transform: translate3d(0, 0, 0);
@@ -3162,7 +3162,7 @@ h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   color: #000;
   font-weight: 500;
-  font-family: "Helvetica Neue", "Roboto" sans-serif;
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
   line-height: 1.2; }
   h1 small, h2 small, h3 small, h4 small, h5 small, h6 small,
   .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small {
@@ -3396,7 +3396,7 @@ a.subdued {
   box-sizing: border-box;
   padding: 5px;
   width: 100%;
-  height: 44px;
+  height: 64px;
   border-width: 0;
   border-style: solid;
   border-top: 1px solid transparent;
@@ -3518,12 +3518,12 @@ a.subdued {
     overflow: hidden;
     margin: 0 10px;
     min-width: 30px;
-    height: 43px;
+    height: 63px;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 17px;
-    line-height: 44px; }
+    line-height: 64px; }
     .bar .title.title-left {
       text-align: left; }
     .bar .title.title-right {
@@ -3801,11 +3801,11 @@ a.subdued {
   padding: 0; }
 
 .bar-subheader {
-  top: 44px;
+  top: 64px;
   display: block; }
 
 .bar-subfooter {
-  bottom: 44px;
+  bottom: 64px;
   display: block; }
 
 .nav-bar-block {
@@ -4304,7 +4304,7 @@ a.subdued {
 /* If you change this, change platform.scss as well */
 .tabs-top > .tabs,
 .tabs.tabs-top {
-  top: 44px;
+  top: 64px;
   padding-top: 0;
   background-position: bottom; }
   .tabs-top > .tabs .tab-item.tab-item-active .badge, .tabs-top > .tabs .tab-item.active .badge, .tabs-top > .tabs .tab-item.activated .badge,
@@ -4334,7 +4334,7 @@ a.subdued {
   white-space: nowrap;
   font-weight: 400;
   font-size: 14px;
-  font-family: "HelveticaNeue-Light", "Roboto-Light", sans-serif-light;
+  font-family: "Roboto-Light", "HelveticaNeue-Light", sans-serif-light;
   opacity: 0.7; }
   .tab-item:hover {
     cursor: pointer; }
@@ -4557,21 +4557,21 @@ a.subdued {
     bottom: 0; }
 
   .platform-ios.platform-cordova .modal-wrapper .modal .bar-header:not(.bar-subheader) {
-    height: 44px; }
+    height: 64px; }
     .platform-ios.platform-cordova .modal-wrapper .modal .bar-header:not(.bar-subheader) > * {
       margin-top: 0; }
   .platform-ios.platform-cordova .modal-wrapper .modal .tabs-top > .tabs,
   .platform-ios.platform-cordova .modal-wrapper .modal .tabs.tabs-top {
-    top: 44px; }
+    top: 64px; }
   .platform-ios.platform-cordova .modal-wrapper .modal .has-header,
   .platform-ios.platform-cordova .modal-wrapper .modal .bar-subheader {
-    top: 44px; }
+    top: 64px; }
   .platform-ios.platform-cordova .modal-wrapper .modal .has-subheader {
-    top: 88px; }
+    top: 128px; }
   .platform-ios.platform-cordova .modal-wrapper .modal .has-tabs-top {
-    top: 93px; }
+    top: 113px; }
   .platform-ios.platform-cordova .modal-wrapper .modal .has-header.has-subheader.has-tabs-top {
-    top: 137px; } }
+    top: 177px; } }
 .modal-open {
   pointer-events: none; }
   .modal-open .modal,
@@ -5892,7 +5892,7 @@ input,
 button,
 select,
 textarea {
-  font-family: "Helvetica Neue", "Roboto" sans-serif; }
+  font-family: "Roboto", "Helvetica Neue", sans-serif; }
 
 .item-input {
   display: -webkit-box;
@@ -7661,23 +7661,23 @@ a.button {
  * Platform specific tweaks
  */
 .platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) {
-  height: 64px; }
+  height: 84px; }
   .platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader).item-input-inset .item-input-wrapper {
     margin-top: 19px !important; }
   .platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) > * {
     margin-top: 20px; }
 .platform-ios.platform-cordova:not(.fullscreen) .tabs-top > .tabs,
 .platform-ios.platform-cordova:not(.fullscreen) .tabs.tabs-top {
-  top: 64px; }
+  top: 84px; }
 .platform-ios.platform-cordova:not(.fullscreen) .has-header,
 .platform-ios.platform-cordova:not(.fullscreen) .bar-subheader {
-  top: 64px; }
+  top: 84px; }
 .platform-ios.platform-cordova:not(.fullscreen) .has-subheader {
-  top: 108px; }
+  top: 148px; }
 .platform-ios.platform-cordova:not(.fullscreen) .has-tabs-top {
-  top: 113px; }
+  top: 133px; }
 .platform-ios.platform-cordova:not(.fullscreen) .has-header.has-subheader.has-tabs-top {
-  top: 157px; }
+  top: 197px; }
 .platform-ios.platform-cordova.status-bar-hide {
   margin-bottom: 20px; }
 
@@ -7758,7 +7758,7 @@ a.button {
 [nav-view-transition="android"] .tabs-top > .view-container > [history-cursor="after-root"] {
   z-index: 6; }
 [nav-view-transition="android"] [history-cursor="after-root"] > .has-tabs-top {
-  top: 44px; }
+  top: 64px; }
 
 [nav-bar-transition="android"] [nav-bar="entering"],
 [nav-bar-transition="android"] [nav-bar="leaving"] {
@@ -7792,5 +7792,88 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+body,
+.ionic-body {
+  font-family: "Roboto", sans-serif; }
+
+.imd-button {
+  font-family: "Roboto-Medium";
+  font-size: 14px;
+  text-transform: uppercase; }
+
+.imd-caption {
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  text-transform: none; }
+
+.imd-body-1-device {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  text-transform: none; }
+
+.imd-body-1-desktop {
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+  text-transform: none; }
+
+.imd-body-2-device {
+  font-family: "Roboto-Medium";
+  font-size: 14px;
+  text-transform: none; }
+
+.imd-body-2-desktop {
+  font-family: "Roboto-Medium";
+  font-size: 13px;
+  text-transform: none; }
+
+.imd-subhead-device {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  text-transform: none; }
+
+.imd-subhead-desktop {
+  font-family: "Roboto", sans-serif;
+  font-size: 15px;
+  text-transform: none; }
+
+.imd-title {
+  font-family: "Roboto-Medium";
+  font-size: 20px;
+  text-transform: none; }
+
+.imd-headline {
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  text-transform: none; }
+
+.imd-display-1 {
+  font-family: "Roboto", sans-serif;
+  font-size: 34px;
+  text-transform: none; }
+
+.imd-display-2 {
+  font-family: "Roboto", sans-serif;
+  font-size: 45px;
+  text-transform: none; }
+
+.imd-display-3 {
+  font-family: "Roboto", sans-serif;
+  font-size: 56px;
+  text-transform: none; }
+
+.imd-display-4 {
+  font-family: "Roboto-Light";
+  font-size: 112px;
+  text-transform: none; }
+
+/*
+.menu-content {
+  width: 100%;
+}
+*/
+.menu-content {
+  left: 72px !important;
+  width: calc(100% - 72px) !important; }
 
 /*# sourceMappingURL=app.css.map */

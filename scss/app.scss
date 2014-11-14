@@ -1,8 +1,132 @@
-// your variable changes can go here
-$ionicons-font-path: "../lib/ionic/fonts";
+// Material design variables
+// -------------------------------
+
+// Baseline grids
+$imd-component-baseline-grid:     8px;
+$imd-type-baseline-grid:          4px;
+$imd-iconography-baseline-grid:   8px;
+
+// Type
+$imd-font-family-base:            "Roboto", sans-serif  !default;
+$imd-font-family-thin:            "Roboto-Thin" !default;
+$imd-font-family-light:           "Roboto-Light", sans-serif-light !default;
+$imd-font-family-medium:          "Roboto-Medium" !default;
+$imd-font-family-bold:            "Roboto-Bold" !default;
+$imd-font-family-black:           "Roboto-Black" !default;
+
+// Type Maps
+$imd-button:            (family: $imd-font-family-medium, transform: uppercase);
+$imd-caption:           (size: 12px);
+$imd-body-1-device:     ();
+$imd-body-1-desktop:    (size: 13px);
+$imd-body-2-device:     (family: $imd-font-family-medium,);
+$imd-body-2-desktop:    (family: $imd-font-family-medium, size: 13px);
+$imd-subhead-device:    (size: 16px);
+$imd-subhead-desktop:   (size: 15px);
+$imd-title:             (family: $imd-font-family-medium, size: 20px);
+$imd-headline:          (size: 24px);
+$imd-display-1:         (size: 34px);
+$imd-display-2:         (size: 45px);
+$imd-display-3:         (size: 56px);
+$imd-display-4:         (family: $imd-font-family-light, size: 112px);
+
+// Type Mixins
+@mixin imd-type-style($family: $imd-font-family-base, $size: 14px, $transform: none) {
+  font-family: $family;
+  font-size: $size;
+  text-transform: $transform;
+}
+
+
+// Ionicons variables
+// --------------------------
+
+$ionicons-font-path:              "../lib/ionic/fonts";
+
+
+// Base
+// -------------------------------
+
+$font-family-sans-serif:          $imd-font-family-base;
+$font-family-light-sans-serif:    $imd-font-family-light;
+
+$font-family-base:                $imd-font-family-base;
+
+
+// Bars
+// -------------------------------
+
+$bar-height:                      64px !default;
+$bar-title-font-size:             17px !default;
+$bar-padding-portrait:            5px !default;
+$bar-padding-landscape:           5px !default;
+$bar-transparency:                1 !default;
+
 
 @import "ionic/ionic";
 
-// your slick styles can go here...
-// when Sass processes, both Ionic's Sass and your Sass will combine
-// into one file and saved in your app's directory as css/app.css
+body,
+.ionic-body {
+  font-family: $imd-font-family-base;
+}
+
+.imd-button {
+  @include imd-type-style($imd-button...);
+}
+
+.imd-caption {
+  @include imd-type-style($imd-caption...);
+}
+
+.imd-body-1-device {
+  @include imd-type-style($imd-body-1-device...);
+}
+
+.imd-body-1-desktop {
+  @include imd-type-style($imd-body-1-desktop...);
+}
+
+.imd-body-2-device {
+  @include imd-type-style($imd-body-2-device...);
+}
+
+.imd-body-2-desktop {
+  @include imd-type-style($imd-body-2-desktop...);
+}
+
+.imd-subhead-device {
+  @include imd-type-style($imd-subhead-device...);
+}
+
+.imd-subhead-desktop {
+  @include imd-type-style($imd-subhead-desktop...);
+}
+
+.imd-title {
+  @include imd-type-style($imd-title...);
+}
+
+.imd-headline {
+  @include imd-type-style($imd-headline...);
+}
+
+.imd-display-1 {
+  @include imd-type-style($imd-display-1...);
+}
+
+.imd-display-2 {
+  @include imd-type-style($imd-display-2...);
+}
+
+.imd-display-3 {
+  @include imd-type-style($imd-display-3...);
+}
+
+.imd-display-4 {
+  @include imd-type-style($imd-display-4...);
+}
+
+.menu-content {
+  left: 72px !important;
+  width: calc(100% - 72px) !important;
+}
