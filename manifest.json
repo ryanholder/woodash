@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"name": "Woodash - Desktop WooCommerce Application",
+	"name": "Woodash (Alpha)",
     "short_name": "Woodash",
 	"version": "0.1",
 	"minimum_chrome_version": "33",
