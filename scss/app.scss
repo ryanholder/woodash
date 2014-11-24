@@ -262,3 +262,11 @@ body,
   width: 67%;
   left: 33%;
 }
+
+.item.active,
+.item .item-content.activated,
+.item-complex.active .item-content {
+  border-color: transparent;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
