@@ -4,12 +4,12 @@
         <div ui-view="menuContent"></div>
     </ion-side-menu-content>
 
-    <ion-side-menu class="woodash-menu" width="182" side="left">
-        <ion-header-bar ng-if="siteConnectList.connected">
+    <ion-side-menu class="woodash-menu" width="256" side="left">
+        <div class="bar bar-header" ng-if="siteConnectList.connected">
             <button class="button button-clear button-positive button-icon icon ion-stop"></button>
             <h1 class="title">{{app.siteName}}</h1>
             <button class="button button-clear button-positive button-icon icon ion-ios7-gear" ng-click="app.wcStoreSettingsModal.show()"></button>
-        </ion-header-bar>
+        </div>
         <ion-content overflow-scroll="true" ng-if="siteConnectList.connected" class="has-header">
             <ion-list>
                 <div class="item item-divider menu-list-divider menu-list-divider-top"></div>
