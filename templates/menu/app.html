@@ -5,7 +5,7 @@
     </ion-side-menu-content>
 
     <ion-side-menu class="woodash-menu" width="256" side="left">
-        <div class="bar bar-header" ng-if="siteConnectList.connected">
+        <div class="bar bar-header bar-side-menu" ng-if="siteConnectList.connected">
             <button class="button button-clear button-positive button-icon icon ion-stop"></button>
             <h1 class="title">{{app.siteName}}</h1>
             <button class="button button-clear button-positive button-icon icon ion-ios7-gear" ng-click="app.wcStoreSettingsModal.show()"></button>
@@ -13,37 +13,37 @@
         <ion-content overflow-scroll="true" ng-if="siteConnectList.connected" class="has-header">
             <ion-list>
                 <div class="item item-divider menu-list-divider menu-list-divider-top"></div>
-                <ion-item nav-clear class="item-icon-left overview" menu-close ui-sref="app.overview" ui-sref-active="active">
+                <ion-item nav-clear class="item-icon-left overview item-side-menu" menu-close ui-sref="app.overview" ui-sref-active="active">
                     <i class="icon ion-stats-bars"></i>
                     Overview
                 </ion-item>
-                <ion-item nav-clear class="item-icon-left" menu-close ui-sref="app.customers.detail" ui-sref-active="active">
+                <ion-item nav-clear class="item-icon-left item-side-menu" menu-close ui-sref="app.customers.detail" ui-sref-active="active">
                     <i class="icon ion-ios7-people"></i>
                     Customers
                 </ion-item>
-                <ion-item nav-clear class="item-icon-left" menu-close ui-sref="app.products.detail" ui-sref-active="active">
+                <ion-item nav-clear class="item-icon-left item-side-menu" menu-close ui-sref="app.products.detail" ui-sref-active="active">
                     Products
                     <i class="icon ion-ios7-cart"></i>
                 </ion-item>
-                <ion-item nav-clear class="item-icon-left col-bottom" menu-close ui-sref="app.orders.detail" ui-sref-active="active">
+                <ion-item nav-clear class="item-icon-left col-bottom item-side-menu" menu-close ui-sref="app.orders.detail" ui-sref-active="active">
                     Orders
                     <i class="icon ion-ios7-copy"></i>
                 </ion-item>
                 <div class="item item-divider menu-list-divider"></div>
-                <ion-item nav-clear class="item-icon-left col-bottom" menu-close href="#/app/profile">
+                <ion-item nav-clear class="item-icon-left col-bottom item-side-menu" menu-close href="#/app/profile">
                     User Name
                     <i class="icon ion-person"></i>
                 </ion-item>
             </ion-list>
         </ion-content>
-        <ion-footer-bar>
-            <div class="item item-button-left">
+        <div class="bar bar-footer bar-side-menu">
+            <div class="item item-button-left item-side-menu">
                 More
                 <button class="button button-clear button-positive" ng-click="app.settingsModal.show()">
                     <i class="icon ion-more"></i>
                 </button>
             </div>
-        </ion-footer-bar>
+        </div>
     </ion-side-menu>
 
 </ion-side-menus>

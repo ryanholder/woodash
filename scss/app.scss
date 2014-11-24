@@ -30,6 +30,11 @@ $imd-display-2:         (size: 45px);
 $imd-display-3:         (size: 56px);
 $imd-display-4:         (family: $imd-font-family-light, size: 112px);
 
+$button-material-design-bg:             #424242 !default;
+$button-material-design-border:         #ddd !default;
+$button-material-design-text:           rgba(255,255,255,0.87) !default;
+$button-material-design-active-bg:      #fafafa !default;
+$button-material-design-active-border:  #ccc !default;
 
 // Type Mixins
 @mixin imd-type-style($family: $imd-font-family-base, $size: 14px, $transform: none) {
@@ -54,6 +59,12 @@ $font-family-light-sans-serif:    $imd-font-family-light;
 $font-family-base:                $imd-font-family-base;
 
 
+// Buttons
+// -------------------------------
+
+
+
+
 // Bars
 // -------------------------------
 
@@ -63,11 +74,61 @@ $bar-padding-portrait:            5px !default;
 $bar-padding-landscape:           5px !default;
 $bar-transparency:                1 !default;
 
+$bar-material-design-bg:                    rgba(#424242, $bar-transparency) !default;
+$bar-material-design-text:                  rgba(255,255,255,0.87) !default;
+$bar-material-design-border:                #ddd !default;
+$bar-material-design-active-bg:             #fafafa !default;
+$bar-material-design-active-border:         #ccc !default;
+
+
+// Lists
+// -------------------------------
+
+$list-header-bg:                  transparent !default;
+$list-header-color:               #222 !default;
+$list-header-padding:             5px 15px !default;
+$list-header-margin-top:          20px !default;
+
+
+// Items
+// -------------------------------
+
+$item-font-size:                  16px !default;
+$item-border-width:               1px !default;
+$item-padding:                    16px !default;
+
+$item-button-font-size:           18px !default;
+$item-button-line-height:         32px !default;
+$item-icon-font-size:             32px !default;
+$item-icon-fill-font-size:        28px !default;
+
+$item-icon-accessory-color:       #ccc !default;
+$item-icon-accessory-font-size:   16px !default;
+
+$item-avatar-width:               40px !default;
+$item-avatar-height:              40px !default;
+$item-avatar-border-radius:       4px !default;
+
+$item-thumbnail-width:            80px !default;
+$item-thumbnail-height:           80px !default;
+$item-thumbnail-margin:           10px !default;
+
+$item-divider-bg:                 #f5f5f5 !default;
+$item-divider-color:              #222 !default;
+$item-divider-padding:            5px 15px !default;
+
+$item-material-design-bg:                   $button-material-design-bg !default;
+$item-material-design-border:               transparent !default;
+$item-material-design-text:                 $button-material-design-text !default;
+$item-material-design-active-bg:            $button-material-design-active-bg !default;
+$item-material-design-active-border:        $button-material-design-active-border !default;
+
 
 // Menus
 // -------------------------------
 
-$menu-bg:                         #fff !default;
+$menu-bg:                         #424242 !default;
+
 $menu-width:                      256px !default;
 $menu-animation-speed:            200ms !default;
 
@@ -138,14 +199,66 @@ body,
 }
 
 .menu-content {
-  left: 72px !important;
-  width: calc(100% - 72px) !important;
+  left: 64px !important;
+  width: calc(100% - 64px) !important;
 }
 
 .menu-open .menu-content {
-  -webkit-transform: translate3d(184px, 0px, 0px) !important;
+  -webkit-transform: translate3d(192px, 0px, 0px) !important;
 }
 
-//.woodash-menu {
-//  width: $menu-width !important;
-//}
+.bar-side-menu {
+  @include bar-style($bar-material-design-bg, $bar-material-design-border, $bar-material-design-text);
+  background-image: linear-gradient(0deg, #000000, #000000 50%, transparent 50%);
+  &.bar-footer{
+    background-image: linear-gradient(180deg, $bar-material-design-border, $bar-material-design-border 50%, transparent 50%);
+  }
+}
+
+.item-side-menu {
+  @include item-style($item-material-design-bg, $item-material-design-border, $item-material-design-text);
+  border: 1px solid transparent;
+}
+
+.item-side-menu.item-icon-left .item-content {
+  padding: 0;
+  padding-left: 64px;
+  line-height: 48px;
+}
+
+.item-side-menu .icon {
+  left: 16px;
+}
+
+.item-complex .item-content {
+  background-color: transparent;
+}
+
+.item-divider {
+  border: none;
+  border-bottom: 1px solid #000;
+  padding-top: 0px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  min-height: 0px;
+  background-color: transparent;
+}
+
+.item-divider.menu-list-divider-top {
+  border: none;
+  padding-top: 0;
+  padding-bottom: 8px;
+  margin-bottom: 0;
+  min-height: 0;
+  background-color: transparent;
+}
+
+.list-pane,
+.list-pane-header {
+  width: 33%;
+}
+
+.detail-pane {
+  width: 67%;
+  left: 33%;
+}
