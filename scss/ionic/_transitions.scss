@@ -60,6 +60,14 @@ $ios-transition-container-bg-color:    #000 !default;
     }
   }
 
+  [nav-bar="cached"] {
+    display: block;
+
+    .header-item {
+      display: none;
+    }
+  }
+
 }
 
 
@@ -107,6 +115,10 @@ $android-transition-timing-leaving:          cubic-bezier(0.4, 0, 1, 1) !default
     top: $bar-height;
   }
 
+  .tabs-top.tabs-striped > .view-container {
+    position: static;
+  }
+
 }
 
 
@@ -146,7 +158,8 @@ $android-transition-timing-leaving:          cubic-bezier(0.4, 0, 1, 1) !default
 // Transition Settings
 // -------------------------------
 
-[nav-view="cached"] {
+[nav-view="cached"],
+[nav-bar="cached"] {
   display: none;
 }
 
