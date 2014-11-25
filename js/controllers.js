@@ -104,8 +104,13 @@ angular.module('woodash.controllers', [])
 
         //todo: This clearHistory function might be heavy as an onclick, look to perform check on state change.
         customers.clearHistory = function () {
-            $ionicViewSwitcher.nextTransition('none');
-            $ionicHistory.resetHistory();
+            //$ionicViewSwitcher.nextTransition('none');
+            $ionicHistory.clearHistory();
+            //$ionicHistory.clearCache();
+            $ionicHistory.nextViewOptions({
+                disableAnimate: true,
+                disableBack: true
+            });
         };
 
         $scope.detailView.display = true;

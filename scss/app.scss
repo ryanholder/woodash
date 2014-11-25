@@ -377,12 +377,3 @@ body,
   box-shadow: 0 1px 5px rgba(0,0,0,.3);
   padding: 0;
 }
-
-.pane-dummy-header {
-  height: 64px;
-  display: block;
-  content: "";
-  box-shadow: 0 1px 5px rgba(0,0,0,.3);
-  background-color: transparent;
-  pointer-events: none;
-}
