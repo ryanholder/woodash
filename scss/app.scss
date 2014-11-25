@@ -68,7 +68,7 @@ $font-family-base:                $imd-font-family-base;
 // Bars
 // -------------------------------
 
-$bar-height:                      64px !default;
+$bar-height:                      56px !default;
 $bar-title-font-size:             17px !default;
 $bar-padding-portrait:            5px !default;
 $bar-padding-landscape:           5px !default;
@@ -134,7 +134,6 @@ $menu-animation-speed:            200ms !default;
 
 $menu-side-shadow:                -1px 0px 2px rgba(0, 0, 0, 0.2), 1px 0px 2px rgba(0,0,0,0.2) !default;
 
-
 @import "ionic/ionic";
 
 body,
@@ -198,13 +197,23 @@ body,
   @include imd-type-style($imd-display-4...);
 }
 
+
+/* Side menu styles to be refactored
+ * Notes as follows...
+ *
+ * Using 56px as toolbar height, therefore menu width 4 x that = 224px
+ * 48px is the height of the menu item with padding
+ * icon size is 24px with text font of 14px using Roboto-Medium
+ * The open visible piece is 56px
+ */
+
 .menu-content {
-  left: 64px !important;
-  width: calc(100% - 64px) !important;
+  left: 56px !important;
+  width: calc(100% - 56px) !important;
 }
 
 .menu-open .menu-content {
-  -webkit-transform: translate3d(192px, 0px, 0px) !important;
+  -webkit-transform: translate3d(168px, 0px, 0px) !important;
 }
 
 .bar-side-menu {
@@ -222,16 +231,24 @@ body,
 
 .item-side-menu.item-icon-left .item-content {
   padding: 0;
-  padding-left: 64px;
+  padding-left: 72px;
   line-height: 48px;
 }
 
 .item-side-menu .icon {
   left: 16px;
+  font-size: 24px;
+}
+
+.item-side-menu .icon:before {
+  width: 24px;
 }
 
 .item-complex .item-content {
   background-color: transparent;
+  font-family: $imd-font-family-medium;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .item-divider {
