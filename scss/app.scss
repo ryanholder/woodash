@@ -197,6 +197,18 @@ body,
   @include imd-type-style($imd-display-4...);
 }
 
+/*
+ * Styles to create the mailbox look and feel
+ */
+.list-pane,
+.list-pane-header {
+  width: 320px;
+}
+
+.detail-pane {
+  width: calc(100% - 320px);
+  left: 320px;
+}
 
 /* Side menu styles to be refactored
  * Notes as follows...
@@ -270,20 +282,61 @@ body,
   background-color: transparent;
 }
 
-.list-pane,
-.list-pane-header {
-  width: 33%;
-}
-
-.detail-pane {
-  width: 67%;
-  left: 33%;
-}
-
 .item.active,
 .item .item-content.activated,
 .item-complex.active .item-content {
   border-color: transparent;
   background-color: rgba(255, 255, 255, 0.05);
   color: #fff;
+}
+
+
+/* List item style for mailbox look and feel
+ * Notes as follows...
+ *
+ * Using icon with 1 line text tile = 48px
+ * Using icon with 2 line text tile = 72px
+ * Using icon with 3 line text tile = 88px
+ *
+ * Using 88px Tile the title font is 16px regular with line height of 20px
+ * the two following lines are 14px with line height of 18px, combined text = 56px
+ */
+
+.item-thumbnail-left {
+  min-height: 48px;
+}
+
+.item-thumbnail-left .item-content {
+  min-height: 48px;
+  padding: 16px;
+}
+
+.item-thumbnail-left .item-content .tile-left {
+  float: left;
+
+  img {
+    height: 40px;
+    width: 40px;
+    border-radius: 40px;
+  }
+}
+
+.item-thumbnail-left .item-content .tile-right {
+  padding-left: 56px;
+}
+
+.item-content h2,
+.item-content p {
+  font-family: "Roboto";
+  font-weight: normal;
+}
+
+.item-content h2 {
+  line-height: 20px;
+  margin: 0;
+}
+
+.item-content p {
+  white-space: normal;
+  line-height: 18px;
 }
