@@ -30,7 +30,7 @@ $imd-display-2:         (size: 45px);
 $imd-display-3:         (size: 56px);
 $imd-display-4:         (family: $imd-font-family-light, size: 112px);
 
-$button-material-design-bg:             #424242 !default;
+$button-material-design-bg:             #616161 !default;
 $button-material-design-border:         #ddd !default;
 $button-material-design-text:           rgba(255,255,255,0.87) !default;
 $button-material-design-active-bg:      #fafafa !default;
@@ -74,7 +74,7 @@ $bar-padding-portrait:            5px !default;
 $bar-padding-landscape:           5px !default;
 $bar-transparency:                1 !default;
 
-$bar-material-design-bg:                    rgba(#424242, $bar-transparency) !default;
+$bar-material-design-bg:                    rgba(#616161, $bar-transparency) !default;
 $bar-material-design-text:                  rgba(255,255,255,0.87) !default;
 $bar-material-design-border:                #ddd !default;
 $bar-material-design-active-bg:             #fafafa !default;
@@ -127,7 +127,7 @@ $item-material-design-active-border:        $button-material-design-active-borde
 // Menus
 // -------------------------------
 
-$menu-bg:                         #424242 !default;
+$menu-bg:                         #616161 !default;
 
 $menu-width:                      256px !default;
 $menu-animation-speed:            200ms !default;
@@ -208,7 +208,7 @@ body,
 .detail-pane {
   width: calc(100% - 320px);
   left: 320px;
-  box-shadow: -1px 0px 5px rgba(0,0,0,.3);
+//  box-shadow: -1px 0px 5px rgba(0,0,0,.3);
 }
 
 /* Side menu styles to be refactored
@@ -232,7 +232,7 @@ body,
 
 .bar-side-menu {
   @include bar-style($bar-material-design-bg, $bar-material-design-border, $bar-material-design-text);
-  background-image: linear-gradient(0deg, #212121, #212121 50%, transparent 50%);
+  background-image: linear-gradient(0deg, #424242, #424242 50%, transparent 50%);
   &.bar-footer{
     background-image: linear-gradient(180deg, $bar-material-design-border, $bar-material-design-border 50%, transparent 50%);
   }
@@ -304,8 +304,8 @@ body,
 .item .item-content.activated,
 .item-complex.active .item-content {
   border-color: transparent;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: rgba(255, 255, 255, 1);
 }
 
 
@@ -365,7 +365,7 @@ body,
  */
 .list-pane .bar .title {
   margin: 0;
-  font-family: "Roboto-Medium";
+  font-family: "Roboto";
   font-size: 20px;
   line-height: 64px;
   font-weight: normal;
@@ -374,7 +374,7 @@ body,
 
 .list-pane .bar.bar-md,
 .detail-pane .bar.bar-md {
-  box-shadow: 0 1px 5px rgba(0,0,0,.3);
+//  box-shadow: 0 1px 5px rgba(0,0,0,.3);
   padding: 7px;
 }
 
@@ -384,4 +384,27 @@ body,
 
 .bar .button-icon.ion-navicon:before {
   font-size: 28px; // todo: hack here on navicon, at 24px it is small
+}
+
+.list-content {
+  border-right: 1px solid #ddd;
+}
+
+.content-pane:after {
+  height: 64px;
+  display: block;
+  content: "";
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  background-color: transparent;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.customer-detail-subheader {
+  height: 224px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }

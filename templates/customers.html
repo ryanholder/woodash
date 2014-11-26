@@ -8,7 +8,7 @@
             <button class="button button-icon icon ion-ios7-search-strong"></button>
         </div>
     </ion-header-bar>
-    <ion-content>
+    <ion-content class="list-content">
         <ion-list>
             <ion-item ng-repeat="customer in customers.list" ng-click="customers.clearHistory()" ui-sref="app.customers.detail({id:customer.id})" ui-sref-active="active" class="item-thumbnail-left">
                 <div class="tile-left">
