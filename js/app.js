@@ -8,6 +8,7 @@
 angular.module('woodash', [
     'ngAnimate',
     'ngSanitize',
+    'ngMaterial',
     'restangular',
     'ui.router',
 	'ionic',
@@ -17,8 +18,8 @@ angular.module('woodash', [
     'woodash.services',
     'woodash.directives',
     'woodash.controllers'
-])
 
+    ])
 
     .constant('appSiteConfig', {
         'site_url': 'https://wp.thewhatwhat.com/wc-api/v2',
