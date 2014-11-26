@@ -406,5 +406,9 @@ body,
 
 .customer-detail-subheader {
   height: 224px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+//  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.has-customer-detail-subheader {
+  top: 338px;
 }

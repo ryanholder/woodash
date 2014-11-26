@@ -1,8 +1,23 @@
 <ion-view>
-    <ion-content class="detail-content">
-        <div class="customer-detail-subheader">
-
+    <div class="bar bar-subheader bar-stable customer-detail-subheader">
+        <div class="row">
+            <div class="col col-25">Image</div>
+            <div class="col">Name<br>Location<br>Email</div>
+            <div class="col col-25">Last Purchase<br>Total Purchase<br>Last Login</div>
         </div>
+    </div>
+    <div class="tabs tabs-top" style="top: 288px">
+        <a class="tab-item">
+            Home
+        </a>
+        <a class="tab-item">
+            Favorites
+        </a>
+        <a class="tab-item">
+            Settings
+        </a>
+    </div>
+    <ion-content class="detail-content has-customer-detail-subheader">
         {{customersdetail.info.id}}
         <div ng-repeat="order in customersdetail.orders">
             <a ui-sref="app.customers.detail.order({order:order.id})">{{order.id}}</a>
