@@ -375,5 +375,13 @@ body,
 .list-pane .bar.bar-md,
 .detail-pane .bar.bar-md {
   box-shadow: 0 1px 5px rgba(0,0,0,.3);
-  padding: 0;
+  padding: 7px;
+}
+
+.bar .button.button-icon .icon:before, .bar .button.button-icon:before, .bar .button.button-icon.icon-left:before, .bar .button.button-icon.icon-right:before {
+  font-size: 24px;
+}
+
+.bar .button-icon.ion-navicon:before {
+  font-size: 28px; // todo: hack here on navicon, at 24px it is small
 }
