@@ -140,6 +140,8 @@ angular.module('woodash.controllers', [])
             }
         });
 
+        console.log(customersdetail.info.plain());
+
         customersdetail.info.orders.then( function (orders) {
             if (orders.length > 0) {
                 customersdetail.orders = orders.plain();

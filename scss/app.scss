@@ -6,6 +6,9 @@ $imd-component-baseline-grid:     8px;
 $imd-type-baseline-grid:          4px;
 $imd-iconography-baseline-grid:   8px;
 
+// Bars
+$bar-tall-height:                 164px !default;
+
 // Type
 $imd-font-family-base:            "Roboto", sans-serif  !default;
 $imd-font-family-thin:            "Roboto-Thin" !default;
@@ -205,11 +208,18 @@ body,
   width: 320px;
 }
 
+
 .detail-pane {
   width: calc(100% - 320px);
   left: 320px;
+
+  .pane {
+//    background-color: rgb(238, 238, 238);
+  }
 //  box-shadow: -1px 0px 5px rgba(0,0,0,.3);
 }
+
+
 
 /* Side menu styles to be refactored
  * Notes as follows...
@@ -378,6 +388,14 @@ body,
   padding: 7px;
 }
 
+.list-pane .bar.bar-md {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.detail-pane .bar.bar-md {
+  background-image: none;
+}
+
 .bar .button.button-icon .icon:before, .bar .button.button-icon:before, .bar .button.button-icon.icon-left:before, .bar .button.button-icon.icon-right:before {
   font-size: 24px;
 }
@@ -390,7 +408,7 @@ body,
   border-right: 1px solid #ddd;
 }
 
-.content-pane:after {
+/*.content-pane:after {
   height: 64px;
   display: block;
   content: "";
@@ -402,13 +420,37 @@ body,
   left: 0;
   width: 100%;
   z-index: 2;
+}*/
+
+.bar-subheader.bar-md-tall {
+  height: $bar-tall-height - $bar-height;
+  min-height: $bar-tall-height - $bar-height;
+  max-height: $bar-tall-height - $bar-height;
 }
 
-.customer-detail-subheader {
-  height: 224px;
-//  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+.tabs-top.has-bar-md-tall > .tabs {
+  top: $bar-tall-height;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
 }
 
-.has-customer-detail-subheader {
-  top: 338px;
+.customer-header {
+  .col {
+    padding: 6px;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 32px;
+    margin: 0 0 0 16px;
+  }
+
+  p {
+    line-height: 24px;
+    margin: 0 0 0 16px;
+  }
+}
+
+.detail-content {
+  top: $bar-tall-height + 48px;
 }

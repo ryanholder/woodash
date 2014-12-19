@@ -1,26 +1,47 @@
 <ion-view>
-    <div class="bar bar-subheader bar-stable customer-detail-subheader">
-        <div class="row">
-            <div class="col col-25">Image</div>
-            <div class="col">Name<br>Location<br>Email</div>
-            <div class="col col-25">Last Purchase<br>Total Purchase<br>Last Login</div>
+<!--    <md-toolbar md-theme="green" class="md-tall md-green-theme">
+        <h2 class="md-toolbar-tools">
+            <span>Toolbar: tall</span>
+        </h2>
+    </md-toolbar>-->
+    <ion-nav-buttons side="secondary">
+        <button class="button button-icon icon ion-ios7-star-outline" style="min-height: 54px;"></button>
+        <button class="button button-icon icon ion-edit" style="min-height: 54px;"></button>
+    </ion-nav-buttons>
+<!--    <ion-nav-buttons side="right">
+        <div class="buttons">
+            <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+        </div>
+    </ion-nav-buttons>-->
+    <div class="bar bar-subheader bar-light bar-md-tall">
+        <div class="row customer-header">
+            <div class="col">
+                <div style="width: 56px; height: 56px; border-radius: 50%; background-color: #ccc; float: left;"></div>
+                <div style="float: left">
+                    <h3>{{customersdetail.info.first_name}} {{customersdetail.info.last_name}}</h3>
+                    <p>{{customersdetail.info.email}}</p>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="tabs tabs-top" style="top: 288px">
-        <a class="tab-item">
-            Home
-        </a>
-        <a class="tab-item">
-            Favorites
-        </a>
-        <a class="tab-item">
-            Settings
-        </a>
-    </div>
-    <ion-content class="detail-content has-customer-detail-subheader">
-        {{customersdetail.info.id}}
-        <div ng-repeat="order in customersdetail.orders">
-            <a ui-sref="app.customers.detail.order({order:order.id})">{{order.id}}</a>
-        </div>
-    </ion-content>
+    <ion-tabs class="tabs-top has-bar-md-tall tabs-light">
+
+        <ion-tab title="Details">
+            <!-- Tab 1 content -->
+            <ion-content class="detail-content">
+                {{customersdetail.info.id}}
+            </ion-content>
+        </ion-tab>
+
+        <ion-tab title="Orders">
+            <!-- Tab 2 content -->
+            <ion-content class="detail-content">
+                <div ng-repeat="order in customersdetail.orders">
+                    <a ui-sref="app.customers.detail.order({order:order.id})">{{order.id}}</a>
+                </div>
+            </ion-content>
+        </ion-tab>
+
+    </ion-tabs>
+
 </ion-view>
