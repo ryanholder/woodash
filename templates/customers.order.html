@@ -1,8 +1,9 @@
 <ion-view>
-    <ion-nav-buttons side="right">
-		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
-	</ion-nav-buttons>
     <ion-content>
-        order here
+        <h2>Menu</h2>
+        <button ng-click="closeDrawer()">Close</button>
+        <div ng-repeat="order in customersdetail.orders">
+            {{order.id}}
+        </div>
     </ion-content>
 </ion-view>

@@ -26,6 +26,15 @@
 <ion-pane class="detail-pane">
     <ion-nav-bar class="bar-light bar-md" delegate-handle="detailNav">
         <ion-nav-back-button></ion-nav-back-button>
+        <ion-nav-buttons side="secondary">
+            <button class="button button-icon icon ion-ios7-star-outline" style="min-height: 54px;"></button>
+            <button class="button button-icon icon ion-edit" style="min-height: 54px;"></button>
+            <button class="button button-icon icon ion-ios7-information" style="min-height: 54px;" ng-click="openDrawer()"></button>
+        </ion-nav-buttons>
     </ion-nav-bar>
+
+    <drawer side="right">
+        <ion-nav-view name="detailOrdersContent"></ion-nav-view>
+    </drawer>
     <ion-nav-view name="detailContent"></ion-nav-view>
 </ion-pane>
