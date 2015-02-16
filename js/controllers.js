@@ -131,12 +131,12 @@ angular.module('woodash.controllers', [])
         customers.list = stateData.customers;
     }])
 
-    .controller('CustomersDetailCtrl', ['$rootScope', '$scope', '$stateParams', '$state', 'stateData', function ($rootScope, $scope, $stateParams, $state, stateData) {
+    .controller('CustomersDetailCtrl', ['$rootScope', '$scope', '$stateParams', '$state', function ($rootScope, $scope, $stateParams, $state) {
         var customersdetail = this;
 
-        angular.forEach(stateData.customers, function(value, key) {
+        angular.forEach($scope.customers.list, function(value, key) {
             if (value.id === $stateParams.id) {
-                return customersdetail.info = stateData.customers[key];
+                return customersdetail.info = $scope.customers.list[key];
             }
         });
 
