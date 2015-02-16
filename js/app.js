@@ -107,6 +107,10 @@ angular.module('woodash', [
                     'detailContent@app.customers': {
                         templateUrl: 'templates/customers.detail.html',
                         controller: 'CustomersDetailCtrl as customersdetail'
+                    },
+                    'detailOrdersContent@app.customers': {
+                        templateUrl: 'templates/customers.order.html',
+                        controller: 'CustomersDetailCtrl as customersdetail'
                     }
                 },
                 resolve: {
@@ -121,7 +125,7 @@ angular.module('woodash', [
             .state('app.customers.detail.order', {
                 url: '/order/{order}',
                 views: {
-                    'detailContent@app.customers': {
+                    'detailOrdersContent@app.customers': {
                         templateUrl: 'templates/customers.order.html',
                         controller: 'CustomersOrderCtrl as customersorder'
                     }
