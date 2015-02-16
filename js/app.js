@@ -12,6 +12,7 @@ angular.module('woodash', [
     'restangular',
     'ui.router',
 	'ionic',
+    'ionic.contrib.drawer',
     'angularMoment',
     'mgcrea.ngStrap',
     'woodash.filters',

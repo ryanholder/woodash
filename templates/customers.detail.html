@@ -1,3 +1,15 @@
+<drawer side="left">
+    <ion-content>
+        <h2>Menu</h2>
+        <button ng-click="closeDrawer()">Close</button>
+        <ion-list>
+            <ion-item>Friends</ion-item>
+            <ion-item>Favorites</ion-item>
+            <ion-item>Search</ion-item>
+        </ion-list>
+    </ion-content>
+</drawer>
+
 <ion-view>
 <!--    <md-toolbar md-theme="green" class="md-tall md-green-theme">
         <h2 class="md-toolbar-tools">
@@ -7,6 +19,7 @@
     <ion-nav-buttons side="secondary">
         <button class="button button-icon icon ion-ios7-star-outline" style="min-height: 54px;"></button>
         <button class="button button-icon icon ion-edit" style="min-height: 54px;"></button>
+        <button ng-click="openDrawer()">Open</button>
     </ion-nav-buttons>
 <!--    <ion-nav-buttons side="right">
         <div class="buttons">
