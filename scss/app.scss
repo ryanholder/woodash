@@ -7,10 +7,10 @@ $imd-type-baseline-grid:          4px;
 $imd-iconography-baseline-grid:   8px;
 
 // Bars
-$bar-tall-height:                 164px !default;
+$bar-tall-height:                 128px !default;
 
 // Type
-$imd-font-family-base:            "Roboto", sans-serif  !default;
+$imd-font-family-base:            "Roboto-Regular", sans-serif  !default;
 $imd-font-family-thin:            "Roboto-Thin" !default;
 $imd-font-family-light:           "Roboto-Light", sans-serif-light !default;
 $imd-font-family-medium:          "Roboto-Medium" !default;
@@ -220,6 +220,13 @@ body,
 }
 
 
+/* Flex related style */
+[flex] {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
 
 /* Side menu styles to be refactored
  * Notes as follows...
@@ -422,10 +429,72 @@ body,
   z-index: 2;
 }*/
 
-.bar-subheader.bar-md-tall {
-  height: $bar-tall-height - $bar-height;
-  min-height: $bar-tall-height - $bar-height;
-  max-height: $bar-tall-height - $bar-height;
+.todo-bar-md-tall {
+  height: $bar-tall-height;
+  min-height: $bar-tall-height;
+  max-height: $bar-tall-height;
+  padding: 0;
+
+  .todo-display-title {
+    @extend .imd-display-3;
+    line-height: 40px;
+    opacity: 0.54;
+    display: flex;
+    height: 100%;
+    padding-bottom: 32px;
+    margin: 0 24px 0 80px;
+    align-items: flex-end;
+  }
+}
+
+.todo-vertical-spacing {
+  display: flex;
+  height: 24px;
+}
+
+.todo-vertical-spacing.divider {
+  height: 1px;
+  background: #ccc;
+  margin: 8px 24px 8px 80px;
+}
+
+.todo-contact-form-group {
+  display: flex;
+  flex-direction: column;
+  min-height: 72px;
+//  align-items: center;
+  margin: 0 24px 0 24px;
+
+  .todo-maintain-min-padding {
+    display: flex;
+    min-height: 16px;
+  }
+
+  .todo-contact-form-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .todo-icon {
+      height: 24px;
+      width: 24px;
+      background: #ccc;
+      display: block;
+    }
+
+    .todo-text {
+      margin-left: 32px;
+
+      .todo-subhead {
+        @extend .imd-subhead-desktop;
+      }
+
+      .todo-body-1 {
+        @extend .imd-body-1-desktop;
+        opacity: 0.87;
+      }
+    }
+  }
 }
 
 .tabs-top.has-bar-md-tall > .tabs {

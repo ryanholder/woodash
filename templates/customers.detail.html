@@ -1,11 +1,69 @@
 <ion-view>
-    <div class="bar bar-subheader bar-md-tall">
-        <span flex></span>
-        <h2 class="display">{{customersdetail.info.first_name}} {{customersdetail.info.last_name}}</h2>
-    </div>
-    <ion-content class="has-subheader">
-        <div>
-            <span>{{customersdetail.info.id}}</span>
+    <ion-content>
+        <div class="todo-bar-md-tall">
+            <h2 class="todo-display-title">{{customersdetail.info.first_name}} {{customersdetail.info.last_name}}</h2>
+        </div>
+        <div class="todo-vertical-spacing"></div>
+        <div class="todo-contact-form-group">
+            <div class="todo-maintain-min-padding"></div>
+            <div class="todo-contact-form-details">
+                <span class="todo-icon"></span>
+                <div class="todo-text">
+                    <div class="todo-subhead">{{customersdetail.info.email}}</div>
+                    <label class="todo-body-1">email</label>
+                </div>
+            </div>
+            <div class="todo-maintain-min-padding"></div>
+        </div>
+        <div class="todo-vertical-spacing divider"></div>
+        <div class="todo-contact-form-group">
+            <div class="todo-maintain-min-padding"></div>
+            <div class="todo-contact-form-details">
+                <span class="todo-icon"></span>
+                <div class="todo-text">
+                    <div class="todo-subhead">{{customersdetail.info.billing_address.phone}}</div>
+                    <label class="todo-body-1">phone</label>
+                </div>
+            </div>
+            <div class="todo-maintain-min-padding"></div>
+        </div>
+        <div class="todo-vertical-spacing divider"></div>
+        <div class="todo-contact-form-group">
+            <div class="todo-maintain-min-padding"></div>
+            <div class="todo-contact-form-details">
+                <span class="todo-icon"></span>
+                <div class="todo-text">
+                    <div class="todo-subhead">
+                        {{customersdetail.info.billing_address.address_1}}<br>
+                        {{customersdetail.info.billing_address.address_2}}<br>
+                        {{customersdetail.info.billing_address.city}}<br>
+                        {{customersdetail.info.billing_address.postcode}}<br>
+                        {{customersdetail.info.billing_address.state}}<br>
+                        {{customersdetail.info.billing_address.country}}
+                    </div>
+                    <label class="todo-body-1">bill to address</label>
+                </div>
+            </div>
+            <div class="todo-maintain-min-padding"></div>
+        </div>
+        <div class="todo-vertical-spacing divider"></div>
+        <div class="todo-contact-form-group">
+            <div class="todo-maintain-min-padding"></div>
+            <div class="todo-contact-form-details">
+                <span class="todo-icon"></span>
+                <div class="todo-text">
+                    <div class="todo-subhead">
+                        {{customersdetail.info.shipping_address.address_1}}<br>
+                        {{customersdetail.info.shipping_address.address_2}}<br>
+                        {{customersdetail.info.shipping_address.city}}<br>
+                        {{customersdetail.info.shipping_address.postcode}}<br>
+                        {{customersdetail.info.shipping_address.state}}<br>
+                        {{customersdetail.info.shipping_address.country}}
+                    </div>
+                    <label class="todo-body-1">ship to address</label>
+                </div>
+            </div>
+            <div class="todo-maintain-min-padding"></div>
         </div>
     </ion-content>
 </ion-view>
