@@ -429,21 +429,24 @@ body,
   z-index: 2;
 }*/
 
+.has-subheader {
+  top: 144px;
+}
+
 .todo-bar-md-tall {
-  height: $bar-tall-height;
-  min-height: $bar-tall-height;
-  max-height: $bar-tall-height;
+  height: 80px;
+  min-height: 80px;
+  max-height: 80px;
   padding: 0;
 
   .todo-display-title {
-    @extend .imd-display-3;
+    @extend .imd-display-1;
     line-height: 40px;
     opacity: 0.54;
     display: flex;
     height: 100%;
-    padding-bottom: 32px;
     margin: 0 24px 0 80px;
-    align-items: flex-end;
+    align-items: center;
   }
 }
 
