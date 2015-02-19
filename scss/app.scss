@@ -415,7 +415,7 @@ body,
   border-right: 1px solid #ddd;
 }
 
-drawer {
+.drawer {
   display: block;
   position: fixed;
   width: 320px;
@@ -424,22 +424,38 @@ drawer {
   background: #ffffff;
 }
 
-drawer.animate {
+.animate .drawer {
   -webkit-transition: 0.4s all ease-in-out;
   transition: 0.4s all ease-in-out;
 }
 
-drawer.left {
+.drawer.left {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
   box-shadow: 1px 0px 10px rgba(0,0,0,0.3);
 }
-drawer.right {
+.drawer.right {
   right: 0;
   top: 0;
   -webkit-transform: translate3d(100%, 0, 0);
   transform: translate3d(100%, 0, 0);
   box-shadow: -1px 0px 10px rgba(0,0,0,0.3);
+}
+
+.drawer-backdrop {
+  -webkit-transition: background-color 300ms ease-in-out;
+  transition: background-color 300ms ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.drawer-backdrop.active {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /*.content-pane:after {
