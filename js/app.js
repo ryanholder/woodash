@@ -110,7 +110,7 @@ angular.module('woodash', [
                     },
                     'detailOrdersContent@app.customers': {
                         templateUrl: 'templates/customers.order.html',
-                        controller: 'CustomersDetailCtrl as customersdetail'
+                        controller: 'CustomersOrderCtrl as customersorder'
                     }
                 },
                 resolve: {

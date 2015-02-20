@@ -129,6 +129,11 @@ angular.module('woodash.controllers', [])
         });
 
         customers.list = stateData.customers;
+
+        customers.drawOpen = false;
+        customers.openDrawer = function () {
+            customers.drawOpen = !customers.drawOpen;
+        };
     }])
 
     .controller('CustomersDetailCtrl', ['$rootScope', '$scope', '$stateParams', '$state', function ($rootScope, $scope, $stateParams, $state) {
