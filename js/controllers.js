@@ -131,7 +131,7 @@ angular.module('woodash.controllers', [])
         customers.list = stateData.customers;
 
         customers.drawOpen = false;
-        customers.openDrawer = function () {
+        customers.toggleDrawer = function () {
             customers.drawOpen = !customers.drawOpen;
         };
     }])
