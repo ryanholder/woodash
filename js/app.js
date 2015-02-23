@@ -122,7 +122,7 @@ angular.module('woodash', [
                 }
             })
 
-            .state('app.customers.detail.order', {
+      /*      .state('app.customers.detail.order', {
                 url: '/order/{order}',
                 views: {
                     'detailOrdersContent@app.customers': {
@@ -130,7 +130,7 @@ angular.module('woodash', [
                         controller: 'CustomersOrderCtrl as customersorder'
                     }
                 }
-            })
+            })*/
 
             .state('app.products', {
                 url: '/products',
