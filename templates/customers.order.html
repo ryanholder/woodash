@@ -2,7 +2,7 @@
     <drawer-view class="right">
         <ion-content class="drawer-content">
             <h2>Menu</h2>
-            <button ng-click="closeDrawer()">Close</button>
+            <button ng-click="customers.toggleDrawer()">Close</button>
             <div ng-repeat="order in customersdetail.orders">
                 {{order.id}}
             </div>
