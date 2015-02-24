@@ -246,4 +246,8 @@ angular.module('woodash.controllers', [])
         console.log(ordersdetail.orders);
 
         //console.log(ordersdetail.orders);
+    }])
+
+    .controller('PlayboxCtrl', ['$scope', function ($scope) {
+        var playbox = this;
     }]);

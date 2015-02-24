@@ -194,6 +194,16 @@ angular.module('woodash', [
                         }
                     }
                 }
+            })
+
+            .state('app.playbox', {
+                url: '/playbox',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/playbox.html',
+                        controller: 'PlayboxCtrl as playbox'
+                    }
+                }
             });
 
         $urlRouterProvider.otherwise('/app/overview');
