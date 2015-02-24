@@ -121,6 +121,7 @@ angular.module('woodash.directives', [])
                             .first(5)
                             .value();
 
+                        // todo: replace DataCollection for ForerunnerDB
                         var charDC = new DataCollection(lineItems);
 
                         angular.forEach(lineItemsCount, function(value) {
@@ -271,6 +272,7 @@ angular.module('woodash.directives', [])
                     wcOrders.getList(params).then(function(orders) {
                         //var allOrders = [];
 
+                        // todo: replace DataCollection for ForerunnerDB
                         var charDC = new DataCollection(orders);
                         $scope.totalRevenue = charDC.query().sum('total');
                         $scope.ordersPlaced = $filter('number')(orders.length, 0);

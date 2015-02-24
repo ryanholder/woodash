@@ -1,0 +1,104 @@
+<!doctype HTML>
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="../dist/fdb-legacy.js"></script>
+	<script src="../dist/fdb-autobind.min.js"></script>
+</head>
+<body>
+	<div id="coll"></div>
+	<script id="collTemplate" type="text/x-jsrender">
+		{^{for #data}}
+			<div data-link="id{:_id}">
+				{^{:name}}
+				<ol>
+				  {^{for arr}}
+					<li data-link="class{:name} id{:_id}">
+					  {^{:name}}
+					  <img class="remove" src="http://www.jsviews.com/resources/images/close.png" />
+					</li>
+				  {{/for}}
+				</ol>
+			</div>
+		{{/for}}
+	</script>
+	<script>
+		window._counter = 0;
+		var db = new ForerunnerDB(),
+			test = db.collection('test');
+
+		//test.link('#coll', '#collTemplate');
+		var view = test.view('moo', {}, {
+			sort: {
+				_id: -1
+			}
+		});
+		view.link('#coll', '#collTemplate');
+
+		test.insert([{
+			"_id": "1",
+			"name": 'Test2 Test School 1',
+			"arr": [{
+				"_id": "1",
+				"name": "Rob Evans",
+				"email": 'rob@irrelon.com'
+			}]
+		}, {
+			"_id": "2",
+			"name": 'Test2 Test School 2',
+			"arr": [{
+				"_id": "1",
+				"name": "Rob Evans",
+				"email": 'rob@irrelon.com'
+			}]
+		}]);
+
+		test.insert({
+			"_id": "3",
+			"name": 'Test2 Test School 3',
+			"arr": [{
+				"_id": "1",
+				"name": "Rob Evans",
+				"email": 'rob@irrelon.com'
+			}]
+		});
+
+		setTimeout(function () {
+			test.update({
+				"_id": "1",
+				"arr": {
+					"_id": "1"
+				}
+			}, {
+				"arr.$": {
+					"name": "Roger Rabbit"
+				}
+			});
+		}, 1000);
+
+		setTimeout(function () {
+			view.queryOptions({sort: {_id: 1}});
+		}, 2000);
+
+		view.refresh();
+
+		$('body').on("click", ".remove", function() {
+			debugger;
+
+			var view = $.view(this);
+
+			test.update({
+				_id: view.parent.parent.data._id
+			}, {
+				"$pull": {
+					"arr": {
+						_id: view.data._id
+					}
+				}
+			});
+		});
+
+
+	</script>
+</body>
+</html>
