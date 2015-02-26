@@ -6,6 +6,27 @@
         <h1 class="title">Playbox</h1>
     </ion-header-bar>
     <ion-content class="has-header">
-
+        <section id="todoapp">
+            <header id="header">
+                <h1>todos</h1>
+                <input id="new-todo" placeholder="What needs to be done?" autofocus>
+            </header>
+            <section id="main">
+                <ul id="todo-list"></ul>
+            </section>
+            <footer id="footer">
+                <span id="todo-count"></span>
+                <div id="sync-wrapper">
+                    <div id="sync-success">Currently syncing</div>
+                    <div id="sync-error">There was a problem syncing</div>
+                </div>
+            </footer>
+        </section>
+        <footer id="info">
+            <p>Double-click to edit a todo</p>
+            <p>Template by <a href="http://github.com/sindresorhus">Sindre Sorhus</a></p>
+            <p>Created by <a href="http://twitter.com/ffesseler">Florian Fesseler</a></p>
+            <p>Cleanup, edits by <a href="http://github.com/boushley">Aaron Boushley</a></p>
+        </footer>
     </ion-content>
 </ion-view>

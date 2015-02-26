@@ -11,6 +11,7 @@ angular.module('woodash', [
     'ngMaterial',
     'restangular',
     'ui.router',
+    'pouchdb',
 	'ionic',
     'ionic.contrib.drawer',
     'angularMoment',
